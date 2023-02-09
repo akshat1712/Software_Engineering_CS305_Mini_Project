@@ -16,7 +16,7 @@ public class Main {
             option=sc.nextInt();
 
             if( option==1){
-                login Login = new login(); // making a new instance of login
+                Login Login = new Login(); // making a new instance of login
                 Login.loginForm(); // calling the loginForm function
             }
             else if( option==2){

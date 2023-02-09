@@ -1,7 +1,7 @@
 package org.example;
 import java.sql.*;
 import java.util.Scanner;
-public class login {
+public class Login {
 
 
     private boolean checklogin(String query, Connection con){
@@ -45,6 +45,8 @@ public class login {
                     String query = String.format("SELECT empl_id FROM acad_empl WHERE email ='%s' AND password ='%s';",Email,Password);
                     if( checklogin(query,con)){
                         System.out.println("LOGIN SUCCESFUL");
+                        user acadEmpl = new AcademicEmployee();
+                        acadEmpl.showmenu();
                     }
                     else {
                         System.out.println("LOGIN UNSUCCESFUL");
@@ -54,6 +56,8 @@ public class login {
                     String query = String.format("SELECT faculty_id FROM faculties WHERE email ='%s' AND password ='%s';",Email,Password);
                     if( checklogin(query,con)){
                         System.out.println("LOGIN SUCCESFUL");
+                        user faculty = new Faculty();
+                        faculty.showmenu();
                     }
                     else {
                         System.out.println("LOGIN UNSUCCESFUL");
@@ -63,6 +67,8 @@ public class login {
                     String query= String.format("SELECT student_id FROM students WHERE email ='%s' AND password ='%s';",Email,Password);
                     if( checklogin(query,con)){
                         System.out.println("LOGIN SUCCESFUL");
+                        user student = new Student();
+                        student.showmenu();
                     }
                     else {
                         System.out.println("LOGIN UNSUCCESFUL");
