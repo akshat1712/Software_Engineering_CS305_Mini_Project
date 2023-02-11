@@ -25,10 +25,6 @@ public class FacultyImpl implements UserDAO {
     }
 
 
-    public void showmenu() {
-        System.out.println("Welcome to Faculty Menu");
-    }
-
     public boolean login() {
         System.out.println("Welcome to Faculty Login");
         return true;

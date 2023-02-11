@@ -21,9 +21,6 @@ public class AcademicEmployeeImpl implements UserDAO {
         con= DriverManager.getConnection(connectionString,username,databasePassword);
     }
 
-    public void showmenu() {
-        System.out.println("Welcome to Academic Employee Menu");
-    }
 
     public boolean login() {
         System.out.println("Welcome to Academic Employee Login");
