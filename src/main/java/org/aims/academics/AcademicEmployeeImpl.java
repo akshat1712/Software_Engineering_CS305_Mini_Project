@@ -3,6 +3,7 @@ import org.aims.dao.UserDAO;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class AcademicEmployeeImpl implements UserDAO {
@@ -23,9 +24,40 @@ public class AcademicEmployeeImpl implements UserDAO {
 
 
     public boolean login() {
-        System.out.println("Welcome to Academic Employee Login");
-        return true;
+        try {
+            ResultSet rs1 = con.createStatement().executeQuery("SELECT * FROM passwords WHERE email='" + email + "' AND password='" + password + "' AND role='ACADEMIC'");
+            return rs1.next();
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
+    public void addCourseInCatalog() {
+
+    }
+
+    public String startSemester(int Year, String Semester) throws SQLException {
+        ResultSet rs1=con.createStatement().executeQuery("SELECT  FROM time_semester WHERE status='ONGOING'");
+        if(rs1.next()){
+            return "Semester Already Ongoing";
+        }
+        else {
+            con.createStatement().executeUpdate("INSERT INTO time_semester VALUES ('" + Semester + "','" + Year + "','ONGOING')");
+            return "Semester Started";
+        }
+    }
+
+    public String endSemester() throws SQLException{
+        ResultSet rs1=con.createStatement().executeQuery("SELECT  FROM time_semester WHERE status='ONGOING'");
+        if(rs1.next()){
+            con.createStatement().executeUpdate("UPDATE time_semester SET status='ENDED' WHERE status='ONGOING'");
+            return "Semester Ended";
+        }
+        else {
+            return "No Ongoing Semester";
+        }
+    }
 }
 

@@ -87,6 +87,7 @@ CREATE TABLE IF NOT EXISTS "capstone" (
 CREATE TABLE IF NOT EXISTS "time_semester"(
     "semester" VARCHAR(1) NOT NULL,
     "year" INTEGER NOT NULL,
+    "status" VARCHAR(10) NOT NULL,
     PRIMARY KEY ("semester", "year")
 );
 
