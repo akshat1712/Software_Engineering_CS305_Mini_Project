@@ -59,5 +59,17 @@ public class AcademicEmployeeImpl implements UserDAO {
             return "No Ongoing Semester";
         }
     }
+
+    public String viewGrades(String email) throws SQLException {
+        ResultSet rs1=con.createStatement().executeQuery("SELECT student_id FROM grades WHERE email='"+email+"'");
+        if(rs1.next()){
+            String id= rs1.getString("student_id");
+            ResultSet rs2=con.createStatement().executeQuery("select course_code,grade,semester,year from transcript_student_"+id+" as T ,courses_catalog C WHERE T.catalog_id=C.catalog_id;");
+            return "dONE";
+        }
+        else {
+            return "No student exist with this grade";
+        }
+    }
 }
 
