@@ -120,7 +120,8 @@ public class AcademicEmployeeService implements UserService {
         Scanner sc = new Scanner(System.in);
         String email = sc.nextLine();
         try {
-            AcademicEmployee.viewGrades(email);
+            String response =AcademicEmployee.viewGrades(email);
+            System.out.println(response);
         }
         catch (Exception e) {
             e.printStackTrace();

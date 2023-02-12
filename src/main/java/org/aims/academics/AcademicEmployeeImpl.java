@@ -42,8 +42,6 @@ public class AcademicEmployeeImpl implements UserDAO {
             if(s.equals(courseCode))
                 continue;
             String [] split=s.split(" ");
-//            String query="SELECT * FROM courses_catalog WHERE course_code='"+split[0]+"'";
-//            System.out.println(query);
             ResultSet rs1=con.createStatement().executeQuery("SELECT * FROM courses_catalog WHERE course_code='"+split[0]+"'");
             if(!rs1.next()){
                 return "Prerequisite Course Does Not Exist";
@@ -100,7 +98,7 @@ public class AcademicEmployeeImpl implements UserDAO {
             return "DONE";
         }
         else {
-            return "No student exist with this grade";
+            return "No student exist with this Email-ID";
         }
     }
 }
