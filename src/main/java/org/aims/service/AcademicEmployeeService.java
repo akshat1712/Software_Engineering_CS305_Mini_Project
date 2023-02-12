@@ -73,17 +73,18 @@ public class AcademicEmployeeService implements UserService {
             System.out.print("Enter Number of Pre-Requisite: ");
             int preRequisite = sc.nextInt();
             String[] preRequisiteList = new String[preRequisite+1];
-            System.out.println("Enter Pre-Requisite Course Code with Grade Cutoff, each in new line");
-
-            for (int i = 0; i < preRequisite+1; i++) {
-                preRequisiteList[i] = sc.nextLine();
+            if (preRequisite > 0)
+                System.out.println("Enter Pre-Requisite Course Code with Grade Cutoff, each in new line: ");
+            preRequisiteList[0]=courseCode;
+            for (int i = 1; i < preRequisite+1; i++) {
+                String data = sc.nextLine();
+                if(data.equals(""))
+                    data = sc.nextLine();
+                preRequisiteList[i] = data;
             }
 
-            for (int i = 0; i < preRequisite; i++) {
-                System.out.println(preRequisiteList[i]);
-            }
-
-//            System.out.println(preRequisiteList[0]);
+            String response = AcademicEmployee.addCourseInCatalog(courseCode, courseName, courseDepartment, Lectures, Tutorials, Practical, SelfStudy, Credits, preRequisiteList);
+            System.out.println(response);
         }
         catch (Exception e) {
             e.printStackTrace();

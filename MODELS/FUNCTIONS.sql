@@ -102,9 +102,8 @@ $$;
 
 CREATE OR REPLACE FUNCTION INSERT_COURSE_CATALOG(
     course_name VARCHAR(50),
-    course_code VARCHAR(10),
+    course_code VARCHAR(5),
     dept_id INTEGER,
-    pre_req TEXT[],
     lectures INTEGER,
     tutorials INTEGER,
     practicals INTEGER,
@@ -115,8 +114,8 @@ RETURNS INTEGER
 LANGUAGE plpgsql
 AS $$
     BEGIN
-        INSERT INTO courses_catalog ("course_name", "course_code", "dept_id", "pre_req", "lectures", "tutorials", "practicals", "self_study", "credits")
-        VALUES (course_name, course_code, dept_id, pre_req, lectures, tutorials, practicals, self_study, credits);
+        INSERT INTO courses_catalog ("course_name", "course_code", "dept_id", "lectures", "tutorials", "practicals", "self_study", "credits")
+        VALUES (course_name, course_code, dept_id, lectures, tutorials, practicals, self_study, credits);
         RETURN 1;
     END;
 $$;
@@ -126,15 +125,14 @@ CREATE OR REPLACE FUNCTION INSERT_COURSE_OFFERED(
     catalog_id INTEGER,
     faculty_id INTEGER,
     course_code VARCHAR(5),
-    CGPA_cutoff REAL,
-    courses_pre_req TEXT[]
+    CGPA_cutoff REAL
 )
 RETURNS INTEGER
 LANGUAGE plpgsql
 AS $$
     BEGIN
-        INSERT INTO courses_offered ("catalog_id", "faculty_id", "course_code", "CGPA_cutoff", "courses_pre_req")
-        VALUES (catalog_id, faculty_id, course_code, CGPA_cutoff, courses_pre_req);
+        INSERT INTO courses_offered ("catalog_id", "faculty_id", "course_code", "CGPA_cutoff")
+        VALUES (catalog_id, faculty_id, course_code, CGPA_cutoff);
         RETURN 1;
     END;
 $$;
@@ -215,3 +213,4 @@ FOR EACH ROW EXECUTE PROCEDURE FACULTY_TABLE_CREATION();
 
 
 
+INSERT INTO courses_pre_req ("catalog_id", "course_code","grade") VALUES (1, 'CS101', 'A');

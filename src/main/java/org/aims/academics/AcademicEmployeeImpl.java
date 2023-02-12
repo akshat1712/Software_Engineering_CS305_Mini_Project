@@ -25,7 +25,7 @@ public class AcademicEmployeeImpl implements UserDAO {
 
     public boolean login() {
         try {
-            ResultSet rs1 = con.createStatement().executeQuery("SELECT * FROM passwords WHERE email='" + email + "' AND password='" + password + "' AND role='ACADEMIC'");
+            ResultSet rs1 = con.createStatement().executeQuery("SELECT * FROM passwords WHERE email='" + email + "' AND password='" + password + "' AND role='ACAD_STAFF'");
             return rs1.next();
         }
         catch (SQLException e){
@@ -34,9 +34,41 @@ public class AcademicEmployeeImpl implements UserDAO {
         }
     }
 
-    public void addCourseInCatalog() {
+    public String addCourseInCatalog( String courseCode, String courseName,String department,
+                                    int lectures,int tutorial, int practicals, int self_study, int credits,
+                                    String [] prerequisite) throws SQLException {
 
+        for (String s : prerequisite) {
+            if(s.equals(courseCode))
+                continue;
+            String [] split=s.split(" ");
+//            String query="SELECT * FROM courses_catalog WHERE course_code='"+split[0]+"'";
+//            System.out.println(query);
+            ResultSet rs1=con.createStatement().executeQuery("SELECT * FROM courses_catalog WHERE course_code='"+split[0]+"'");
+            if(!rs1.next()){
+                return "Prerequisite Course Does Not Exist";
+            }
+        }
+        ResultSet rs2=con.createStatement().executeQuery("SELECT dept_id FROM departments WHERE name='"+department+"'");
+        if(!rs2.next()){
+            return "Department Does Not Exist";
+        }
+        con.createStatement().executeQuery("SELECT INSERT_COURSE_CATALOG('"+courseName+"','"+courseCode+"','"+rs2.getString("dept_id")+"',"+lectures+","+tutorial+","+practicals+","+self_study+","+credits+")");
+
+        ResultSet rs3=con.createStatement().executeQuery("SELECT MAX(catalog_id) as id FROM courses_catalog;");
+
+        if (!rs3.next()){
+            return "Course Not added Successfully";
+        }
+        for(String s:prerequisite){
+            if(s.equals(courseCode))
+                continue;
+            String [] split=s.split(" ");
+            con.createStatement().execute("INSERT INTO courses_pre_req (\"catalog_id\", \"pre_req\",\"grade\") VALUES ('"+rs3.getString("id")+"','"+split[0]+"','"+split[1]+"')");
     }
+        return "ADDED";
+    }
+
 
     public String startSemester(int Year, String Semester) throws SQLException {
         ResultSet rs1=con.createStatement().executeQuery("SELECT  FROM time_semester WHERE status='ONGOING'");
@@ -65,7 +97,7 @@ public class AcademicEmployeeImpl implements UserDAO {
         if(rs1.next()){
             String id= rs1.getString("student_id");
             ResultSet rs2=con.createStatement().executeQuery("select course_code,grade,semester,year from transcript_student_"+id+" as T ,courses_catalog C WHERE T.catalog_id=C.catalog_id;");
-            return "dONE";
+            return "DONE";
         }
         else {
             return "No student exist with this grade";

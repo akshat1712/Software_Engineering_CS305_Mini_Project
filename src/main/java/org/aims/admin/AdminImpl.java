@@ -59,7 +59,7 @@ public class AdminImpl implements UserDAO {
                 System.out.println("Academic Staff already exists");
             else{
                 ResultSet rs2=con.createStatement().executeQuery("SELECT INSERT_ACADEMIC_EMPLOYEE('"+name+"','"+email+"','"+JoiningDate+"','"+PhoneNumber+"','"+Address+"');");
-                ResultSet rs3 = con.createStatement().executeQuery("SELECT INSERT_PASSWORD('" + email + "','" + PhoneNumber + "','" + "ACADEMIC_STAFF" + "')");
+                ResultSet rs3 = con.createStatement().executeQuery("SELECT INSERT_PASSWORD('" + email + "','" + PhoneNumber + "','" + "ACAD_STAFF" + "')");
             }
         }
 

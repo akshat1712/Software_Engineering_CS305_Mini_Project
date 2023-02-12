@@ -56,7 +56,6 @@ CREATE TABLE IF NOT EXISTS "courses_catalog" (
     "course_code" VARCHAR(5) NOT NULL,
     "course_name" VARCHAR(50) NOT NULL,
     "dept_id" INTEGER NOT NULL,
-    "pre_req" TEXT[],
     "lectures" VARCHAR(1) NOT NULL,
     "tutorials" VARCHAR(1) NOT NULL,
     "practicals" VARCHAR(1) NOT NULL,
@@ -65,12 +64,20 @@ CREATE TABLE IF NOT EXISTS "courses_catalog" (
     FOREIGN KEY ("dept_id") REFERENCES "departments" ("dept_id")
 );
 
+CREATE TABLE IF NOT EXISTS "courses_pre_req" (
+    "pre_req_id" SERIAL PRIMARY KEY,
+    "catalog_id" INTEGER NOT NULL,
+    "pre_req" VARCHAR(5) NOT NULL,
+    "grade" VARCHAR(2) NOT NULL,
+    FOREIGN KEY ("catalog_id") REFERENCES "courses_catalog" ("catalog_id")
+);
+
+
 CREATE TABLE IF NOT EXISTS "courses_offering" (
     "offering_id" SERIAL PRIMARY KEY,
     "catalog_id" INTEGER,
     "faculty_id" INTEGER NOT NULL,
     "course_code" VARCHAR(5) NOT NULL UNIQUE,
-    "offering_pre_req" TEXT[],
     "CGPA" VARCHAR(1) NOT NULL,
     FOREIGN KEY ("catalog_id") REFERENCES "courses_catalog" ("catalog_id"),
     FOREIGN KEY ("faculty_id") REFERENCES "faculties" ("faculty_id")
@@ -96,8 +103,12 @@ CREATE TABLE IF NOT EXISTS "time_semester"(
 -- engineering and
 
 -- THIS IS FOR ONLY COURSES, THERE IS DIFFERENT TABLE FOR CREDITS
--- department,program_core,humanties_core,science_core,general_engineering,capstone,internship,extra_curricular
 
--- This is for credits only
--- department,program_core,humanties_core,science_core,general_engineering,capstone,internship,extra_curricular
--- program_elective,humanities_elective,science_elective,open_elective
+-- TABLE WILL Batch_Curriculum_<YEAR>
+-- COLUMNS WILL BE DEPARTMENT, COURSE_CODE,TYPE
+-- TYPE WILL BE Program Core ( PC ), Program Elective ( PE ),HS CORE ( HC ) , HS ELECTIVE (HE )
+-- GENERAL ENGINEERING ( GE ) , SCIENCE CORE ( SC ) , SCIENCE ELECTIVE ( SE ) , OPEN ELECTIVE ( OE )
+-- CAPSTONE ( CP ), INTERNSHIP ( IN ), EXTRA-CURRICULAR ( EC )
+
+-- TABLE WILL be credits_curriculum_<YEAR>
+-- COLUMNS WILL BE DEPARTMENT, TYPE, CREDITS
