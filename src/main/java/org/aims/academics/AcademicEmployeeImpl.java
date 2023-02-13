@@ -10,14 +10,14 @@ import java.util.Date;
 
 public class AcademicEmployeeImpl implements UserDAO {
 
-    private String email;
-    private String password;
+    private final String email;
+    private final String password;
 
-    private Connection con;
+    private final Connection con;
 
-    private String connectionString="jdbc:postgresql://localhost:5432/postgres";
-    private String username="postgres";
-    private String databasePassword="2020csb1068";
+    private final String connectionString="jdbc:postgresql://localhost:5432/postgres";
+    private final String username="postgres";
+    private final String databasePassword="2020csb1068";
     public AcademicEmployeeImpl(String Email, String Password ) throws SQLException {
         this.email = Email;
         this.password = Password;
@@ -40,6 +40,13 @@ public class AcademicEmployeeImpl implements UserDAO {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public boolean logout() throws SQLException{
+            SimpleDateFormat DateTime=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date=new Date();
+            con.createStatement().execute("UPDATE login_logs SET logout_time='"+DateTime.format(date)+"' WHERE email='"+email+"' AND logout_time='2000-01-01 00:00:00';");
+            return true;
     }
 
     public String addCourseInCatalog( String courseCode, String courseName,String department,
@@ -75,7 +82,11 @@ public class AcademicEmployeeImpl implements UserDAO {
         return "ADDED";
     }
 
+    public String CreateBatch(int batch) throws SQLException{
+        con.createStatement().execute("SELECT BATCH_TABLE_CREATION('"+batch+"')");
+        return "DONE";
 
+    }
     public String startSemester(int Year, String Semester) throws SQLException {
         ResultSet rs1=con.createStatement().executeQuery("SELECT  FROM time_semester WHERE status='ONGOING'");
         if(rs1.next()){
@@ -103,10 +114,26 @@ public class AcademicEmployeeImpl implements UserDAO {
         if(rs1.next()){
             String id= rs1.getString("student_id");
             ResultSet rs2=con.createStatement().executeQuery("select course_code,grade,semester,year from transcript_student_"+id+" as T ,courses_catalog C WHERE T.catalog_id=C.catalog_id;");
-            return "DONE";
+            if (rs2.next()){
+                return "Grades will show up here";
+            }
+            else{
+                return "No Grades";
+            }
         }
         else {
             return "No student exist with this Email-ID";
+        }
+    }
+
+    public String changePassword( String oldPassword , String newPassword) throws SQLException{
+        ResultSet rs1=con.createStatement().executeQuery("SELECT * FROM passwords WHERE email='"+email+"' AND password='"+oldPassword+"' AND role='ACAD_STAFF'");
+        if (rs1.next()){
+            con.createStatement().execute("UPDATE passwords SET password='"+newPassword+"' WHERE email='"+email+"'");
+            return "Password Changed to New";
+        }
+        else {
+            return "Incorrect Old Password";
         }
     }
 }

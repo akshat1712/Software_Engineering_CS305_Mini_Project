@@ -23,14 +23,18 @@ public class FacultyService  implements UserService{
             System.out.println("[1] Offer Course");
             System.out.println("[2] Take Back course");
             System.out.println("[3] View Grades");
+            System.out.println("[4] Change Password");
+            System.out.println("[5] Update Grades");
             System.out.print("Enter your option: ");
             option = sc.nextInt();
 
             switch (option) {
-                case 0 -> System.out.println("Logging out");
+                case 0 -> logoutService();
                 case 1 -> offerCourseService();
                 case 2 -> takeBackCourseService();
                 case 3 -> viewGradesService();
+                case 4 -> changePasswordService();
+                case 5 -> updateGradesService();
                 default -> System.out.println("Invalid option");
             }
         }
@@ -43,6 +47,15 @@ public class FacultyService  implements UserService{
         catch (Exception e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public void logoutService() {
+        try{
+              Faculty.logout();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -89,5 +102,39 @@ public class FacultyService  implements UserService{
         catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void changePasswordService(){
+        System.out.println("Change Password");
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the old password: ");
+        String oldPassword = sc.nextLine();
+        System.out.println("Enter the new password: ");
+        String newPassword = sc.nextLine();
+        try {
+            String response =Faculty.changePassword(oldPassword, newPassword);
+            System.out.println(response);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateGradesService(){
+        System.out.println("Update Grades");
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the email address of the student");
+        String email = sc.nextLine();
+        System.out.println("Enter the course code");
+        String courseCode = sc.nextLine();
+        System.out.println("Enter the new grade");
+        String grade = sc.nextLine();
+//        try {
+//            String response =Faculty.updateGrades(email, courseCode, grade);
+//            System.out.println(response);
+//        }
+//        catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 }

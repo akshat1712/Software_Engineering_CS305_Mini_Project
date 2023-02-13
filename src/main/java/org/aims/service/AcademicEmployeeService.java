@@ -25,15 +25,19 @@ public class AcademicEmployeeService implements UserService {
             System.out.println("[2] Start Semester");
             System.out.println("[3] End Semester");
             System.out.println("[4] View Grades");
+            System.out.println("[5] Create Batch");
+            System.out.println("[6] Change Password");
             System.out.print("Enter your option: ");
             option = sc.nextInt();
 
             switch (option) {
-                case 0 -> System.out.println("Logging out");
+                case 0 -> logoutService();
                 case 1 -> addCourseInCatalogService();
                 case 2 -> startSemesterService();
                 case 3 -> endSemesterService();
                 case 4 -> viewGradesService();
+                case 5 -> createBatchService();
+                case 6 -> changePasswordService();
                 default -> System.out.println("Invalid option");
             }
         }
@@ -46,6 +50,15 @@ public class AcademicEmployeeService implements UserService {
         } catch (Exception e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public void logoutService() {
+        try{
+              AcademicEmployee.logout();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -121,6 +134,36 @@ public class AcademicEmployeeService implements UserService {
         String email = sc.nextLine();
         try {
             String response =AcademicEmployee.viewGrades(email);
+            System.out.println(response);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void createBatchService(){
+        System.out.println("Create Batch");
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the batch number: ");
+        int batchNumber = sc.nextInt();
+        try {
+            String response =AcademicEmployee.CreateBatch(batchNumber);
+            System.out.println(response);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void changePasswordService(){
+        System.out.println("Change Password");
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the old password: ");
+        String oldPassword = sc.nextLine();
+        System.out.println("Enter the new password: ");
+        String newPassword = sc.nextLine();
+        try {
+            String response =AcademicEmployee.changePassword(oldPassword, newPassword);
             System.out.println(response);
         }
         catch (Exception e) {

@@ -21,13 +21,24 @@ public class StudentService implements UserService {
         Scanner sc = new Scanner(System.in);
         while (option!=0){
             System.out.println("[0] LOGOUT");
-            System.out.println("[1] View Profile");
-            System.out.println("[2] Update Profile");
-            System.out.println("[3] View Courses");
-            System.out.println("[4] View Grades");
-            System.out.println("[5] Register Courses");
+            System.out.println("[1] Register Courses");
+            System.out.println("[2] De-Register Courses");
+            System.out.println("[3] View Grades");
+            System.out.println("[4] Computer CGPA");
+            System.out.println("[5] Change Password");
             System.out.print("Enter your option: ");
             option = sc.nextInt();
+
+            switch (option) {
+                case 0 -> logoutService();
+                case 1 -> registerCourseService();
+//                case 2 -> deRegisterCourseServce();
+//                case 3 -> viewGradesService();
+//                case 4 -> computeCGPAService();
+                case 5 -> changePasswordService();
+
+                default -> System.out.println("Invalid option");
+            }
         }
     }
     public boolean login(String email,String password) {
@@ -38,6 +49,45 @@ public class StudentService implements UserService {
         catch (SQLException e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public void logoutService() {
+        try{
+            Student.logout();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void changePasswordService(){
+        System.out.println("Change Password");
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the old password: ");
+        String oldPassword = sc.nextLine();
+        System.out.println("Enter the new password: ");
+        String newPassword = sc.nextLine();
+        try {
+            String response =Student.changePassword(oldPassword, newPassword);
+            System.out.println(response);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void registerCourseService(){
+        System.out.println("Register Course");
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the course code: ");
+        String courseCode = sc.nextLine();
+        try {
+            String response =Student.registerCourse(courseCode);
+            System.out.println(response);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

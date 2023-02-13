@@ -14,9 +14,9 @@ public class AdminImpl implements UserDAO {
         private final String Password;
         private final Connection con;
 
-        private String connectionString="jdbc:postgresql://localhost:5432/postgres";
-        private String username="postgres";
-        private String databasePassword="2020csb1068";
+        private final String connectionString="jdbc:postgresql://localhost:5432/postgres";
+        private final String username="postgres";
+        private final String databasePassword="2020csb1068";
         public AdminImpl(String email, String password) throws SQLException {
             this.Email= email;
             this.Password= password;

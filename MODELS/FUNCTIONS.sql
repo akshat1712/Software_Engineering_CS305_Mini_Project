@@ -214,4 +214,36 @@ FOR EACH ROW EXECUTE PROCEDURE FACULTY_TABLE_CREATION();
 
 
 
-INSERT INTO courses_pre_req ("catalog_id", "course_code","grade") VALUES (1, 'CS101', 'A');
+CREATE OR REPLACE FUNCTION BATCH_TABLE_CREATION(
+    batch_id INTEGER
+)
+RETURNS VOID
+LANGUAGE plpgsql
+AS
+$$
+    DECLARE
+    BEGIN
+
+
+            EXECUTE '
+                CREATE TABLE IF NOT EXISTS batch_curriculum_'||batch_id||' (
+                "department_id" INTEGER NOT NULL,
+                "catalog_id" INTEGER NOT NULL,
+                "semester" VARCHAR(1) NOT NULL,
+                "type" VARCHAR(2) NOT NULL,
+                FOREIGN KEY ("catalog_id") REFERENCES "courses_catalog" ("catalog_id"),
+                FOREIGN KEY ("department_id") REFERENCES "departments" ("dept_id")
+                );
+            ';
+
+            EXECUTE '
+                CREATE TABLE IF NOT EXISTS batch_credits_'||batch_id||' (
+                "department_id" INTEGER NOT NULL,
+                "type" VARCHAR(2) NOT NULL,
+                "credits" VARCHAR(2) NOT NULL,
+                FOREIGN KEY ("department_id") REFERENCES "departments" ("dept_id")
+                );
+            '
+        RETURN;
+    END
+$$;

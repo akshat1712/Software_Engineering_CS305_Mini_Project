@@ -99,16 +99,3 @@ CREATE TABLE IF NOT EXISTS "time_semester"(
 );
 
 
--- FOR EACH BATCH, I have to make a table for each batch which tells the credits requirement for passing the
--- engineering and
-
--- THIS IS FOR ONLY COURSES, THERE IS DIFFERENT TABLE FOR CREDITS
-
--- TABLE WILL Batch_Curriculum_<YEAR>
--- COLUMNS WILL BE DEPARTMENT, COURSE_CODE,TYPE
--- TYPE WILL BE Program Core ( PC ), Program Elective ( PE ),HS CORE ( HC ) , HS ELECTIVE (HE )
--- GENERAL ENGINEERING ( GE ) , SCIENCE CORE ( SC ) , SCIENCE ELECTIVE ( SE ) , OPEN ELECTIVE ( OE )
--- CAPSTONE ( CP ), INTERNSHIP ( IN ), EXTRA-CURRICULAR ( EC )
-
--- TABLE WILL be credits_curriculum_<YEAR>
--- COLUMNS WILL BE DEPARTMENT, TYPE, CREDITS
