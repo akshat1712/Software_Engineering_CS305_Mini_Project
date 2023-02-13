@@ -47,10 +47,35 @@ public class FacultyService  implements UserService{
     }
 
     private void offerCourseService(){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Offer Course");
+        System.out.print("Enter the course code: ");
+        String courseCode = sc.nextLine();
+        System.out.print("Enter the CGPA Cutoff ( Enter -1 if None ): ");
+        double cgpaCutoff = sc.nextDouble();
+        try {
+            String response = Faculty.offerCourse(courseCode, cgpaCutoff);
+            System.out.println(response);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Unable to offer course");
+        }
 
     }
     private void takeBackCourseService(){
-
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Take Back Course");
+        System.out.print("Enter the course code: ");
+        String courseCode = sc.nextLine();
+        try {
+            String response = Faculty.takeBackCourse(courseCode);
+            System.out.println(response);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Unable to take back course");
+        }
     }
     private void viewGradesService(){
         System.out.println("View Grades");

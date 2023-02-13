@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS "courses_offering" (
     "catalog_id" INTEGER,
     "faculty_id" INTEGER NOT NULL,
     "course_code" VARCHAR(5) NOT NULL UNIQUE,
-    "CGPA" VARCHAR(1) NOT NULL,
+    "CGPA" REAL NOT NULL,
     FOREIGN KEY ("catalog_id") REFERENCES "courses_catalog" ("catalog_id"),
     FOREIGN KEY ("faculty_id") REFERENCES "faculties" ("faculty_id")
 );

@@ -8,10 +8,10 @@ import java.sql.SQLException;
 
 public class StudentImpl implements UserDAO {
 
-    private String email;
-    private String password;
+    private final String email;
+    private final String password;
 
-    private Connection con;
+    private final Connection con;
 
     private String connectionString="jdbc:postgresql://localhost:5432/postgres";
     private String username="postgres";

@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class AcademicEmployeeImpl implements UserDAO {
 
@@ -26,7 +28,13 @@ public class AcademicEmployeeImpl implements UserDAO {
     public boolean login() {
         try {
             ResultSet rs1 = con.createStatement().executeQuery("SELECT * FROM passwords WHERE email='" + email + "' AND password='" + password + "' AND role='ACAD_STAFF'");
-            return rs1.next();
+            if( rs1.next()){
+                SimpleDateFormat DateTime=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date date=new Date();
+                con.createStatement().execute("INSERT INTO login_logs (\"email\",\"login_time\",\"logout_time\") VALUES ('"+email+"','"+DateTime.format(date)+"','2000-01-01 00:00:00');");
+                return true;
+            }
+            return false;
         }
         catch (SQLException e){
             e.printStackTrace();
@@ -91,7 +99,7 @@ public class AcademicEmployeeImpl implements UserDAO {
     }
 
     public String viewGrades(String email) throws SQLException {
-        ResultSet rs1=con.createStatement().executeQuery("SELECT student_id FROM grades WHERE email='"+email+"'");
+        ResultSet rs1=con.createStatement().executeQuery("SELECT student_id FROM students WHERE email='"+email+"'");
         if(rs1.next()){
             String id= rs1.getString("student_id");
             ResultSet rs2=con.createStatement().executeQuery("select course_code,grade,semester,year from transcript_student_"+id+" as T ,courses_catalog C WHERE T.catalog_id=C.catalog_id;");

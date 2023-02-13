@@ -131,11 +131,12 @@ RETURNS INTEGER
 LANGUAGE plpgsql
 AS $$
     BEGIN
-        INSERT INTO courses_offered ("catalog_id", "faculty_id", "course_code", "CGPA_cutoff")
+        INSERT INTO courses_offering ("catalog_id", "faculty_id", "course_code", "CGPA")
         VALUES (catalog_id, faculty_id, course_code, CGPA_cutoff);
         RETURN 1;
     END;
 $$;
+
 
 
 
