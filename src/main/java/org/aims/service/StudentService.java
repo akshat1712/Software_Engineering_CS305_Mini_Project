@@ -32,7 +32,7 @@ public class StudentService implements UserService {
             switch (option) {
                 case 0 -> logoutService();
                 case 1 -> registerCourseService();
-//                case 2 -> deRegisterCourseServce();
+                case 2 -> deRegisterCourseService();
 //                case 3 -> viewGradesService();
 //                case 4 -> computeCGPAService();
                 case 5 -> changePasswordService();
@@ -84,6 +84,20 @@ public class StudentService implements UserService {
         String courseCode = sc.nextLine();
         try {
             String response =Student.registerCourse(courseCode);
+            System.out.println(response);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void deRegisterCourseService(){
+        System.out.println("De-Register Course");
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the course code: ");
+        String courseCode = sc.nextLine();
+        try {
+            String response =Student.dropCourse(courseCode);
             System.out.println(response);
         }
         catch (Exception e) {

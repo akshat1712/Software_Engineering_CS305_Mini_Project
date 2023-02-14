@@ -77,5 +77,21 @@ public class StudentImpl implements UserDAO {
         return "Course Registered";
     }
 
+    public String dropCourse(String courseCode) throws SQLException{
+        ResultSet rs1=con.createStatement().executeQuery("SELECT catalog_id FROM courses_offering WHERE course_code='"+courseCode+"'");
+        if (!rs1.next()){
+            return "Course Not Being Offered Right Now";
+        }
+        ResultSet rs2=con.createStatement().executeQuery("SELECT student_id FROM students WHERE email='"+email+"'");
+        if (!rs2.next()){
+            return "Invalid Student Email";
+        }
+        ResultSet rs3=con.createStatement().executeQuery("SELECT * FROM courses_enrolled_student_"+rs2.getString("student_id")+" WHERE catalog_id="+rs1.getString("catalog_id"));
+        if (!rs3.next()){
+            return "Course Not Registered";
+        }
+        con.createStatement().execute("DELETE FROM courses_enrolled_student_"+rs2.getString("student_id")+" WHERE catalog_id="+rs1.getString("catalog_id"));
+        return "Course Dropped";
+    }
 }
 

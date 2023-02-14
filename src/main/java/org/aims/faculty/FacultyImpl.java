@@ -62,19 +62,25 @@ public class FacultyImpl implements UserDAO {
             return "Course Already Offered";
         }
 
-        ResultSet rs3=con.createStatement().executeQuery("SELECT faculty_id FROM faculties WHERE email='"+email+"'");
+        ResultSet rs3=con.createStatement().executeQuery("SELECT * from time_semester WHERE status='ONGOING'");
 
         if(!rs3.next()){
+            return "Semester Not Started";
+        }
+
+        ResultSet rs4=con.createStatement().executeQuery("SELECT faculty_id FROM faculties WHERE email='"+email+"'");
+
+        if(!rs4.next()){
             return "Faculty Does Not Exist";
         }
 
 //        String query="SELECT INSERT_COURSE_OFFERED('"+rs1.getString("catalog_id")+"','"+rs3.getString("faculty_id")+"','"+courseCode+"',"+cgpaCutoff+")";
-        ResultSet rs4=con.createStatement().executeQuery("SELECT INSERT_COURSE_OFFERED('"+rs1.getString("catalog_id")+"','"+rs3.getString("faculty_id")+"','"+courseCode+"',"+cgpaCutoff+")");
-        if(!rs4.next()){
+        ResultSet rs5=con.createStatement().executeQuery("SELECT INSERT_COURSE_OFFERED('"+rs1.getString("catalog_id")+"','"+rs4.getString("faculty_id")+"','"+courseCode+"',"+cgpaCutoff+")");
+        if(!rs5.next()){
             return "Error";
         }
 
-        con.createStatement().execute("INSERT INTO courses_teaching_faculty_"+rs3.getString("faculty_id")+" VALUES('"+rs1.getString("catalog_id")+"')");
+        con.createStatement().execute("INSERT INTO courses_teaching_faculty_"+rs4.getString("faculty_id")+" VALUES('"+rs1.getString("catalog_id")+"')");
         return "Course Offered Successfully";
     }
 
@@ -92,6 +98,12 @@ public class FacultyImpl implements UserDAO {
 
         if(!rs3.next()){
             return "Faculty Does Not Exist";
+        }
+
+        ResultSet rs5=con.createStatement().executeQuery("SELECT * from time_semester WHERE status='ONGOING'");
+
+        if(!rs5.next()){
+            return "Semester Has ended";
         }
 
         if( rs2.getString("faculty_id").equals(rs3.getString("faculty_id"))){
