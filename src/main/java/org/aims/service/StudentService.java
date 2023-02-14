@@ -33,7 +33,7 @@ public class StudentService implements UserService {
                 case 0 -> logoutService();
                 case 1 -> registerCourseService();
                 case 2 -> deRegisterCourseService();
-//                case 3 -> viewGradesService();
+                case 3 -> viewGradesService();
 //                case 4 -> computeCGPAService();
                 case 5 -> changePasswordService();
 
@@ -99,6 +99,19 @@ public class StudentService implements UserService {
         try {
             String response =Student.dropCourse(courseCode);
             System.out.println(response);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void viewGradesService(){
+        System.out.println("View Grades");
+        try {
+            String[] response =Student.viewGrades();
+            for (String s : response) {
+                System.out.println(s);
+            }
         }
         catch (Exception e) {
             e.printStackTrace();

@@ -93,5 +93,31 @@ public class StudentImpl implements UserDAO {
         con.createStatement().execute("DELETE FROM courses_enrolled_student_"+rs2.getString("student_id")+" WHERE catalog_id="+rs1.getString("catalog_id"));
         return "Course Dropped";
     }
+
+    public String[] viewGrades() throws SQLException {
+        ResultSet rs1=con.createStatement().executeQuery("SELECT student_id FROM students WHERE email='"+email+"'");
+        if(rs1.next()){
+            String id= rs1.getString("student_id");
+            ResultSet rs2=con.createStatement().executeQuery("select count(*) from transcript_student_"+id+" as T ,courses_catalog C WHERE T.catalog_id=C.catalog_id;");
+            int numGrades=0;
+
+            if(rs2.next()){
+                numGrades=rs2.getInt("count");
+            }
+
+            String [] grades=new String[numGrades];
+
+            rs2=con.createStatement().executeQuery("select course_code,grade,semester,year from transcript_student_"+id+" as T ,courses_catalog C WHERE T.catalog_id=C.catalog_id;");
+
+            while(rs2.next()){
+                grades[rs2.getRow()-1]="Course Code: "+rs2.getString("course_code")+" || Grade: "+rs2.getString("grade")+" || Semester: "+rs2.getString("semester")+" || Year: "+rs2.getString("year");
+            }
+
+            return grades;
+        }
+        else {
+            return null;
+        }
+    }
 }
 

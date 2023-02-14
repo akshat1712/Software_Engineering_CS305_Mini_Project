@@ -96,8 +96,10 @@ public class FacultyService  implements UserService{
         Scanner sc = new Scanner(System.in);
         String email = sc.nextLine();
         try {
-            String response =Faculty.viewGrades(email);
-            System.out.println(response);
+            String[] response =Faculty.viewGrades(email);
+            for (String s : response) {
+                System.out.println(s);
+            }
         }
         catch (Exception e) {
             e.printStackTrace();

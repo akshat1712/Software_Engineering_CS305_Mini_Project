@@ -109,20 +109,29 @@ public class AcademicEmployeeImpl implements UserDAO {
         }
     }
 
-    public String viewGrades(String email) throws SQLException {
+    public String[] viewGrades(String email) throws SQLException {
         ResultSet rs1=con.createStatement().executeQuery("SELECT student_id FROM students WHERE email='"+email+"'");
         if(rs1.next()){
             String id= rs1.getString("student_id");
-            ResultSet rs2=con.createStatement().executeQuery("select course_code,grade,semester,year from transcript_student_"+id+" as T ,courses_catalog C WHERE T.catalog_id=C.catalog_id;");
-            if (rs2.next()){
-                return "Grades will show up here";
+            ResultSet rs2=con.createStatement().executeQuery("select count(*) from transcript_student_"+id+" as T ,courses_catalog C WHERE T.catalog_id=C.catalog_id;");
+            int numGrades=0;
+
+            if(rs2.next()){
+                numGrades=rs2.getInt("count");
             }
-            else{
-                return "No Grades";
+
+            String [] grades=new String[numGrades];
+
+            rs2=con.createStatement().executeQuery("select course_code,grade,semester,year from transcript_student_"+id+" as T ,courses_catalog C WHERE T.catalog_id=C.catalog_id;");
+
+            while(rs2.next()){
+                grades[rs2.getRow()-1]="Course Code: "+rs2.getString("course_code")+" || Grade: "+rs2.getString("grade")+" || Semester: "+rs2.getString("semester")+" || Year: "+rs2.getString("year");
             }
+
+            return grades;
         }
         else {
-            return "No student exist with this Email-ID";
+            return null;
         }
     }
 
@@ -135,6 +144,18 @@ public class AcademicEmployeeImpl implements UserDAO {
         else {
             return "Incorrect Old Password";
         }
+    }
+
+    public String generateReport() throws SQLException{
+
+        ResultSet rs1=con.createStatement().executeQuery("SELECT email FROM students");
+
+        while(rs1.next()){
+            String email=rs1.getString("email");
+
+        }
+
+        return "DONE";
     }
 }
 

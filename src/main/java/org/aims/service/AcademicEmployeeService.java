@@ -27,6 +27,7 @@ public class AcademicEmployeeService implements UserService {
             System.out.println("[4] View Grades");
             System.out.println("[5] Create Batch");
             System.out.println("[6] Change Password");
+            System.out.println("[7] Generate Report");
             System.out.print("Enter your option: ");
             option = sc.nextInt();
 
@@ -38,6 +39,7 @@ public class AcademicEmployeeService implements UserService {
                 case 4 -> viewGradesService();
                 case 5 -> createBatchService();
                 case 6 -> changePasswordService();
+                case 7 -> generateReportService();
                 default -> System.out.println("Invalid option");
             }
         }
@@ -133,8 +135,10 @@ public class AcademicEmployeeService implements UserService {
         Scanner sc = new Scanner(System.in);
         String email = sc.nextLine();
         try {
-            String response =AcademicEmployee.viewGrades(email);
-            System.out.println(response);
+            String[] response =AcademicEmployee.viewGrades(email);
+            for (String s : response) {
+                System.out.println(s);
+            }
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -164,6 +168,18 @@ public class AcademicEmployeeService implements UserService {
         String newPassword = sc.nextLine();
         try {
             String response =AcademicEmployee.changePassword(oldPassword, newPassword);
+            System.out.println(response);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void generateReportService(){
+        System.out.println("Generate Report");
+
+        try{
+            String response =AcademicEmployee.generateReport();
             System.out.println(response);
         }
         catch (Exception e) {

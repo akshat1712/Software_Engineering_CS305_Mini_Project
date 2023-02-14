@@ -109,6 +109,13 @@ public class FacultyImpl implements UserDAO {
         if( rs2.getString("faculty_id").equals(rs3.getString("faculty_id"))){
             con.createStatement().execute("DELETE FROM courses_offering WHERE offering_id='"+rs2.getString("offering_id")+"'");
             con.createStatement().execute("DELETE FROM courses_teaching_faculty_"+rs3.getString("faculty_id")+" WHERE catalog_id='"+rs1.getString("catalog_id")+"'");
+
+            ResultSet rs6=con.createStatement().executeQuery("SELECT student_id as id FROM students");
+
+            while (rs6.next()){
+                con.createStatement().execute("DELETE FROM courses_enrolled_student_"+rs6.getString("id")+" WHERE catalog_id='"+rs1.getString("catalog_id")+"'");
+            }
+
             return "Course Taken Back Successfully";
         }
         else{
@@ -119,15 +126,29 @@ public class FacultyImpl implements UserDAO {
 
     }
 
-    public String viewGrades(String email) throws SQLException {
+    public String[] viewGrades(String email) throws SQLException {
         ResultSet rs1=con.createStatement().executeQuery("SELECT student_id FROM students WHERE email='"+email+"'");
         if(rs1.next()){
             String id= rs1.getString("student_id");
-            ResultSet rs2=con.createStatement().executeQuery("select course_code,grade,semester,year from transcript_student_"+id+" as T ,courses_catalog C WHERE T.catalog_id=C.catalog_id;");
-            return "DONE";
+            ResultSet rs2=con.createStatement().executeQuery("select count(*) from transcript_student_"+id+" as T ,courses_catalog C WHERE T.catalog_id=C.catalog_id;");
+            int numGrades=0;
+
+            if(rs2.next()){
+                numGrades=rs2.getInt("count");
+            }
+
+            String [] grades=new String[numGrades];
+
+            rs2=con.createStatement().executeQuery("select course_code,grade,semester,year from transcript_student_"+id+" as T ,courses_catalog C WHERE T.catalog_id=C.catalog_id;");
+
+            while(rs2.next()){
+                grades[rs2.getRow()-1]="Course Code: "+rs2.getString("course_code")+" || Grade: "+rs2.getString("grade")+" || Semester: "+rs2.getString("semester")+" || Year: "+rs2.getString("year");
+            }
+
+            return grades;
         }
         else {
-            return "No student exist with this Email-ID";
+            return null;
         }
     }
 
