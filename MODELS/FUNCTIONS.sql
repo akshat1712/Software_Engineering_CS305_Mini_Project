@@ -108,7 +108,7 @@ CREATE OR REPLACE FUNCTION INSERT_COURSE_CATALOG(
     tutorials INTEGER,
     practicals INTEGER,
     self_study INTEGER,
-    credits INTEGER
+    credits REAL
 )
 RETURNS INTEGER
 LANGUAGE plpgsql
@@ -214,10 +214,12 @@ FOR EACH ROW EXECUTE PROCEDURE FACULTY_TABLE_CREATION();
 
 
 
+
+
 CREATE OR REPLACE FUNCTION BATCH_TABLE_CREATION(
     batch_id INTEGER
 )
-RETURNS VOID
+RETURNS INTEGER
 LANGUAGE plpgsql
 AS
 $$
@@ -227,23 +229,31 @@ $$
 
             EXECUTE '
                 CREATE TABLE IF NOT EXISTS batch_curriculum_'||batch_id||' (
-                "department_id" INTEGER NOT NULL,
+                "department_id" INTEGER NOT NULL PRIMARY KEY,
                 "catalog_id" INTEGER NOT NULL,
-                "semester" VARCHAR(1) NOT NULL,
                 "type" VARCHAR(2) NOT NULL,
                 FOREIGN KEY ("catalog_id") REFERENCES "courses_catalog" ("catalog_id"),
-                FOREIGN KEY ("department_id") REFERENCES "departments" ("dept_id")
+                FOREIGN KEY ("department_id") REFERENCES "departments" ("dept_id"),
+                FOREIGN KEY ("type") REFERENCES "course_types" ("type_alias")
                 );
             ';
 
             EXECUTE '
                 CREATE TABLE IF NOT EXISTS batch_credits_'||batch_id||' (
-                "department_id" INTEGER NOT NULL,
+                "department_id" INTEGER NOT NULL PRIMARY KEY,
                 "type" VARCHAR(2) NOT NULL,
                 "credits" VARCHAR(2) NOT NULL,
-                FOREIGN KEY ("department_id") REFERENCES "departments" ("dept_id")
+                FOREIGN KEY ("department_id") REFERENCES "departments" ("dept_id"),
+                FOREIGN KEY ("type") REFERENCES "course_types" ("type_alias")
                 );
-            '
-        RETURN;
+            ';
+
+            EXECUTE'
+                INSERT INTO batch ("batch") VALUES ('||batch_id||');
+            ';
+        RETURN 1;
     END
 $$;
+
+
+--

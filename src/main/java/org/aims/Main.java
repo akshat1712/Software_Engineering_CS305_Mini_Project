@@ -18,63 +18,71 @@ public class Main {
             System.out.println("Select [5] to Exit");
             System.out.print("Please enter your choice: ");
             Scanner sc= new Scanner(System.in);
-            option=sc.nextInt();
+            try{
+
+                option=sc.nextInt();
+            }
+            catch (Exception e){
+                System.out.println("\nInvalid option\n");
+                continue;
+            }
+
 
             if( option==5){
-                System.out.println("Thank you for using the system");
+                System.out.println("\nThank you for using the system");
                 break;
             }
             else if( option<1 || option>5){
-                System.out.println("Invalid option");
+                System.out.println("\nInvalid option");
                 continue;
             }
 
             String email;
             String password;
 
-            System.out.print("Please enter your email: ");
+            System.out.print("\nPlease enter your email: ");
             email=sc.next();
-            System.out.print("Please enter your password: ");
+            System.out.print("\nPlease enter your password: ");
             password=sc.next();
 
             if( option==1){
                 UserService studentService = new StudentService();
                 if ( studentService.login(email,password)) {
-                    System.out.println("Login Successful");
+                    System.out.println("\nLogin Successful\n");
                     studentService.showmenu();
                 }
                 else {
-                    System.out.println("Login Failed");
+                    System.out.println("\nLogin Failed\n");
                 }
             }
             else if( option==2){
                 UserService facultyService = new FacultyService();
                 if ( facultyService.login(email,password)) {
-                    System.out.println("Login Successful");
+                    System.out.println("\nLogin Successful\n");
                     facultyService.showmenu();
                 }
                 else {
-                    System.out.println("Login Failed");
+                    System.out.println("\nLogin Failed\n");
                 }
             }
             else if( option==3){
                 UserService academicEmployeeService = new AcademicEmployeeService();
                 if ( academicEmployeeService.login(email,password)) {
-                    System.out.println("Login Successful");
+                    System.out.println("\nLogin Successful\n");
                     academicEmployeeService.showmenu();
                 }
                 else {
-                    System.out.println("Login Failed");
+                    System.out.println("\nLogin Failed\n");
                 }
             }
             else{
                 UserService adminService = new AdminService();
                 if ( adminService.login(email,password)) {
-                    System.out.println("Login Successful");
+                    System.out.println("\nLogin Successful");
                     adminService.showmenu();
                 }
                 else {
-                    System.out.println("Login Failed");
+                    System.out.println("\nLogin Failed\n");
                 }
             }
         }

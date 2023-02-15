@@ -54,13 +54,13 @@ CREATE TABLE IF NOT EXISTS "passwords" (
 CREATE TABLE IF NOT EXISTS "courses_catalog" (
     "catalog_id" SERIAL PRIMARY KEY,
     "course_code" VARCHAR(5) NOT NULL,
-    "course_name" VARCHAR(50) NOT NULL,
+    "course_name" VARCHAR(100) NOT NULL,
     "dept_id" INTEGER NOT NULL,
-    "lectures" VARCHAR(1) NOT NULL,
-    "tutorials" VARCHAR(1) NOT NULL,
-    "practicals" VARCHAR(1) NOT NULL,
-    "self_study" VARCHAR(1) NOT NULL,
-    "credits" VARCHAR(1) NOT NULL,
+    "lectures" VARCHAR(2) NOT NULL,
+    "tutorials" VARCHAR(2) NOT NULL,
+    "practicals" VARCHAR(2) NOT NULL,
+    "self_study" VARCHAR(2) NOT NULL,
+    "credits" VARCHAR(3) NOT NULL,
     FOREIGN KEY ("dept_id") REFERENCES "departments" ("dept_id")
 );
 
@@ -98,4 +98,11 @@ CREATE TABLE IF NOT EXISTS "time_semester"(
     PRIMARY KEY ("semester", "year")
 );
 
+CREATE TABLE IF NOT EXISTS "course_types"(
+    "type" VARCHAR(50) NOT NULL PRIMARY KEY,
+    "type_alias" VARCHAR(2) NOT NULL UNIQUE
+);
 
+CREATE TABLE IF NOT EXISTS "batch"(
+    "batch" INTEGER NOT NULL PRIMARY KEY
+);

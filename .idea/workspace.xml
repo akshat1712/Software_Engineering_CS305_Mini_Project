@@ -4,14 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="793ca995-c85c-4b5c-99eb-10b3a8b12ea8" name="Changes" comment="STUDENT WORK IN PROGRESS">
+    <list default="true" id="793ca995-c85c-4b5c-99eb-10b3a8b12ea8" name="Changes" comment="ADDING SOME UTILITY FUNCTION">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MODELS/FUNCTIONS.sql" beforeDir="false" afterPath="$PROJECT_DIR$/MODELS/FUNCTIONS.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MODELS/TABLES.sql" beforeDir="false" afterPath="$PROJECT_DIR$/MODELS/TABLES.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/academics/AcademicEmployeeImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/academics/AcademicEmployeeImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/faculty/FacultyImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/faculty/FacultyImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/admin/AdminImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/admin/AdminImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/service/AcademicEmployeeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/service/AcademicEmployeeService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/service/FacultyService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/service/FacultyService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/service/StudentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/service/StudentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/student/StudentImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/student/StudentImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/service/AdminService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/service/AdminService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -226,7 +227,14 @@
       <option name="project" value="LOCAL" />
       <updated>1676360262302</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="ADDING SOME UTILITY FUNCTION">
+      <created>1676402083810</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1676402083810</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -253,6 +261,7 @@
     <MESSAGE value="FACULTY WORK COMPLETED FOR NOW &amp; LOGIN LOGS WORKING IN ACADEMIC EMPLOYEE" />
     <MESSAGE value="STUDENT WORK STARTED" />
     <MESSAGE value="STUDENT WORK IN PROGRESS" />
-    <option name="LAST_COMMIT_MESSAGE" value="STUDENT WORK IN PROGRESS" />
+    <MESSAGE value="ADDING SOME UTILITY FUNCTION" />
+    <option name="LAST_COMMIT_MESSAGE" value="ADDING SOME UTILITY FUNCTION" />
   </component>
 </project>

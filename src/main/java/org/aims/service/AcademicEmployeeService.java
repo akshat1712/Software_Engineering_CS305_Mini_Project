@@ -3,6 +3,7 @@ package org.aims.service;
 import org.aims.academics.AcademicEmployeeImpl;
 
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class AcademicEmployeeService implements UserService {
@@ -13,7 +14,7 @@ public class AcademicEmployeeService implements UserService {
     }
 
     public void showmenu() {
-        System.out.println("Welcome to Academic Staff Menu");
+        System.out.println("Welcome to Academic Staff Menu\n");
 
         int option = -1;
 
@@ -28,19 +29,21 @@ public class AcademicEmployeeService implements UserService {
             System.out.println("[5] Create Batch");
             System.out.println("[6] Change Password");
             System.out.println("[7] Generate Report");
-            System.out.print("Enter your option: ");
+            System.out.println("[8] Create Course Types");
+            System.out.print("\nEnter your option: ");
             option = sc.nextInt();
-
+            System.out.println();
             switch (option) {
-                case 0 -> logoutService();
-                case 1 -> addCourseInCatalogService();
-                case 2 -> startSemesterService();
+                case 0 -> logoutService();   // Checking Done
+                case 1 -> addCourseInCatalogService(); // Checking Done
+                case 2 -> startSemesterService(); // Checking Done
                 case 3 -> endSemesterService();
                 case 4 -> viewGradesService();
-                case 5 -> createBatchService();
-                case 6 -> changePasswordService();
+                case 5 -> createCurriculumService();
+                case 6 -> changePasswordService();  // Checking Done
                 case 7 -> generateReportService();
-                default -> System.out.println("Invalid option");
+                case 8 -> createCourseTypesService(); // Checking Done
+                default -> System.out.println("\nInvalid option\n");
             }
         }
     }
@@ -57,7 +60,8 @@ public class AcademicEmployeeService implements UserService {
 
     public void logoutService() {
         try{
-              AcademicEmployee.logout();
+              String response =AcademicEmployee.logout();
+              System.out.println(response);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -68,7 +72,7 @@ public class AcademicEmployeeService implements UserService {
     private void addCourseInCatalogService() {
         try {
             Scanner sc = new Scanner(System.in);
-            System.out.println("Add Course in Catalog");
+            System.out.println("Add Course in Catalog\n");
             System.out.print("Enter Course Code: ");
             String courseCode = sc.nextLine();
             System.out.print("Enter Course Name: ");
@@ -84,12 +88,12 @@ public class AcademicEmployeeService implements UserService {
             System.out.print("Enter Course Self-Study Hours: ");
             int SelfStudy = sc.nextInt();
             System.out.print("Enter Course Credits: ");
-            int Credits = sc.nextInt();
+            double Credits = sc.nextDouble();
             System.out.print("Enter Number of Pre-Requisite: ");
             int preRequisite = sc.nextInt();
             String[] preRequisiteList = new String[preRequisite+1];
             if (preRequisite > 0)
-                System.out.println("Enter Pre-Requisite Course Code with Grade Cutoff, each in new line: ");
+                System.out.println("Enter Pre-Requisite Course Code with Grade Cutoff( 0 if None ), each in new line: ");
             preRequisiteList[0]=courseCode;
             for (int i = 1; i < preRequisite+1; i++) {
                 String data = sc.nextLine();
@@ -98,34 +102,41 @@ public class AcademicEmployeeService implements UserService {
                 preRequisiteList[i] = data;
             }
 
+            System.out.println();
             String response = AcademicEmployee.addCourseInCatalog(courseCode, courseName, courseDepartment, Lectures, Tutorials, Practical, SelfStudy, Credits, preRequisiteList);
             System.out.println(response);
         }
         catch (Exception e) {
             e.printStackTrace();
+            System.out.println("Error in Adding Course in Catalog\n");
         }
     }
 
     private void startSemesterService() {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Enter the Semester Number: ");
+        System.out.print("Enter the Semester Number: ");
         String semesterNumber = sc.nextLine();
-        System.out.println("Enter the Semester Year: ");
+        System.out.print("Enter the Semester Year: ");
         int semesterYear = sc.nextInt();
+        System.out.println();
         try {
             String response = AcademicEmployee.startSemester(semesterYear, semesterNumber);
             System.out.println(response);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
+            System.out.println("Error in Starting the semester\n");
         }
     }
 
     private void endSemesterService() {
         try {
             String response =AcademicEmployee.endSemester();
+
+//            HERE I HAVE TO DO A LOT OF CHECKS IF ALL THE GRADES HAVE COME OR NOT
             System.out.println(response);
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("Error in Ending the semester\n");
         }
     }
 
@@ -145,27 +156,66 @@ public class AcademicEmployeeService implements UserService {
         }
     }
 
-    private void createBatchService(){
+    private void createCurriculumService(){
         System.out.println("Create Batch");
         Scanner sc = new Scanner(System.in);
-        System.out.println("Enter the batch number: ");
+        System.out.print("Enter the batch number: ");
         int batchNumber = sc.nextInt();
-        try {
-            String response =AcademicEmployee.CreateBatch(batchNumber);
+        System.out.print("Enter the Department: ");
+        String department = sc.nextLine();
+
+        if(department.equals(""))
+            department = sc.nextLine();
+
+        System.out.print("\nEnter Number of courses you want to enter in whole Curriculum: ");
+        int numberOfCourses = sc.nextInt();
+        String[] courses = new String[numberOfCourses];
+
+        if(numberOfCourses > 0)
+            System.out.println("Enter Course Code followed by type alias in new lines: ");
+        for (int i = 0; i < numberOfCourses; i++) {
+            String data=sc.nextLine();
+            if(data.equals(""))
+                data=sc.nextLine();
+            courses[i] = data;
+        }
+
+        System.out.print("\nEnter Number of credit-types you want to enter in whole Curriculum: ");
+        int numberOfCreditTypes = sc.nextInt();
+
+        String[] credits=new String[numberOfCreditTypes];
+
+        if (numberOfCreditTypes > 0)
+            System.out.println("Enter Credit Type followed by Number of Credits in new lines");
+
+        for (int i = 0; i < numberOfCreditTypes; i++) {
+            String data=sc.nextLine();
+            if(data.equals(""))
+                data=sc.nextLine();
+            credits[i] = data;
+        }
+
+        System.out.println();
+        try{
+            String response =AcademicEmployee.createCurriculum(batchNumber, courses, credits, department);
             System.out.println(response);
         }
         catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
     private void changePasswordService(){
-        System.out.println("Change Password");
+        System.out.println("\nChange Password");
         Scanner sc = new Scanner(System.in);
-        System.out.println("Enter the old password: ");
+        System.out.print("Enter the old password: ");
         String oldPassword = sc.nextLine();
-        System.out.println("Enter the new password: ");
+        System.out.println();
+        System.out.print("Enter the new password: ");
         String newPassword = sc.nextLine();
+        System.out.println();
+        System.out.println();
         try {
             String response =AcademicEmployee.changePassword(oldPassword, newPassword);
             System.out.println(response);
@@ -180,6 +230,23 @@ public class AcademicEmployeeService implements UserService {
 
         try{
             String response =AcademicEmployee.generateReport();
+            System.out.println(response);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void createCourseTypesService(){
+        System.out.println("Create Course Types");
+        Scanner sc = new Scanner(System.in);
+        System.out.print("\nEnter the name of the Course Type: ");
+        String courseType = sc.nextLine();
+        System.out.print("\nEnter the alias of the Course Type: ");
+        String alias = sc.nextLine();
+        System.out.println();
+        try {
+            String response =AcademicEmployee.createCourseTypes(courseType,alias);
             System.out.println(response);
         }
         catch (Exception e) {
