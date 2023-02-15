@@ -109,7 +109,7 @@ public class AcademicEmployeeImpl implements UserDAO {
         for(String s:credits){
             String[] split =s.split(" ");
 
-            if( Integer.parseInt(split[1]) < 0){
+            if( Double.parseDouble(split[1]) < 0){
                 return "Invalid Credits in "+split[0];
             }
         }

@@ -39,7 +39,7 @@ public class AcademicEmployeeService implements UserService {
                 case 2 -> startSemesterService(); // Checking Done
                 case 3 -> endSemesterService();
                 case 4 -> viewGradesService();
-                case 5 -> createCurriculumService();
+                case 5 -> createCurriculumService(); // Checking Done
                 case 6 -> changePasswordService();  // Checking Done
                 case 7 -> generateReportService();
                 case 8 -> createCourseTypesService(); // Checking Done

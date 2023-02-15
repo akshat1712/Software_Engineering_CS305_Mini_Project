@@ -29,10 +29,10 @@ public class AdminService implements UserService{
 
             switch (option) {
                 case 0 -> System.out.println("\nLogging out...\n");
-                case 1 -> AddFacultyService();
-                case 2 -> AddStudentService();
-                case 3 -> AddAcademicStaffService();
-                case 4 -> AddDepartmentService();
+                case 1 -> AddFacultyService(); // Checking Done
+                case 2 -> AddStudentService(); // Checking Done
+                case 3 -> AddAcademicStaffService(); // Checking Done
+                case 4 -> AddDepartmentService(); // Checking Done
                 default -> System.out.println("\nINVALID OPTION\n");
             }
         }

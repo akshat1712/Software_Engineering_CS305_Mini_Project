@@ -55,55 +55,55 @@ public class FacultyImpl implements UserDAO {
     public String offerCourse(String courseCode, double cgpaCutoff) throws SQLException {
         ResultSet rs1=con.createStatement().executeQuery("SELECT catalog_id FROM courses_catalog WHERE course_code='"+courseCode+"'");
         if(!rs1.next()){
-            return "Course Does Not Exist";
+            return "\nCourse Does Not Exist";
         }
         ResultSet rs2=con.createStatement().executeQuery("SELECT * FROM courses_offering WHERE course_code='"+courseCode+"'");
         if(rs2.next()){
-            return "Course Already Offered";
+            return "\nCourse Already Offered";
         }
 
         ResultSet rs3=con.createStatement().executeQuery("SELECT * from time_semester WHERE status='ONGOING'");
 
         if(!rs3.next()){
-            return "Semester Not Started";
+            return "\nSemester Not Started";
         }
 
         ResultSet rs4=con.createStatement().executeQuery("SELECT faculty_id FROM faculties WHERE email='"+email+"'");
 
         if(!rs4.next()){
-            return "Faculty Does Not Exist";
+            return "\nFaculty Does Not Exist";
         }
 
 //        String query="SELECT INSERT_COURSE_OFFERED('"+rs1.getString("catalog_id")+"','"+rs3.getString("faculty_id")+"','"+courseCode+"',"+cgpaCutoff+")";
         ResultSet rs5=con.createStatement().executeQuery("SELECT INSERT_COURSE_OFFERED('"+rs1.getString("catalog_id")+"','"+rs4.getString("faculty_id")+"','"+courseCode+"',"+cgpaCutoff+")");
         if(!rs5.next()){
-            return "Error";
+            return "Error in Offering the Course";
         }
 
         con.createStatement().execute("INSERT INTO courses_teaching_faculty_"+rs4.getString("faculty_id")+" VALUES('"+rs1.getString("catalog_id")+"')");
-        return "Course Offered Successfully";
+        return "\nCourse Offered Successfully";
     }
 
     public String takeBackCourse(String courseCode) throws SQLException {
         ResultSet rs1=con.createStatement().executeQuery("SELECT * FROM courses_catalog WHERE course_code='"+courseCode+"'");
         if(!rs1.next()){
-            return "Course Does Not Exist";
+            return "\nCourse Does Not Exist";
         }
         ResultSet rs2=con.createStatement().executeQuery("SELECT * FROM courses_offering WHERE course_code='"+courseCode+"'");
         if(!rs2.next()){
-            return "Course Not Offered";
+            return "\nCourse Not Offered";
         }
 
         ResultSet rs3=con.createStatement().executeQuery("SELECT faculty_id FROM faculties WHERE email='"+email+"'");
 
         if(!rs3.next()){
-            return "Faculty Does Not Exist";
+            return "\nFaculty Does Not Exist";
         }
 
         ResultSet rs5=con.createStatement().executeQuery("SELECT * from time_semester WHERE status='ONGOING'");
 
         if(!rs5.next()){
-            return "Semester Has ended";
+            return "\nSemester Has ended";
         }
 
         if( rs2.getString("faculty_id").equals(rs3.getString("faculty_id"))){
@@ -116,10 +116,10 @@ public class FacultyImpl implements UserDAO {
                 con.createStatement().execute("DELETE FROM courses_enrolled_student_"+rs6.getString("id")+" WHERE catalog_id='"+rs1.getString("catalog_id")+"'");
             }
 
-            return "Course Taken Back Successfully";
+            return "\nCourse Taken Back Successfully";
         }
         else{
-            return "Course Not Offered By You";
+            return "\nCourse Not Offered By You";
         }
 
 
@@ -156,10 +156,10 @@ public class FacultyImpl implements UserDAO {
         ResultSet rs1=con.createStatement().executeQuery("SELECT * FROM passwords WHERE email='"+email+"' AND password='"+oldPassword+"' AND role='FACULTY'");
         if (rs1.next()){
             con.createStatement().execute("UPDATE passwords SET password='"+newPassword+"' WHERE email='"+email+"'");
-            return "Password Changed to New";
+            return "\nPassword Changed to New";
         }
         else {
-            return "Incorrect Old Password";
+            return "\nIncorrect Old Password";
         }
     }
 

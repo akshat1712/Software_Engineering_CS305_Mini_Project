@@ -229,7 +229,7 @@ $$
 
             EXECUTE '
                 CREATE TABLE IF NOT EXISTS batch_curriculum_'||batch_id||' (
-                "department_id" INTEGER NOT NULL PRIMARY KEY,
+                "department_id" INTEGER NOT NULL,
                 "catalog_id" INTEGER NOT NULL,
                 "type" VARCHAR(2) NOT NULL,
                 FOREIGN KEY ("catalog_id") REFERENCES "courses_catalog" ("catalog_id"),
@@ -240,9 +240,9 @@ $$
 
             EXECUTE '
                 CREATE TABLE IF NOT EXISTS batch_credits_'||batch_id||' (
-                "department_id" INTEGER NOT NULL PRIMARY KEY,
+                "department_id" INTEGER NOT NULL ,
                 "type" VARCHAR(2) NOT NULL,
-                "credits" VARCHAR(2) NOT NULL,
+                "credits" VARCHAR(4) NOT NULL,
                 FOREIGN KEY ("department_id") REFERENCES "departments" ("dept_id"),
                 FOREIGN KEY ("type") REFERENCES "course_types" ("type_alias")
                 );
