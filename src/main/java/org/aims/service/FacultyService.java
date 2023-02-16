@@ -130,12 +130,21 @@ public class FacultyService  implements UserService{
     private void updateGradesService(){
         System.out.println("Update Grades");
         Scanner sc = new Scanner(System.in);
-        System.out.println("Enter the email address of the student");
-        String email = sc.nextLine();
-        System.out.println("Enter the course code");
-        String courseCode = sc.nextLine();
-        System.out.println("Enter the new grade");
-        String grade = sc.nextLine();
+        String courseCode;
+        System.out.print("Enter the course code: ");
+        courseCode=sc.nextLine();
+        System.out.print("Enter the path of the csv File: ");
+        String path = sc.nextLine();
+        System.out.println();
+        try {
+            String response = Faculty.updateGrades(path, courseCode);
+            System.out.println(response);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Unable to update grades");
+        }
+
 
     }
 }

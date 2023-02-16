@@ -163,4 +163,25 @@ public class FacultyImpl implements UserDAO {
         }
     }
 
+    public String updateGrades( String path,String courseCode) throws SQLException {
+
+        ResultSet rs1=con.createStatement().executeQuery(("SELECT * FROM courses_offering WHERE course_code='"+courseCode+"'"));
+        if(!rs1.next()){
+            return "\nCourse Not Offered";
+        }
+
+        ResultSet rs2=con.createStatement().executeQuery("SELECT faculty_id FROM faculties WHERE email='"+email+"'");
+        if(!rs2.next()){
+            return "\nFaculty Does Not Exist";
+        }
+
+        ResultSet rs3=con.createStatement().executeQuery("SELECT * from courses_teaching_faculty_"+rs2.getString("faculty_id")+" WHERE catalog_id='"+rs1.getString("catalog_id")+"'");
+        if(!rs3.next()){
+            return "\nCourse Not Offered By You";
+        }
+
+
+        System.out.println(System.getProperty("user.dir"));
+        return "\nGrades Upgraded Successfully";
+    }
 }

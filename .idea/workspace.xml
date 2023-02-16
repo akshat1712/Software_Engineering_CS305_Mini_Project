@@ -4,14 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="793ca995-c85c-4b5c-99eb-10b3a8b12ea8" name="Changes" comment="CURRICULUM FUNCTIONALITY ADDED">
+    <list default="true" id="793ca995-c85c-4b5c-99eb-10b3a8b12ea8" name="Changes" comment="STUDENT TESTING HAVE TO START">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MODELS/FUNCTIONS.sql" beforeDir="false" afterPath="$PROJECT_DIR$/MODELS/FUNCTIONS.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/academics/AcademicEmployeeImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/academics/AcademicEmployeeImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/faculty/FacultyImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/faculty/FacultyImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/service/AcademicEmployeeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/service/AcademicEmployeeService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/service/AdminService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/service/AdminService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/service/FacultyService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/service/FacultyService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/service/StudentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/service/StudentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/student/StudentImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/student/StudentImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -240,7 +238,14 @@
       <option name="project" value="LOCAL" />
       <updated>1676484302353</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="STUDENT TESTING HAVE TO START">
+      <created>1676487548739</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1676487548739</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -269,6 +274,7 @@
     <MESSAGE value="STUDENT WORK IN PROGRESS" />
     <MESSAGE value="ADDING SOME UTILITY FUNCTION" />
     <MESSAGE value="CURRICULUM FUNCTIONALITY ADDED" />
-    <option name="LAST_COMMIT_MESSAGE" value="CURRICULUM FUNCTIONALITY ADDED" />
+    <MESSAGE value="STUDENT TESTING HAVE TO START" />
+    <option name="LAST_COMMIT_MESSAGE" value="STUDENT TESTING HAVE TO START" />
   </component>
 </project>

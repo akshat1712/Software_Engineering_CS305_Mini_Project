@@ -20,23 +20,30 @@ public class StudentService implements UserService {
 
         Scanner sc = new Scanner(System.in);
         while (option!=0){
-            System.out.println("[0] LOGOUT");
+            System.out.println("\n[0] LOGOUT");
             System.out.println("[1] Register Courses");
             System.out.println("[2] De-Register Courses");
             System.out.println("[3] View Grades");
             System.out.println("[4] Computer CGPA");
             System.out.println("[5] Change Password");
             System.out.print("Enter your option: ");
-            option = sc.nextInt();
+            try{
+                option = sc.nextInt();
+            }
+            catch( Exception e){
+                System.out.println("Invalid Option");
+                option=-1;
+                continue;
+            }
+            System.out.println();
 
             switch (option) {
-                case 0 -> logoutService();
-                case 1 -> registerCourseService();
-                case 2 -> deRegisterCourseService();
+                case 0 -> logoutService(); // Checking Done
+                case 1 -> registerCourseService(); // HAVE TO SEE AFTERWARDS , HOW TO CHANGE IT
+                case 2 -> deRegisterCourseService(); // Checking Done
                 case 3 -> viewGradesService();
 //                case 4 -> computeCGPAService();
                 case 5 -> changePasswordService();
-
                 default -> System.out.println("Invalid option");
             }
         }
@@ -55,6 +62,7 @@ public class StudentService implements UserService {
     public void logoutService() {
         try{
             Student.logout();
+            System.out.println("\nLogging Out Successfully");
         }
         catch (SQLException e) {
             e.printStackTrace();
@@ -64,9 +72,9 @@ public class StudentService implements UserService {
     private void changePasswordService(){
         System.out.println("Change Password");
         Scanner sc = new Scanner(System.in);
-        System.out.println("Enter the old password: ");
+        System.out.print("Enter the old password: ");
         String oldPassword = sc.nextLine();
-        System.out.println("Enter the new password: ");
+        System.out.print("Enter the new password: ");
         String newPassword = sc.nextLine();
         try {
             String response =Student.changePassword(oldPassword, newPassword);
@@ -80,7 +88,7 @@ public class StudentService implements UserService {
     private void registerCourseService(){
         System.out.println("Register Course");
         Scanner sc = new Scanner(System.in);
-        System.out.println("Enter the course code: ");
+        System.out.print("Enter the course code: ");
         String courseCode = sc.nextLine();
         try {
             String response =Student.registerCourse(courseCode);
@@ -94,7 +102,7 @@ public class StudentService implements UserService {
     private void deRegisterCourseService(){
         System.out.println("De-Register Course");
         Scanner sc = new Scanner(System.in);
-        System.out.println("Enter the course code: ");
+        System.out.print("Enter the course code: ");
         String courseCode = sc.nextLine();
         try {
             String response =Student.dropCourse(courseCode);
