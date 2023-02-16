@@ -1,4 +1,7 @@
 package org.aims.faculty;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.sql.ResultSet;
 
 import org.aims.dao.UserDAO;
@@ -165,7 +168,7 @@ public class FacultyImpl implements UserDAO {
 
     public String updateGrades( String path,String courseCode) throws SQLException {
 
-        ResultSet rs1=con.createStatement().executeQuery(("SELECT * FROM courses_offering WHERE course_code='"+courseCode+"'"));
+        ResultSet rs1=con.createStatement().executeQuery(("SELECT catalog_id FROM courses_offering WHERE course_code='"+courseCode+"'"));
         if(!rs1.next()){
             return "\nCourse Not Offered";
         }
@@ -180,8 +183,75 @@ public class FacultyImpl implements UserDAO {
             return "\nCourse Not Offered By You";
         }
 
+        try{
+            BufferedReader br;
+            br= new BufferedReader(new FileReader(path));
+            String line=br.readLine();
+            while (line!=null){
+                System.out.println(line);
+                line=br.readLine();
+            }
+            br.close();
+        }
+        catch ( Exception e){
+            return "\nInvalid File";
+        }
 
-        System.out.println(System.getProperty("user.dir"));
+
+
+        try{
+            BufferedReader br;
+            br= new BufferedReader(new FileReader(path));
+            String line=br.readLine();
+
+            while(line!=null){
+                String[] data=line.split(",");
+
+                if( Integer.parseInt(data[1])>10 || Integer.parseInt(data[1])<0){
+                    return "\nInvalid Grade "+ data[1] +" Present";
+                }
+
+                ResultSet rs4=con.createStatement().executeQuery("SELECT student_id FROM students WHERE entry_number='"+data[0]+"'");
+                if(rs4.next()){
+                    String query="SELECT * FROM courses_enrolled_student_"+rs4.getString("student_id")+" WHERE catalog_id="+rs1.getString("catalog_id")+";";
+                    ResultSet rs5=con.createStatement().executeQuery(query);
+                    if (!rs5.next()){
+                        return "\nStudent "+data[0]+" Not Enrolled In Course";
+                    }
+                }
+                else{
+                    return "\nInvalid Entry Number Present";
+                }
+                line=br.readLine();
+            }
+            br.close();
+        }
+        catch (Exception e){
+            System.out.println(e);
+            return "\nFile Does Not Exist1";
+        }
+
+
+        try{
+            BufferedReader br;
+            br= new BufferedReader(new FileReader(path));
+            String line=br.readLine();
+
+            while(line!=null){
+                String[] data=line.split(",");
+                ResultSet rs4=con.createStatement().executeQuery("SELECT student_id FROM students WHERE entry_number='"+data[0]+"'");
+                if(rs4.next()){
+                    con.createStatement().execute("UPDATE courses_enrolled_student_"+rs4.getString("student_id")+" SET grade='"+data[1]+"' WHERE catalog_id='"+rs1.getString("catalog_id")+"'");
+                }
+                line=br.readLine();
+            }
+            br.close();
+        }
+        catch (Exception e){
+            System.out.println(e);
+            return "\nFile Does Not Exist2";
+        }
+
         return "\nGrades Upgraded Successfully";
     }
 }

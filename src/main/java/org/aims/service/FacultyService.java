@@ -20,14 +20,20 @@ public class FacultyService  implements UserService{
         Scanner sc = new Scanner(System.in);
         while (option!=0){
             System.out.println("\n[0] LOGOUT");
-            System.out.println("[1] Offer Course");
-            System.out.println("[2] Take Back course");
+            System.out.println("[1] Offer Course");  // Checking Done
+            System.out.println("[2] Take Back course");  // Checking Done
             System.out.println("[3] View Grades");
             System.out.println("[4] Change Password");
             System.out.println("[5] Update Grades");
             System.out.print("Enter your option: ");
-            option = sc.nextInt();
-
+            try {
+                option = sc.nextInt();
+            }
+            catch (Exception e) {
+                System.out.println("Invalid option");
+                sc.nextLine();
+                continue;
+            }
             System.out.println();
             switch (option) {
                 case 0 -> logoutService(); // Checking Done
@@ -35,7 +41,7 @@ public class FacultyService  implements UserService{
                 case 2 -> takeBackCourseService(); // Checking Done
                 case 3 -> viewGradesService();
                 case 4 -> changePasswordService(); // Checking Done
-                case 5 -> updateGradesService();
+                case 5 -> updateGradesService(); // Checking Done
                 default -> System.out.println("Invalid option");
             }
         }

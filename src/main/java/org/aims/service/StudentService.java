@@ -43,7 +43,7 @@ public class StudentService implements UserService {
                 case 2 -> deRegisterCourseService(); // Checking Done
                 case 3 -> viewGradesService();
 //                case 4 -> computeCGPAService();
-                case 5 -> changePasswordService();
+                case 5 -> changePasswordService(); // Checking Done
                 default -> System.out.println("Invalid option");
             }
         }
