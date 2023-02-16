@@ -37,7 +37,7 @@ public class AcademicEmployeeService implements UserService {
                 case 0 -> logoutService();   // Checking Done
                 case 1 -> addCourseInCatalogService(); // Checking Done
                 case 2 -> startSemesterService(); // Checking Done
-                case 3 -> endSemesterService();
+                case 3 -> endSemesterService(); // Checking Done
                 case 4 -> viewGradesService();
                 case 5 -> createCurriculumService(); // Checking Done
                 case 6 -> changePasswordService();  // Checking Done
@@ -131,8 +131,6 @@ public class AcademicEmployeeService implements UserService {
     private void endSemesterService() {
         try {
             String response =AcademicEmployee.endSemester();
-
-//            HERE I HAVE TO DO A LOT OF CHECKS IF ALL THE GRADES HAVE COME OR NOT
             System.out.println(response);
         } catch (Exception e) {
             e.printStackTrace();

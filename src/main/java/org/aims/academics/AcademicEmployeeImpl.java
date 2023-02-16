@@ -1,6 +1,7 @@
 package org.aims.academics;
 import org.aims.dao.UserDAO;
 
+import javax.xml.transform.Result;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -160,14 +161,46 @@ public class AcademicEmployeeImpl implements UserDAO {
     }
 
     public String endSemester() throws SQLException{
-        ResultSet rs1=con.createStatement().executeQuery("SELECT  FROM time_semester WHERE status='ONGOING'");
-        if(rs1.next()){
-            con.createStatement().executeUpdate("UPDATE time_semester SET status='ENDED' WHERE status='ONGOING'");
-            return "Semester Ended\n";
+        ResultSet rs1=con.createStatement().executeQuery("SELECT * FROM time_semester WHERE status='ONGOING'");
+        if(!rs1.next()){
+            return "\nNo Semester Ongoing\n";
         }
-        else {
-            return "No Ongoing Semester\n";
+
+        ResultSet rs2=con.createStatement().executeQuery("SELECT student_id,entry_number FROM students");
+
+        while(rs2.next()){
+            String id=rs2.getString("student_id");
+            ResultSet rs3=con.createStatement().executeQuery("SELECT * FROM courses_enrolled_student_"+id);
+            while(rs3.next()){
+                String grade=rs3.getString("grade");
+                if(grade==null){
+                    return "\n Grade Not submitted for the student "+rs2.getString("entry_number");
+                }
+            }
         }
+
+
+        ResultSet rs4=con.createStatement().executeQuery("SELECT student_id FROM students");
+        while(rs4.next()){
+            String id=rs4.getString("student_id");
+            String query="INSERT INTO transcript_student_"+id+" (\"catalog_id\",\"grade\",\"semester\",\"year\") SELECT catalog_id,grade,"+rs1.getString("semester")+","+rs1.getString("year")+" FROM courses_enrolled_student_"+id;
+//            System.out.println(query);
+            con.createStatement().execute(query);
+            con.createStatement().execute("TRUNCATE TABLE courses_enrolled_student_"+id);
+        }
+
+        ResultSet rs5=con.createStatement().executeQuery("SELECT faculty_id FROM faculties");
+        while(rs5.next()) {
+            String id = rs5.getString("faculty_id");
+            String query = "INSERT INTO transcript_faculty_" + id + " (\"catalog_id\",\"semester\",\"year\") SELECT catalog_id," + rs1.getString("semester") + "," + rs1.getString("year") + " FROM courses_teaching_faculty_" + id;
+//            System.out.println(query);
+            con.createStatement().execute(query);
+            con.createStatement().execute("TRUNCATE TABLE courses_teaching_faculty_" + id);
+        }
+        con.createStatement().executeUpdate("UPDATE time_semester SET status='ENDED' WHERE status='ONGOING'");
+
+
+        return "Semester Ended\n";
     }
 
     public String[] viewGrades(String email) throws SQLException {
