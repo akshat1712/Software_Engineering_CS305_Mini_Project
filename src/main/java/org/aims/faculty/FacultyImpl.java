@@ -55,7 +55,7 @@ public class FacultyImpl implements UserDAO {
         return true;
     }
 
-    public String offerCourse(String courseCode, double cgpaCutoff) throws SQLException {
+    public String offerCourse(String courseCode, double cgpaCutoff,String[] prerequisites) throws SQLException {
         ResultSet rs1=con.createStatement().executeQuery("SELECT catalog_id FROM courses_catalog WHERE course_code='"+courseCode+"'");
         if(!rs1.next()){
             return "\nCourse Does Not Exist";
@@ -77,13 +77,44 @@ public class FacultyImpl implements UserDAO {
             return "\nFaculty Does Not Exist";
         }
 
-//        String query="SELECT INSERT_COURSE_OFFERED('"+rs1.getString("catalog_id")+"','"+rs3.getString("faculty_id")+"','"+courseCode+"',"+cgpaCutoff+")";
+        for(String s: prerequisites){
+            String[] split1 =s.split(",");
+            for(String s1:split1){
+                String[] split2=s1.split(" ");
+                ResultSet rs7=con.createStatement().executeQuery("SELECT * FROM courses_catalog WHERE course_code='"+split2[0]+"'");
+                if(!rs7.next()){
+                    return "\nPrerequisite Course Does Not Exist";
+                }
+                if( Integer.parseInt(split2[1]) < 0 || Integer.parseInt(split2[1]) > 10){
+                    return "\nInvalid Grade";
+                }
+            }
+        }
+
         ResultSet rs5=con.createStatement().executeQuery("SELECT INSERT_COURSE_OFFERED('"+rs1.getString("catalog_id")+"','"+rs4.getString("faculty_id")+"','"+courseCode+"',"+cgpaCutoff+")");
-        if(!rs5.next()){
+        ResultSet rs6=con.createStatement().executeQuery("SELECT * FROM courses_offering WHERE course_code='"+courseCode+"'");
+
+        if(!rs5.next() || !rs6.next()){
             return "Error in Offering the Course";
         }
 
+
+        int count=0;
+        for( String s: prerequisites){
+            String[] split1 =s.split(",");
+            count+=1;
+            for(String s1:split1){
+                String[] split2=s1.split(" ");
+                String query="INSERT INTO courses_pre_req_offering (\"offering_id\",\"pre_req\",\"grade\",\"type\") VALUES ('"+rs6.getString("offering_id")+"','"+split2[0]+"','"+split2[1]+"','"+count+"')";
+                con.createStatement().execute(query);
+            }
+        }
+
+
+
+
         con.createStatement().execute("INSERT INTO courses_teaching_faculty_"+rs4.getString("faculty_id")+" VALUES('"+rs1.getString("catalog_id")+"')");
+
         return "\nCourse Offered Successfully";
     }
 
@@ -110,6 +141,7 @@ public class FacultyImpl implements UserDAO {
         }
 
         if( rs2.getString("faculty_id").equals(rs3.getString("faculty_id"))){
+            con.createStatement().execute("DELETE FROM courses_pre_req_offering WHERE offering_id='"+rs2.getString("offering_id")+"'");
             con.createStatement().execute("DELETE FROM courses_offering WHERE offering_id='"+rs2.getString("offering_id")+"'");
             con.createStatement().execute("DELETE FROM courses_teaching_faculty_"+rs3.getString("faculty_id")+" WHERE catalog_id='"+rs1.getString("catalog_id")+"'");
 

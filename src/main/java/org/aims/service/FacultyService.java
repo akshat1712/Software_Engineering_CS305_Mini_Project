@@ -22,9 +22,9 @@ public class FacultyService  implements UserService{
             System.out.println("\n[0] LOGOUT");
             System.out.println("[1] Offer Course");  // Checking Done
             System.out.println("[2] Take Back course");  // Checking Done
-            System.out.println("[3] View Grades");
-            System.out.println("[4] Change Password");
-            System.out.println("[5] Update Grades");
+            System.out.println("[3] View Grades"); // Checking Done
+            System.out.println("[4] Change Password"); // Checking Done
+            System.out.println("[5] Update Grades"); //Checking Done
             System.out.print("Enter your option: ");
             try {
                 option = sc.nextInt();
@@ -37,9 +37,9 @@ public class FacultyService  implements UserService{
             System.out.println();
             switch (option) {
                 case 0 -> logoutService(); // Checking Done
-                case 1 -> offerCourseService(); // Checking Done
+                case 1 -> offerCourseService(); // Checking Done  ( HAVE TO THINK HOW TO MINIMIZE IT )
                 case 2 -> takeBackCourseService(); // Checking Done
-                case 3 -> viewGradesService();
+                case 3 -> viewGradesService(); // Checking Done
                 case 4 -> changePasswordService(); // Checking Done
                 case 5 -> updateGradesService(); // Checking Done
                 default -> System.out.println("Invalid option");
@@ -74,9 +74,19 @@ public class FacultyService  implements UserService{
         String courseCode = sc.nextLine();
         System.out.print("Enter the CGPA Cutoff ( Enter -1 if None ): ");
         double cgpaCutoff = sc.nextDouble();
+        System.out.println("Enter the prerequisites, Each Line is OR of prerequisites and course is AND Lines");
+        System.out.print("Enter number of lines you want to enter: ");
+        int n = sc.nextInt();
+        System.out.println("Enter prerequisites with grades separated from other prerequisites by ,");
+        String [] prerequisites = new String[n];
+
+        sc.nextLine();
+        for(int i=0;i<n;i++){
+            prerequisites[i] = sc.nextLine();
+        }
         System.out.println();
         try {
-            String response = Faculty.offerCourse(courseCode, cgpaCutoff);
+            String response = Faculty.offerCourse(courseCode, cgpaCutoff,prerequisites);
             System.out.println(response);
         }
         catch (Exception e) {
@@ -102,7 +112,7 @@ public class FacultyService  implements UserService{
     }
     private void viewGradesService(){
         System.out.println("View Grades");
-        System.out.println("Enter the email address of the student");
+        System.out.print("Enter the email address of the student: ");
         Scanner sc = new Scanner(System.in);
         String email = sc.nextLine();
         try {

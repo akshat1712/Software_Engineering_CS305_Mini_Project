@@ -57,12 +57,10 @@ public class AcademicEmployeeImpl implements UserDAO {
         for (String s : prerequisite) {
             if(s.equals(courseCode))
                 continue;
-            String [] split=s.split(" ");
-            if( Integer.parseInt(split[1]) < 0 || Integer.parseInt(split[1]) > 10){
-                return "Invalid Grade in "+split[0];
-            }
 
-            ResultSet rs1=con.createStatement().executeQuery("SELECT * FROM courses_catalog WHERE course_code='"+split[0]+"'");
+            String query= "SELECT * FROM courses_catalog WHERE course_code='" + s + "'";
+            System.out.println(query);
+            ResultSet rs1=con.createStatement().executeQuery("SELECT * FROM courses_catalog WHERE course_code='"+s+"'");
             if(!rs1.next()){
                 return "Prerequisite Course Does Not Exist";
             }
@@ -72,8 +70,6 @@ public class AcademicEmployeeImpl implements UserDAO {
             return "Department Does Not Exist";
         }
 
-//        String query="SELECT INSERT_COURSE_CATALOG('"+courseName+"','"+courseCode+"','"+rs2.getString("dept_id")+"',"+lectures+","+tutorial+","+practicals+","+self_study+","+credits+")";
-//        System.out.println(query);
 
         con.createStatement().executeQuery("SELECT INSERT_COURSE_CATALOG('"+courseName+"','"+courseCode+"','"+rs2.getString("dept_id")+"',"+lectures+","+tutorial+","+practicals+","+self_study+","+credits+")");
 
@@ -86,8 +82,7 @@ public class AcademicEmployeeImpl implements UserDAO {
         for(String s:prerequisite){
             if(s.equals(courseCode))
                 continue;
-            String [] split=s.split(" ");
-            con.createStatement().execute("INSERT INTO courses_pre_req (\"catalog_id\", \"pre_req\",\"grade\") VALUES ('"+rs3.getString("id")+"','"+split[0]+"','"+split[1]+"')");
+            con.createStatement().execute("INSERT INTO courses_pre_req (\"catalog_id\", \"pre_req\") VALUES ('"+rs3.getString("id")+"','"+s+"')");
         }
         return "COURSE ADDED IN CATALOG SUCCESSFULLY\n";
     }
@@ -150,9 +145,13 @@ public class AcademicEmployeeImpl implements UserDAO {
 
     }
     public String startSemester(int Year, String Semester) throws SQLException {
-        ResultSet rs1=con.createStatement().executeQuery("SELECT  FROM time_semester WHERE status='ONGOING'");
+        ResultSet rs1=con.createStatement().executeQuery("SELECT * FROM time_semester WHERE status!='ENDED'");
+        ResultSet rs2=con.createStatement().executeQuery("SELECT * FROM time_semester WHERE year="+Year+" AND semester='"+Semester+"'");
         if(rs1.next()){
             return "A Semester Already Ongoing\n";
+        }
+        else if(rs2.next()){
+            return "This is not valid semester\n";
         }
         else {
             con.createStatement().executeUpdate("INSERT INTO time_semester VALUES ('" + Semester + "','" + Year + "','ONGOING')");
@@ -198,7 +197,8 @@ public class AcademicEmployeeImpl implements UserDAO {
             con.createStatement().execute("TRUNCATE TABLE courses_teaching_faculty_" + id);
         }
         con.createStatement().executeUpdate("UPDATE time_semester SET status='ENDED' WHERE status='ONGOING'");
-
+        con.createStatement().executeQuery("TRUNCATE TABLE courses_offering");
+        con.createStatement().executeQuery("TRUNCATE TABLE courses_pre_req_offering");
 
         return "Semester Ended\n";
     }

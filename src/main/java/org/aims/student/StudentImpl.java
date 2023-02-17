@@ -3,6 +3,7 @@ package org.aims.student;
 import org.aims.dao.UserDAO;
 
 import javax.management.Query;
+import javax.xml.transform.Result;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -62,7 +63,7 @@ public class StudentImpl implements UserDAO {
     }
 
     public String registerCourse(String courseCode) throws SQLException{
-        ResultSet rs1=con.createStatement().executeQuery("SELECT catalog_id FROM courses_offering WHERE course_code='"+courseCode+"'");
+        ResultSet rs1=con.createStatement().executeQuery("SELECT catalog_id,offering_id,\"CGPA\" FROM courses_offering WHERE course_code='"+courseCode+"'");
         if (!rs1.next()){
             return "\nCourse Not Being Offered Right Now";
         }
@@ -74,13 +75,24 @@ public class StudentImpl implements UserDAO {
         if (rs3.next()){
             return "\nCourse Already Registered";
         }
+        String CGPA=computeCGPA();
+
+        if( Float.parseFloat(CGPA)<Float.parseFloat(rs1.getString("CGPA"))){
+            return "\nCGPA is less than the required CGPA";
+        }
+
+        ResultSet rs5=con.createStatement().executeQuery("SELECT * FROM transcript_student_"+rs2.getString("student_id")+" WHERE Grade>'3' AND catalog_id="+rs1.getString("catalog_id"));
+        if (rs5.next()){
+            return "\nCourse Already Taken in Previous Semester";
+        }
+
+        // HAVE TO THINK WHETHER WE HAVE TO DO AND OF COURSE OR NOT
 
         ResultSet rs4=con.createStatement().executeQuery("select P.catalog_id from courses_catalog P , courses_pre_req Q where P.course_code=Q.pre_req AND Q.catalog_id="+rs1.getString("catalog_id"));
         while(rs4.next()){
             String query="Select * from transcript_student_"+rs2.getString("student_id")+" P where P.catalog_id="+rs4.getString("catalog_id");
-//            System.out.println(query);
-            ResultSet rs5=con.createStatement().executeQuery(query);
-            if( !rs5.next()){
+            ResultSet rs6=con.createStatement().executeQuery(query);
+            if( !rs6.next()){
                 return "\nYou Do not satify the prerequisite";
             }
         }
@@ -130,6 +142,39 @@ public class StudentImpl implements UserDAO {
         else {
             return null;
         }
+    }
+
+    public String computeCGPA() throws SQLException{
+        ResultSet rs1=con.createStatement().executeQuery("SELECT student_id FROM students WHERE email='"+email+"'");
+
+        if(!rs1.next()){
+            return "-1";
+        }
+
+        String query="select P.credits,Q.grade from courses_catalog P , transcript_student_"+rs1.getString("student_id")+" Q WHERE P.catalog_id=Q.catalog_id";
+        ResultSet rs2=con.createStatement().executeQuery(query);
+
+        double credits_earned=0;
+        double points_earned=0;
+
+        while (rs2.next()){
+            if (rs2.getDouble("grade")<=3){
+                continue;
+            }
+            credits_earned+=rs2.getDouble("credits");
+            points_earned+=rs2.getDouble("grade")*rs2.getDouble("credits");
+        }
+
+        if(credits_earned!=0){
+            return Double.toString(points_earned/credits_earned);
+        }
+        else{
+            return "0.00";
+        }
+    }
+
+    public String checkGraduation() throws SQLException{
+        return "YES";
     }
 }
 

@@ -26,6 +26,7 @@ public class StudentService implements UserService {
             System.out.println("[3] View Grades");
             System.out.println("[4] Computer CGPA");
             System.out.println("[5] Change Password");
+            System.out.println("[6] Check Graduation");
             System.out.print("Enter your option: ");
             try{
                 option = sc.nextInt();
@@ -41,9 +42,10 @@ public class StudentService implements UserService {
                 case 0 -> logoutService(); // Checking Done
                 case 1 -> registerCourseService(); // HAVE TO SEE AFTERWARDS , HOW TO CHANGE IT
                 case 2 -> deRegisterCourseService(); // Checking Done
-                case 3 -> viewGradesService();
-//                case 4 -> computeCGPAService();
+                case 3 -> viewGradesService();  // Checking Done
+                case 4 -> computeCGPAService(); // Checking Done
                 case 5 -> changePasswordService(); // Checking Done
+                case 6 -> checkGraduationService();
                 default -> System.out.println("Invalid option");
             }
         }
@@ -120,6 +122,27 @@ public class StudentService implements UserService {
             for (String s : response) {
                 System.out.println(s);
             }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private void computeCGPAService(){
+        System.out.println("Compute CGPA");
+        try {
+            String response =Student.computeCGPA();
+            System.out.println(response);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void checkGraduationService(){
+        System.out.println("Check Graduation");
+        try {
+            String response =Student.checkGraduation();
+            System.out.println(response);
         }
         catch (Exception e) {
             e.printStackTrace();

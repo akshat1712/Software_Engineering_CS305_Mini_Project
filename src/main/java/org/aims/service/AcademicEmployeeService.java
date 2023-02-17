@@ -38,7 +38,7 @@ public class AcademicEmployeeService implements UserService {
                 case 1 -> addCourseInCatalogService(); // Checking Done
                 case 2 -> startSemesterService(); // Checking Done
                 case 3 -> endSemesterService(); // Checking Done
-                case 4 -> viewGradesService();
+                case 4 -> viewGradesService(); // Checking Done
                 case 5 -> createCurriculumService(); // Checking Done
                 case 6 -> changePasswordService();  // Checking Done
                 case 7 -> generateReportService();
@@ -93,7 +93,7 @@ public class AcademicEmployeeService implements UserService {
             int preRequisite = sc.nextInt();
             String[] preRequisiteList = new String[preRequisite+1];
             if (preRequisite > 0)
-                System.out.println("Enter Pre-Requisite Course Code with Grade Cutoff( 0 if None ), each in new line: ");
+                System.out.println("Enter Pre-Requisite Course Code each in new line: ");
             preRequisiteList[0]=courseCode;
             for (int i = 1; i < preRequisite+1; i++) {
                 String data = sc.nextLine();
@@ -140,7 +140,7 @@ public class AcademicEmployeeService implements UserService {
 
     private void viewGradesService(){
         System.out.println("View Grades");
-        System.out.println("Enter the email address of the student");
+        System.out.print("Enter the email address of the student: ");
         Scanner sc = new Scanner(System.in);
         String email = sc.nextLine();
         try {
