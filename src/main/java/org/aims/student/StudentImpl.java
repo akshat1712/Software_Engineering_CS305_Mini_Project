@@ -93,7 +93,22 @@ public class StudentImpl implements UserDAO {
             String query="Select * from transcript_student_"+rs2.getString("student_id")+" P where P.catalog_id="+rs4.getString("catalog_id");
             ResultSet rs6=con.createStatement().executeQuery(query);
             if( !rs6.next()){
-                return "\nYou Do not satify the prerequisite";
+                return "\nYou Do not satify the College prerequisite";
+            }
+        }
+
+        ResultSet rs7=con.createStatement().executeQuery("SELECT * FROM courses_pre_req_offering WHERE offering_id="+rs1.getString("offering_id"));
+        while(rs7.next()){
+            String preReq=rs7.getString("pre_req");
+            String preReqGrade=rs7.getString("grade");
+            ResultSet rs8=con.createStatement().executeQuery("SELECT * FROM courses_catalog WHERE course_code='"+preReq+"'");
+            if(rs8.next()){
+                String query="Select * from transcript_student_"+rs2.getString("student_id")+" P where P.grade>='"+preReqGrade+"' AND P.catalog_id="+rs8.getString("catalog_id");
+                System.out.println(query);
+                ResultSet rs9=con.createStatement().executeQuery(query);
+                if( !rs9.next()){
+                    return "\nYou Do not satify the Faculty prerequisite";
+                }
             }
         }
 

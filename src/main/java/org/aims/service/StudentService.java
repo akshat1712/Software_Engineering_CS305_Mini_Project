@@ -40,7 +40,7 @@ public class StudentService implements UserService {
 
             switch (option) {
                 case 0 -> logoutService(); // Checking Done
-                case 1 -> registerCourseService(); // HAVE TO SEE AFTERWARDS , HOW TO CHANGE IT
+                case 1 -> registerCourseService(); // Checking Done
                 case 2 -> deRegisterCourseService(); // Checking Done
                 case 3 -> viewGradesService();  // Checking Done
                 case 4 -> computeCGPAService(); // Checking Done
