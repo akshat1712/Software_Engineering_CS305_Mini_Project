@@ -5,10 +5,10 @@ import org.aims.faculty.FacultyImpl;
 
 import java.util.Scanner;
 
-public class FacultyService  implements UserService{
+public class FacultyService implements UserService {
     private FacultyImpl Faculty;
 
-    public FacultyService( ){
+    public FacultyService() {
 
     }
 
@@ -18,7 +18,7 @@ public class FacultyService  implements UserService{
         int option = -1;
 
         Scanner sc = new Scanner(System.in);
-        while (option!=0){
+        while (option != 0) {
             System.out.println("\n[0] LOGOUT");
             System.out.println("[1] Offer Course");  // Checking Done
             System.out.println("[2] Take Back course");  // Checking Done
@@ -28,8 +28,7 @@ public class FacultyService  implements UserService{
             System.out.print("Enter your option: ");
             try {
                 option = sc.nextInt();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println("Invalid option");
                 sc.nextLine();
                 continue;
@@ -46,28 +45,27 @@ public class FacultyService  implements UserService{
             }
         }
     }
-    public boolean login(String email,String password) {
+
+    public boolean login(String email, String password) {
         try {
             Faculty = new FacultyImpl(email, password);
             return Faculty.login();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
 
     public void logoutService() {
-        try{
-              Faculty.logout();
-              System.out.println("\nLogged out successfully\n");
-        }
-        catch (Exception e) {
+        try {
+            Faculty.logout();
+            System.out.println("\nLogged out successfully\n");
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void offerCourseService(){
+    private void offerCourseService() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Offer Course");
         System.out.print("Enter the course code: ");
@@ -78,24 +76,24 @@ public class FacultyService  implements UserService{
         System.out.print("Enter number of lines you want to enter: ");
         int n = sc.nextInt();
         System.out.println("Enter prerequisites with grades separated from other prerequisites by ,");
-        String [] prerequisites = new String[n];
+        String[] prerequisites = new String[n];
 
         sc.nextLine();
-        for(int i=0;i<n;i++){
+        for (int i = 0; i < n; i++) {
             prerequisites[i] = sc.nextLine();
         }
         System.out.println();
         try {
-            String response = Faculty.offerCourse(courseCode, cgpaCutoff,prerequisites);
+            String response = Faculty.offerCourse(courseCode, cgpaCutoff, prerequisites);
             System.out.println(response);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Unable to offer course");
         }
 
     }
-    private void takeBackCourseService(){
+
+    private void takeBackCourseService() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Take Back Course");
         System.out.print("Enter the course code: ");
@@ -104,29 +102,28 @@ public class FacultyService  implements UserService{
         try {
             String response = Faculty.takeBackCourse(courseCode);
             System.out.println(response);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Unable to take back course");
         }
     }
-    private void viewGradesService(){
+
+    private void viewGradesService() {
         System.out.println("View Grades");
         System.out.print("Enter the email address of the student: ");
         Scanner sc = new Scanner(System.in);
         String email = sc.nextLine();
         try {
-            String[] response =Faculty.viewGrades(email);
+            String[] response = Faculty.viewGrades(email);
             for (String s : response) {
                 System.out.println(s);
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void changePasswordService(){
+    private void changePasswordService() {
         System.out.println("Change Password");
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter the old password: ");
@@ -135,28 +132,26 @@ public class FacultyService  implements UserService{
         String newPassword = sc.nextLine();
         System.out.println();
         try {
-            String response =Faculty.changePassword(oldPassword, newPassword);
+            String response = Faculty.changePassword(oldPassword, newPassword);
             System.out.println(response);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void updateGradesService(){
+    private void updateGradesService() {
         System.out.println("Update Grades");
         Scanner sc = new Scanner(System.in);
         String courseCode;
         System.out.print("Enter the course code: ");
-        courseCode=sc.nextLine();
+        courseCode = sc.nextLine();
         System.out.print("Enter the path of the csv File: ");
         String path = sc.nextLine();
         System.out.println();
         try {
             String response = Faculty.updateGrades(path, courseCode);
             System.out.println(response);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Unable to update grades");
         }

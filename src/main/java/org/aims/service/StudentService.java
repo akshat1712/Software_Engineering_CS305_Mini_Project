@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class StudentService implements UserService {
     private StudentImpl Student;
 
-    public StudentService(){
+    public StudentService() {
 
     }
 
@@ -19,7 +19,7 @@ public class StudentService implements UserService {
         int option = -1;
 
         Scanner sc = new Scanner(System.in);
-        while (option!=0){
+        while (option != 0) {
             System.out.println("\n[0] LOGOUT");
             System.out.println("[1] Register Courses");
             System.out.println("[2] De-Register Courses");
@@ -28,12 +28,11 @@ public class StudentService implements UserService {
             System.out.println("[5] Change Password");
             System.out.println("[6] Check SGPA");
             System.out.print("Enter your option: ");
-            try{
+            try {
                 option = sc.nextInt();
-            }
-            catch( Exception e){
+            } catch (Exception e) {
                 System.out.println("Invalid Option");
-                option=-1;
+                option = -1;
                 continue;
             }
             System.out.println();
@@ -49,28 +48,27 @@ public class StudentService implements UserService {
             }
         }
     }
-    public boolean login(String email,String password) {
+
+    public boolean login(String email, String password) {
         try {
             Student = new StudentImpl(email, password);
             return Student.login();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
 
     public void logoutService() {
-        try{
+        try {
             Student.logout();
             System.out.println("\nLogging Out Successfully");
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    private void changePasswordService(){
+    private void changePasswordService() {
         System.out.println("Change Password");
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter the old password: ");
@@ -78,61 +76,57 @@ public class StudentService implements UserService {
         System.out.print("Enter the new password: ");
         String newPassword = sc.nextLine();
         try {
-            String response =Student.changePassword(oldPassword, newPassword);
+            String response = Student.changePassword(oldPassword, newPassword);
             System.out.println(response);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void registerCourseService(){
+    private void registerCourseService() {
         System.out.println("Register Course");
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter the course code: ");
         String courseCode = sc.nextLine();
         try {
-            String response =Student.registerCourse(courseCode);
+            String response = Student.registerCourse(courseCode);
             System.out.println(response);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void deRegisterCourseService(){
+    private void deRegisterCourseService() {
         System.out.println("De-Register Course");
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter the course code: ");
         String courseCode = sc.nextLine();
         try {
-            String response =Student.dropCourse(courseCode);
+            String response = Student.dropCourse(courseCode);
             System.out.println(response);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void viewGradesService(){
+    private void viewGradesService() {
         System.out.println("View Grades");
         try {
-            String[] response =Student.viewGrades();
+            String[] response = Student.viewGrades();
             for (String s : response) {
                 System.out.println(s);
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    private void computeCGPAService(){
+
+    private void computeCGPAService() {
         System.out.println("Compute CGPA");
         try {
-            String response =Student.computeCGPA();
+            String response = Student.computeCGPA();
             System.out.println(response);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
