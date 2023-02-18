@@ -235,6 +235,7 @@ $$
                 FOREIGN KEY ("catalog_id") REFERENCES "courses_catalog" ("catalog_id"),
                 FOREIGN KEY ("department_id") REFERENCES "departments" ("dept_id"),
                 FOREIGN KEY ("type") REFERENCES "course_types" ("type_alias")
+                PRIMARY KEY ("department_id", "catalog_id", "type")
                 );
             ';
 
@@ -245,6 +246,7 @@ $$
                 "credits" VARCHAR(4) NOT NULL,
                 FOREIGN KEY ("department_id") REFERENCES "departments" ("dept_id"),
                 FOREIGN KEY ("type") REFERENCES "course_types" ("type_alias")
+                PRIMARY KEY ("department_id", "type")
                 );
             ';
 

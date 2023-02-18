@@ -3,7 +3,10 @@ package org.aims.service;
 import org.aims.academics.AcademicEmployeeImpl;
 
 
+import java.io.File;
+import java.io.FileWriter;
 import java.sql.SQLException;
+import java.util.Map;
 import java.util.Scanner;
 
 public class AcademicEmployeeService implements UserService {
@@ -30,6 +33,7 @@ public class AcademicEmployeeService implements UserService {
             System.out.println("[6] Change Password");
             System.out.println("[7] Generate Report");
             System.out.println("[8] Create Course Types");
+            System.out.println("[9] Check Graduation");
             System.out.print("\nEnter your option: ");
             option = sc.nextInt();
             System.out.println();
@@ -41,8 +45,9 @@ public class AcademicEmployeeService implements UserService {
                 case 4 -> viewGradesService(); // Checking Done
                 case 5 -> createCurriculumService(); // Checking Done
                 case 6 -> changePasswordService();  // Checking Done
-                case 7 -> generateReportService();
+                case 7 -> generateReportService(); // Checking Done
                 case 8 -> createCourseTypesService(); // Checking Done
+                case 9 -> checkGraduationService(); // Checking Done
                 default -> System.out.println("\nInvalid option\n");
             }
         }
@@ -227,8 +232,29 @@ public class AcademicEmployeeService implements UserService {
         System.out.println("Generate Report");
 
         try{
-            String response =AcademicEmployee.generateReport();
-            System.out.println(response);
+            Map<String,String[]> response;
+            response =AcademicEmployee.generateReport();
+
+            String path="D:\\CS305\\Mini_Project\\Transcript";
+
+
+            // Writing to a file
+            for(Map.Entry<String,String[]> entry : response.entrySet()){
+                File fp = new File(path+"\\"+entry.getKey()+".txt");
+
+                for(String s : entry.getValue()){
+                    try {
+                        FileWriter fw = new FileWriter(fp,true);
+                        fw.write(s);
+                        fw.write("\r\n");
+                        fw.close();
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -245,6 +271,22 @@ public class AcademicEmployeeService implements UserService {
         System.out.println();
         try {
             String response =AcademicEmployee.createCourseTypes(courseType,alias);
+            System.out.println(response);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void checkGraduationService(){
+        System.out.println("Check Graduation");
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter the email address of the student: ");
+        String email = sc.nextLine();
+        System.out.println();
+        try {
+            String response =AcademicEmployee.checkGraduation(email);
             System.out.println(response);
         }
         catch (Exception e) {

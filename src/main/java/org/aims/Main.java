@@ -19,7 +19,6 @@ public class Main {
             System.out.print("Please enter your choice: ");
             Scanner sc= new Scanner(System.in);
             try{
-
                 option=sc.nextInt();
             }
             catch (Exception e){

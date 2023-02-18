@@ -43,11 +43,13 @@ public class AdminImpl implements UserDAO {
         public String AddStudent( String name, String email,String EntryNumber,String Department,String Batch, String PhoneNumber,String Address) throws SQLException {
             ResultSet rs1=con.createStatement().executeQuery("SELECT * FROM STUDENTS WHERE EMAIL='"+email+"' OR PHONE_NUMBER='"+PhoneNumber+"' OR ENTRY_NUMBER='"+EntryNumber+"';");
             ResultSet rs2=con.createStatement().executeQuery("SELECT dept_id FROM DEPARTMENTS WHERE NAME='"+Department+"';");
-
+            ResultSet rs5=con.createStatement().executeQuery("SELECT * FROM batch WHERE batch="+Batch+";");
             if(rs1.next())
                 return "Student already exists\n";
             else if(!rs2.next())
                 return "Department does not exist\n";
+            else if(!rs5.next())
+                return "Batch does not exist\n";
             else {
                 ResultSet rs3 = con.createStatement().executeQuery("SELECT INSERT_STUDENT('" + name + "','" + EntryNumber + "','" + email + "','" + rs2.getString("dept_id") + "','" + Batch + "','" + PhoneNumber + "','" + Address + "')");
                 ResultSet rs4 = con.createStatement().executeQuery("SELECT INSERT_PASSWORD('" + email + "','" + PhoneNumber + "','" + "STUDENT" + "')");

@@ -1,0 +1,4 @@
+Course Code: HS103 || Grade: 8 || Semester: 1 || Year: 2020
+Course Code: GE103 || Grade: 2 || Semester: 1 || Year: 2020
+Course Code: MA101 || Grade: 9 || Semester: 1 || Year: 2020
+Course Code: CS101 || Grade: 9 || Semester: 1 || Year: 2020

@@ -75,6 +75,43 @@ public class StudentImpl implements UserDAO {
         if (rs3.next()){
             return "\nCourse Already Registered";
         }
+
+        // here is the problem
+        ResultSet rs10=con.createStatement().executeQuery("SELECT semester,year FROM time_semester WHERE status='ONGOING'");
+        ResultSet rs11=con.createStatement().executeQuery("select credits from courses_enrolled_student_"+rs2.getString("student_id")+" P , courses_catalog Q WHERE P.catalog_id=Q.catalog_id;");
+        ResultSet rs12=con.createStatement().executeQuery("select credits from courses_catalog where catalog_id="+rs1.getString("catalog_id"));
+        if (!rs10.next()){
+            return "\nSemester Not Started";
+        }
+
+        double totalCredits=0;
+        while(rs11.next()){
+            totalCredits+=Double.parseDouble(rs11.getString("credits"));
+        }
+
+
+
+        if(!rs12.next())
+            return "\nCourse Not Found";
+
+        totalCredits+=Double.parseDouble(rs12.getString("credits"));
+
+
+        String semester=rs10.getString("semester");
+        int year=rs10.getInt("year");
+
+        double prevSemesterCredits=0;
+        if(semester.equals("2")){
+            prevSemesterCredits=credits_earned(year,"1",rs2.getString("student_id"))+credits_earned(year-1,"2",rs2.getString("student_id"));
+        }
+        else{
+            prevSemesterCredits=credits_earned(year-1,"1",rs2.getString("student_id"))+credits_earned(year-1,"2",rs2.getString("student_id"));
+        }
+
+        if( totalCredits>0.625*(prevSemesterCredits))
+            return "\nCredits Exceeded";
+
+        // here is the end
         String CGPA=computeCGPA();
 
         if( Float.parseFloat(CGPA)<Float.parseFloat(rs1.getString("CGPA"))){
@@ -86,7 +123,6 @@ public class StudentImpl implements UserDAO {
             return "\nCourse Already Taken in Previous Semester";
         }
 
-        // HAVE TO THINK WHETHER WE HAVE TO DO AND OF COURSE OR NOT
 
         ResultSet rs4=con.createStatement().executeQuery("select P.catalog_id from courses_catalog P , courses_pre_req Q where P.course_code=Q.pre_req AND Q.catalog_id="+rs1.getString("catalog_id"));
         while(rs4.next()){
@@ -111,6 +147,8 @@ public class StudentImpl implements UserDAO {
                 }
             }
         }
+
+
 
         con.createStatement().execute("INSERT INTO courses_enrolled_student_"+rs2.getString("student_id")+" VALUES("+rs1.getString("catalog_id")+")");
         return "\nCourse Registered";
@@ -188,8 +226,20 @@ public class StudentImpl implements UserDAO {
         }
     }
 
-    public String checkGraduation() throws SQLException{
-        return "YES";
+    private double credits_earned(int year, String semester,String id) throws SQLException{
+        String query="Select credits from transcript_student_"+id+" P , courses_catalog Q where P.catalog_id=Q.catalog_id AND P.year='"+year+"' AND P.semester='"+semester+"'";
+        ResultSet rs1=con.createStatement().executeQuery(query);
+
+        double credits=0;
+
+        while(rs1.next()){
+            credits+=rs1.getDouble("credits");
+        }
+
+        if(credits==0)
+            return 6;
+        return credits;
     }
+
 }
 

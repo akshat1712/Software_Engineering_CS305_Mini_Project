@@ -8,6 +8,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class AcademicEmployeeImpl implements UserDAO {
 
@@ -240,16 +243,17 @@ public class AcademicEmployeeImpl implements UserDAO {
         }
     }
 
-    public String generateReport() throws SQLException{
+    public Map<String,String[]> generateReport() throws Exception{
 
-        ResultSet rs1=con.createStatement().executeQuery("SELECT email FROM students");
+        ResultSet rs1=con.createStatement().executeQuery("SELECT * FROM students");
+
+        Map<String,String[]> transcriptAllStudents=new HashMap<String,String[]>();
 
         while(rs1.next()){
-            String email=rs1.getString("email");
-
+            String[] grades=viewGrades(rs1.getString("email"));
+            transcriptAllStudents.put(rs1.getString("entry_number"),grades);
         }
-
-        return "DONE";
+        return transcriptAllStudents;
     }
 
     public String createCourseTypes(String courseType,String alias){
@@ -261,6 +265,78 @@ public class AcademicEmployeeImpl implements UserDAO {
         } catch (SQLException e) {
             return "Course Type Already Exists\n";
         }
+    }
+
+
+    public String checkGraduation(String email) throws SQLException{
+        ResultSet rs1=con.createStatement().executeQuery("SELECT student_id,batch,dept_id FROM students WHERE email='"+email+"'");
+        if(!rs1.next()){
+            return "\nStudent Not Found";
+        }
+        String query1="select course_code,Q.credits,type from transcript_student_"+rs1.getString("student_id")+" P, courses_catalog Q, batch_curriculum_"+rs1.getString("batch")+" R WHERE P.catalog_id=Q.catalog_id AND Q.catalog_id=R.catalog_id AND R.department_id="+rs1.getString("dept_id");
+        String query2="SELECT * from transcript_student_"+rs1.getString("student_id")+";";
+
+        System.out.println(query1);
+
+        ResultSet rs2=con.createStatement().executeQuery(query1);
+        ResultSet rs3=con.createStatement().executeQuery(query2);
+
+        int size1=0;
+        int size2=0;
+
+        while(rs2.next()){
+            size1++;
+        }
+        while(rs3.next()){
+            size2++;
+        }
+
+        if( size1!=size2){
+            return "\nNot all courses of this students has been defined a type";
+        }
+
+        Map<String, Double> creditsTypeCount=new HashMap<String, Double>();
+
+        ResultSet rs4=con.createStatement().executeQuery(query1);
+
+        while(rs4.next()){
+            if(creditsTypeCount.containsKey(rs4.getString("type"))){
+                creditsTypeCount.put(rs4.getString("type"),creditsTypeCount.get(rs4.getString("type"))+rs4.getDouble("credits"));
+            }
+            else{
+                creditsTypeCount.put(rs4.getString("type"),rs4.getDouble("credits"));
+            }
+        }
+
+
+        ResultSet rs5=con.createStatement().executeQuery("SELECT * FROM batch_credits_"+rs1.getString("batch"));
+
+        Double total_credits=0.0;
+        Double credits_without_open_elective=0.0;
+        Double open_elective_required=0.0;
+        while (rs5.next()){
+            total_credits+=rs5.getDouble("credits");
+            if(Objects.equals(rs5.getString("type"), "OE")){
+                open_elective_required=rs5.getDouble("credits");
+                continue;
+            }
+            credits_without_open_elective+=rs5.getDouble("credits");
+
+            if(creditsTypeCount.containsKey(rs5.getString("type"))){
+                if(creditsTypeCount.get(rs5.getString("type"))<rs5.getDouble("credits")){
+                    return "\nNot enough credits of type "+rs5.getString("type");
+                }
+            }
+            else{
+                return "\nNot enough credits of type "+rs5.getString("type");
+            }
+        }
+
+        if( total_credits-credits_without_open_elective < open_elective_required){
+            return "\nNot enough credits of type OE";
+        }
+
+        return "YES";
     }
 }
 

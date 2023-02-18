@@ -4,8 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="793ca995-c85c-4b5c-99eb-10b3a8b12ea8" name="Changes" comment="NEARLY DONE">
+    <list default="true" id="793ca995-c85c-4b5c-99eb-10b3a8b12ea8" name="Changes" comment="STUDENT REGISTRATION DONE">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MODELS/FUNCTIONS.sql" beforeDir="false" afterPath="$PROJECT_DIR$/MODELS/FUNCTIONS.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/academics/AcademicEmployeeImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/academics/AcademicEmployeeImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/admin/AdminImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/admin/AdminImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/service/AcademicEmployeeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/service/AcademicEmployeeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/service/StudentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/service/StudentService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/student/StudentImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/student/StudentImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -270,7 +276,14 @@
       <option name="project" value="LOCAL" />
       <updated>1676656186109</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="STUDENT REGISTRATION DONE">
+      <created>1676702662244</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1676702662244</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -306,6 +319,7 @@
     <MESSAGE value="GRADES ADDITION IS GOING ON" />
     <MESSAGE value="NOW MOVING TO END SEMESTER FUNCTION" />
     <MESSAGE value="NEARLY DONE" />
-    <option name="LAST_COMMIT_MESSAGE" value="NEARLY DONE" />
+    <MESSAGE value="STUDENT REGISTRATION DONE" />
+    <option name="LAST_COMMIT_MESSAGE" value="STUDENT REGISTRATION DONE" />
   </component>
 </project>
