@@ -4,17 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="793ca995-c85c-4b5c-99eb-10b3a8b12ea8" name="Changes" comment="CODING DONE , CHECKING REMAINING , FORMATTING DONE ALSO">
-      <change afterPath="$PROJECT_DIR$/src/test/java/org/aims/admin/AdminImplTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/org/aims/service/AdminServiceTest.java" afterDir="false" />
+    <list default="true" id="793ca995-c85c-4b5c-99eb-10b3a8b12ea8" name="Changes" comment="CODING DONE, IF TIME REMAINS THEN GO FOR CONCRETE DAO">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/aims/dataAccess/userDAL.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/academics/AcademicEmployeeImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/academics/AcademicEmployeeImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/admin/AdminImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/admin/AdminImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/dao/UserDAO.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/faculty/FacultyImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/faculty/FacultyImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/service/AcademicEmployeeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/service/AcademicEmployeeService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/service/AdminService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/service/AdminService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/service/FacultyService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/service/FacultyService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/service/StudentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/service/StudentService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/student/StudentImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/student/StudentImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/aims/admin/AdminImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/aims/admin/AdminImplTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/aims/service/AdminServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/aims/service/AdminServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,9 +43,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="JUnit5 Test Class" />
         <option value="Interface" />
         <option value="Class" />
-        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -69,6 +68,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectId" id="2Kv9RsLM5ZXdjc3i0ABghxRFUy2" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -86,6 +88,7 @@
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
 }</component>
@@ -98,8 +101,8 @@
       <recent name="org.aims.service" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.Mini_Project [run]">
-    <configuration name="AdminImplTest.loginTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+  <component name="RunManager" selected="Gradle.AdminImplTest">
+    <configuration name="AdminImplTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -112,7 +115,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.aims.admin.AdminImplTest.loginTest&quot;" />
+            <option value="&quot;org.aims.admin.AdminImplTest&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -122,7 +125,7 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="AdminImplTest.loginTest1" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="AdminImplTest.addAcademicStaffTest1" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -135,7 +138,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.aims.admin.AdminImplTest.loginTest1&quot;" />
+            <option value="&quot;org.aims.admin.AdminImplTest.addAcademicStaffTest1&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -145,7 +148,7 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="AdminImplTest.loginTest2" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="AdminImplTest.addDepartmentTest2" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -158,7 +161,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.aims.admin.AdminImplTest.loginTest2&quot;" />
+            <option value="&quot;org.aims.admin.AdminImplTest.addDepartmentTest2&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -168,55 +171,59 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="Mini_Project [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="AdminImplTest.addDepartmentTest3" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
+        <option name="scriptParameters" value="" />
         <option name="taskDescriptions">
           <list />
         </option>
         <option name="taskNames">
           <list>
-            <option value="build" />
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;org.aims.admin.AdminImplTest.addDepartmentTest3&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
       </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="Mini_Project [run]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="AdminImplTest.addDepartmentTest4" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
+        <option name="scriptParameters" value="" />
         <option name="taskDescriptions">
           <list />
         </option>
         <option name="taskNames">
           <list>
-            <option value="run" />
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;org.aims.admin.AdminImplTest.addDepartmentTest4&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
       </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.Mini_Project [run]" />
-        <item itemvalue="Gradle.AdminImplTest.loginTest1" />
-        <item itemvalue="Gradle.AdminImplTest.loginTest2" />
-        <item itemvalue="Gradle.AdminImplTest.loginTest" />
-        <item itemvalue="Gradle.Mini_Project [build]" />
+        <item itemvalue="Gradle.AdminImplTest.addAcademicStaffTest1" />
+        <item itemvalue="Gradle.AdminImplTest" />
+        <item itemvalue="Gradle.AdminImplTest.addDepartmentTest4" />
+        <item itemvalue="Gradle.AdminImplTest.addDepartmentTest3" />
+        <item itemvalue="Gradle.AdminImplTest.addDepartmentTest2" />
       </list>
     </recent_temporary>
   </component>
@@ -383,7 +390,14 @@
       <option name="project" value="LOCAL" />
       <updated>1676740258742</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="CODING DONE, IF TIME REMAINS THEN GO FOR CONCRETE DAO">
+      <created>1676818332609</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1676818332609</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -422,9 +436,14 @@
     <MESSAGE value="STUDENT REGISTRATION DONE" />
     <MESSAGE value="CODING DONE , CHECKING REMAINING" />
     <MESSAGE value="CODING DONE , CHECKING REMAINING , FORMATTING DONE ALSO" />
-    <option name="LAST_COMMIT_MESSAGE" value="CODING DONE , CHECKING REMAINING , FORMATTING DONE ALSO" />
+    <MESSAGE value="CODING DONE, IF TIME REMAINS THEN GO FOR CONCRETE DAO" />
+    <option name="LAST_COMMIT_MESSAGE" value="CODING DONE, IF TIME REMAINS THEN GO FOR CONCRETE DAO" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Mini_Project$AdminServiceTest_ShowmenuTest.ic" NAME="AdminServiceTest.ShowmenuTest Coverage Results" MODIFIED="1676819103689" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Mini_Project$AdminImplTest_login.ic" NAME="AdminImplTest.login Coverage Results" MODIFIED="1676824269442" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Mini_Project$AdminImplTest.ic" NAME="AdminImplTest Coverage Results" MODIFIED="1676824878778" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Mini_Project$AdminServiceTest_Showmenu_Department_Test1.ic" NAME="AdminServiceTest.Showmenu_Department_Test1 Coverage Results" MODIFIED="1676820704506" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Mini_Project$AdminImplTest_loginTest1.ic" NAME="AdminImplTest.loginTest1 Coverage Results" MODIFIED="1676797291378" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

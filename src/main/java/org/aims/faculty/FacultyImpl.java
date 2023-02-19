@@ -1,11 +1,10 @@
 package org.aims.faculty;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.sql.ResultSet;
 
-import org.aims.dao.UserDAO;
+import org.aims.dataAccess.userDAL;
 import org.postgresql.util.PSQLException;
 
 import java.sql.Connection;
@@ -14,7 +13,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class FacultyImpl implements UserDAO {
+public class FacultyImpl implements userDAL {
 
     private final String email;
     private final String password;

@@ -1,12 +1,12 @@
 package org.aims.admin;
 
-import org.aims.dao.UserDAO;
+import org.aims.dataAccess.userDAL;
 import org.postgresql.util.PSQLException;
 
 
 import java.sql.*;
 
-public class AdminImpl implements UserDAO {
+public class AdminImpl implements userDAL {
 
     private final String Email;
     private final String Password;

@@ -1,10 +1,8 @@
 package org.aims.student;
 
-import org.aims.dao.UserDAO;
+import org.aims.dataAccess.userDAL;
 import org.postgresql.util.PSQLException;
 
-import javax.management.Query;
-import javax.xml.transform.Result;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -12,7 +10,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class StudentImpl implements UserDAO {
+public class StudentImpl implements userDAL {
 
     private final String email;
     private final String password;

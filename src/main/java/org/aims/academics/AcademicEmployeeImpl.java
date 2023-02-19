@@ -1,8 +1,7 @@
 package org.aims.academics;
 
-import org.aims.dao.UserDAO;
+import org.aims.dataAccess.userDAL;
 
-import javax.xml.transform.Result;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -13,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class AcademicEmployeeImpl implements UserDAO {
+public class AcademicEmployeeImpl implements userDAL {
 
     private final String email;
     private final String password;
