@@ -13,6 +13,7 @@ public class AdminService implements UserService {
 
     }
 
+    @Override
     public void showmenu() {
         System.out.println("\nWelcome to Admin Menu\n");
 
@@ -21,13 +22,19 @@ public class AdminService implements UserService {
         Scanner sc = new Scanner(System.in);
         while (option != 0) {
             System.out.println("[0] LOGOUT");
-            System.out.println("[1] Add Faculty");
-            System.out.println("[2] Add Student");
-            System.out.println("[3] Add Academic Staff");
-            System.out.println("[4] Add Department");
+            System.out.println("[1] Add Faculty"); // CHECKING DONE PROPERLY
+            System.out.println("[2] Add Student"); // CHECKING DONE PROPERLY
+            System.out.println("[3] Add Academic Staff"); // CHECKING DONE PROPERLY
+            System.out.println("[4] Add Department");    // CHECKING DONE PROPERLY
             System.out.print("Enter your option: ");
-            option = sc.nextInt();
-
+            try {
+                option = sc.nextInt();
+            }
+            catch (Exception e) {
+                System.out.println("\nINVALID OPTION\n");
+                sc.nextLine();
+                continue;
+            }
             switch (option) {
                 case 0 -> System.out.println("\nLogging out...\n");
                 case 1 -> AddFacultyService(); // Checking Done
@@ -39,6 +46,7 @@ public class AdminService implements UserService {
         }
     }
 
+    @Override
     public boolean login(String email, String password) {
         try {
             Admin = new AdminImpl(email, password);
@@ -117,6 +125,7 @@ public class AdminService implements UserService {
         System.out.print("Address: ");
         String address = sc.nextLine();
         System.out.println();
+
         try {
             String response = Admin.AddAcademicStaff(name, email, joiningDate, phoneNumber, address);
             System.out.println(response);

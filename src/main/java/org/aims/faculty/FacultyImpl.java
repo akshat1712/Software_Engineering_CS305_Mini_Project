@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.sql.ResultSet;
 
 import org.aims.dao.UserDAO;
+import org.postgresql.util.PSQLException;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -25,7 +26,7 @@ public class FacultyImpl implements UserDAO {
     private final String databasePassword = "2020csb1068";
 
 
-    public FacultyImpl(String Email, String Password) throws SQLException {
+    public FacultyImpl(String Email, String Password) throws PSQLException,SQLException {
         this.email = Email;
         this.password = Password;
         con = DriverManager.getConnection(connectionString, username, databasePassword);
@@ -48,7 +49,7 @@ public class FacultyImpl implements UserDAO {
         }
     }
 
-    public boolean logout() throws SQLException {
+    public boolean logout() throws PSQLException,SQLException {
         SimpleDateFormat DateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
         con.createStatement().execute("UPDATE login_logs SET logout_time='" + DateTime.format(date) + "' WHERE email='" + email + "' AND logout_time='2000-01-01 00:00:00';");
@@ -183,6 +184,13 @@ public class FacultyImpl implements UserDAO {
     }
 
     public String changePassword(String oldPassword, String newPassword) throws SQLException {
+
+        if( newPassword.matches("[\\w]*\\s[\\w]*")){
+            return "\nPassword Cannot Contain Spaces";
+        }
+
+
+
         ResultSet rs1 = con.createStatement().executeQuery("SELECT * FROM passwords WHERE email='" + email + "' AND password='" + oldPassword + "' AND role='FACULTY'");
         if (rs1.next()) {
             con.createStatement().execute("UPDATE passwords SET password='" + newPassword + "' WHERE email='" + email + "'");
@@ -207,19 +215,6 @@ public class FacultyImpl implements UserDAO {
         ResultSet rs3 = con.createStatement().executeQuery("SELECT * from courses_teaching_faculty_" + rs2.getString("faculty_id") + " WHERE catalog_id='" + rs1.getString("catalog_id") + "'");
         if (!rs3.next()) {
             return "\nCourse Not Offered By You";
-        }
-
-        try {
-            BufferedReader br;
-            br = new BufferedReader(new FileReader(path));
-            String line = br.readLine();
-            while (line != null) {
-                System.out.println(line);
-                line = br.readLine();
-            }
-            br.close();
-        } catch (Exception e) {
-            return "\nInvalid File";
         }
 
 

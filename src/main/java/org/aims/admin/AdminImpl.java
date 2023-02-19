@@ -1,12 +1,10 @@
 package org.aims.admin;
 
 import org.aims.dao.UserDAO;
+import org.postgresql.util.PSQLException;
 
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class AdminImpl implements UserDAO {
 
@@ -28,7 +26,25 @@ public class AdminImpl implements UserDAO {
         return Email.equals("postgres@iitrpr.ac.in") && Password.equals("2020csb1068");
     }
 
-    public String AddFaculty(String name, String email, String Department, String JoiningDate, String PhoneNumber, String Address) throws SQLException {
+    public String AddFaculty(String name, String email, String Department, String JoiningDate, String PhoneNumber, String Address) throws PSQLException,SQLException {
+
+
+        if( !name.matches("^[a-z A-z0-9]+$"))
+            return "Name is invalid\n";
+        if( !email.matches("^[a-zA-Z0-9+_.-]+@iitrpr.ac.in$"))
+            return "Email is invalid\n";
+        if( !PhoneNumber.matches("^[0-9]{10}$"))
+            return "Phone number is invalid\n";
+        if( !JoiningDate.matches("^[0-9]{4}-[0-9]{2}-[0-9]{2}$"))
+            return "Joining date is invalid\n";
+        if( name.matches("^[ ]+$"))
+            return "Name is invalid\n";
+        if( Address.matches("^[ ]+$") )
+            return "Address is invalid\n";
+        if( !Department.matches("^[a-z A-Z]+"))
+            return "Department is invalid\n";
+
+
         ResultSet rs1 = con.createStatement().executeQuery("SELECT * FROM FACULTIES WHERE EMAIL='" + email + "' OR PHONE_NUMBER='" + PhoneNumber + "';");
         ResultSet rs2 = con.createStatement().executeQuery("SELECT dept_id FROM DEPARTMENTS WHERE NAME='" + Department + "';");
         if (rs1.next())
@@ -42,7 +58,25 @@ public class AdminImpl implements UserDAO {
         }
     }
 
-    public String AddStudent(String name, String email, String EntryNumber, String Department, String Batch, String PhoneNumber, String Address) throws SQLException {
+    public String AddStudent(String name, String email, String EntryNumber, String Department, String Batch, String PhoneNumber, String Address) throws PSQLException,SQLException {
+
+        if( !name.matches("^[a-z A-z0-9]+"))
+            return "Name is invalid\n";
+        if( !email.matches("^[a-zA-Z0-9+_.-]+@iitrpr.ac.in"))
+            return "Email is invalid\n";
+        if( !EntryNumber.matches("^[0-9]{4}[a-zA-Z]{3}[0-9]{4}$"))
+            return "Entry number is invalid\n";
+        if( !Department.matches("^[a-z A-Z]+"))
+            return "Department is invalid\n";
+        if( !PhoneNumber.matches("^[0-9]{10}$"))
+            return "Phone number is invalid\n";
+        if( !Batch.matches("^[0-9]{4}$"))
+            return "Batch is invalid\n";
+        if( name.matches("^[ ]+$"))
+            return "Name is invalid\n";
+        if( Address.matches("^[ ]+$"))
+            return "Address is invalid\n";
+
         ResultSet rs1 = con.createStatement().executeQuery("SELECT * FROM STUDENTS WHERE EMAIL='" + email + "' OR PHONE_NUMBER='" + PhoneNumber + "' OR ENTRY_NUMBER='" + EntryNumber + "';");
         ResultSet rs2 = con.createStatement().executeQuery("SELECT dept_id FROM DEPARTMENTS WHERE NAME='" + Department + "';");
         ResultSet rs5 = con.createStatement().executeQuery("SELECT * FROM batch WHERE batch=" + Batch + ";");
@@ -59,8 +93,23 @@ public class AdminImpl implements UserDAO {
         }
     }
 
-    public String AddAcademicStaff(String name, String email, String JoiningDate, String PhoneNumber, String Address) throws SQLException {
+    public String AddAcademicStaff(String name, String email, String JoiningDate, String PhoneNumber, String Address) throws PSQLException, SQLException {
+
+        if( !name.matches("^[a-z A-z0-9]+$"))
+            return "Name is invalid\n";
+        if( !email.matches("^[a-zA-Z0-9+_.-]+@iitrpr.ac.in$"))
+            return "Email is invalid\n";
+        if( !PhoneNumber.matches("^[0-9]{10}$"))
+            return "Phone number is invalid\n";
+        if( !JoiningDate.matches("^[0-9]{4}-[0-9]{2}-[0-9]{2}$"))
+            return "Joining date is invalid\n";
+        if( name.matches("^[ ]+$"))
+            return "Name is invalid\n";
+        if( Address.matches("^[ ]+$") )
+            return "Address is invalid\n";
+
         ResultSet rs1 = con.createStatement().executeQuery("SELECT * FROM ACAD_EMPL WHERE EMAIL='" + email + "' OR PHONE_NUMBER='" + PhoneNumber + "';");
+
         if (rs1.next())
             return "Academic staff already exists\n";
         else {
@@ -70,7 +119,13 @@ public class AdminImpl implements UserDAO {
         }
     }
 
-    public String AddDepartment(String Name) throws SQLException {
+    public String AddDepartment(String Name) throws PSQLException,SQLException {
+
+        if( !Name.matches("^[a-z A-z]+"))
+            return "Department name is invalid\n";
+        if( Name.matches("^[ ]+$"))
+            return "Department name is Empty\n";
+
         ResultSet rs1 = con.createStatement().executeQuery("SELECT * FROM DEPARTMENTS WHERE NAME='" + Name + "';");
         if (rs1.next())
             return "Department already exists\n";

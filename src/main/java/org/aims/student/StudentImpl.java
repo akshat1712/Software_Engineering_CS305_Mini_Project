@@ -1,6 +1,7 @@
 package org.aims.student;
 
 import org.aims.dao.UserDAO;
+import org.postgresql.util.PSQLException;
 
 import javax.management.Query;
 import javax.xml.transform.Result;
@@ -29,6 +30,10 @@ public class StudentImpl implements UserDAO {
     }
 
     public boolean login() {
+
+        if( !email.matches("^[a-zA-Z0-9+_.-]+@iitrpr.ac.in"))
+            return false;
+
         try {
             ResultSet rs1 = con.createStatement().executeQuery("SELECT * FROM passwords WHERE email='" + email + "' AND password='" + password + "' AND role='STUDENT'");
             if (rs1.next()) {
@@ -44,13 +49,18 @@ public class StudentImpl implements UserDAO {
         }
     }
 
-    public void logout() throws SQLException {
+    public void logout() throws PSQLException,SQLException {
         SimpleDateFormat DateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
         con.createStatement().execute("UPDATE login_logs SET logout_time='" + DateTime.format(date) + "' WHERE email='" + email + "' AND logout_time='2000-01-01 00:00:00';");
     }
 
-    public String changePassword(String oldPassword, String newPassword) throws SQLException {
+    public String changePassword(String oldPassword, String newPassword) throws PSQLException,SQLException {
+
+        if( newPassword.matches("[\\w]*\\s[\\w]*")){
+            return "\nPassword Cannot Contain Spaces";
+        }
+
         ResultSet rs1 = con.createStatement().executeQuery("SELECT * FROM passwords WHERE email='" + email + "' AND password='" + oldPassword + "' AND role='STUDENT'");
         if (rs1.next()) {
             con.createStatement().execute("UPDATE passwords SET password='" + newPassword + "' WHERE email='" + email + "'");
@@ -60,7 +70,7 @@ public class StudentImpl implements UserDAO {
         }
     }
 
-    public String registerCourse(String courseCode) throws SQLException {
+    public String registerCourse(String courseCode) throws PSQLException,SQLException {
         ResultSet rs1 = con.createStatement().executeQuery("SELECT catalog_id,offering_id,\"CGPA\" FROM courses_offering WHERE course_code='" + courseCode + "'");
         if (!rs1.next()) {
             return "\nCourse Not Being Offered Right Now";
@@ -73,8 +83,6 @@ public class StudentImpl implements UserDAO {
         if (rs3.next()) {
             return "\nCourse Already Registered";
         }
-
-        // here is the problem
         ResultSet rs10 = con.createStatement().executeQuery("SELECT semester,year FROM time_semester WHERE status='ONGOING'");
         ResultSet rs11 = con.createStatement().executeQuery("select credits from courses_enrolled_student_" + rs2.getString("student_id") + " P , courses_catalog Q WHERE P.catalog_id=Q.catalog_id;");
         ResultSet rs12 = con.createStatement().executeQuery("select credits from courses_catalog where catalog_id=" + rs1.getString("catalog_id"));
@@ -136,7 +144,7 @@ public class StudentImpl implements UserDAO {
             ResultSet rs8 = con.createStatement().executeQuery("SELECT * FROM courses_catalog WHERE course_code='" + preReq + "'");
             if (rs8.next()) {
                 String query = "Select * from transcript_student_" + rs2.getString("student_id") + " P where P.grade>='" + preReqGrade + "' AND P.catalog_id=" + rs8.getString("catalog_id");
-                System.out.println(query);
+//                System.out.println(query);
                 ResultSet rs9 = con.createStatement().executeQuery(query);
                 if (!rs9.next()) {
                     return "\nYou Do not satify the Faculty prerequisite";
@@ -149,7 +157,7 @@ public class StudentImpl implements UserDAO {
         return "\nCourse Registered";
     }
 
-    public String dropCourse(String courseCode) throws SQLException {
+    public String dropCourse(String courseCode) throws PSQLException,SQLException {
         ResultSet rs1 = con.createStatement().executeQuery("SELECT catalog_id FROM courses_offering WHERE course_code='" + courseCode + "'");
         if (!rs1.next()) {
             return "\nCourse Not Being Offered Right Now";
@@ -166,7 +174,7 @@ public class StudentImpl implements UserDAO {
         return "\nCourse Dropped";
     }
 
-    public String[] viewGrades() throws SQLException {
+    public String[] viewGrades() throws PSQLException,SQLException {
         ResultSet rs1 = con.createStatement().executeQuery("SELECT student_id FROM students WHERE email='" + email + "'");
         if (rs1.next()) {
             String id = rs1.getString("student_id");
@@ -191,7 +199,7 @@ public class StudentImpl implements UserDAO {
         }
     }
 
-    public String computeCGPA() throws SQLException {
+    public String computeCGPA() throws PSQLException,SQLException {
         ResultSet rs1 = con.createStatement().executeQuery("SELECT student_id FROM students WHERE email='" + email + "'");
 
         if (!rs1.next()) {
@@ -219,7 +227,7 @@ public class StudentImpl implements UserDAO {
         }
     }
 
-    private double credits_earned(int year, String semester, String id) throws SQLException {
+    private double credits_earned(int year, String semester, String id) throws PSQLException,SQLException {
         String query = "Select credits from transcript_student_" + id + " P , courses_catalog Q where P.catalog_id=Q.catalog_id AND P.year='" + year + "' AND P.semester='" + semester + "'";
         ResultSet rs1 = con.createStatement().executeQuery(query);
 

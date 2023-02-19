@@ -72,10 +72,19 @@ public class FacultyService implements UserService {
         String courseCode = sc.nextLine();
         System.out.print("Enter the CGPA Cutoff ( Enter -1 if None ): ");
         double cgpaCutoff = sc.nextDouble();
-        System.out.println("Enter the prerequisites, Each Line is OR of prerequisites and course is AND Lines");
-        System.out.print("Enter number of lines you want to enter: ");
-        int n = sc.nextInt();
-        System.out.println("Enter prerequisites with grades separated from other prerequisites by ,");
+
+        int n=-1;
+        System.out.println("Enter the prerequisites List");
+
+        while(n<0){
+            System.out.print("Enter number of lines you want to enter: ");
+            n = sc.nextInt();
+            if(n<0){
+                System.out.println("Invalid Input");
+            }
+        }
+        if(n>0)
+            System.out.println("Enter prerequisites with grades separated from other prerequisites by ,");
         String[] prerequisites = new String[n];
 
         sc.nextLine();

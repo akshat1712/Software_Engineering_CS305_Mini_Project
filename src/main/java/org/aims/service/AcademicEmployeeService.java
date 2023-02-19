@@ -35,7 +35,15 @@ public class AcademicEmployeeService implements UserService {
             System.out.println("[8] Create Course Types");
             System.out.println("[9] Check Graduation");
             System.out.print("\nEnter your option: ");
-            option = sc.nextInt();
+
+            try{
+                option = sc.nextInt();
+            }catch (Exception e){
+                System.out.println("Invalid Input");
+                sc.nextLine();
+                continue;
+            }
+
             System.out.println();
             switch (option) {
                 case 0 -> logoutService();   // Checking Done
@@ -63,7 +71,7 @@ public class AcademicEmployeeService implements UserService {
         }
     }
 
-    public void logoutService() {
+    private void logoutService() {
         try {
             String response = AcademicEmployee.logout();
             System.out.println(response);

@@ -31,8 +31,8 @@ public class StudentService implements UserService {
             try {
                 option = sc.nextInt();
             } catch (Exception e) {
-                System.out.println("Invalid Option");
-                option = -1;
+                System.out.println("\nInvalid Option");
+                sc.nextLine();
                 continue;
             }
             System.out.println();
@@ -62,9 +62,10 @@ public class StudentService implements UserService {
     public void logoutService() {
         try {
             Student.logout();
-            System.out.println("\nLogging Out Successfully");
+            System.out.println("Logging Out Successfully\n");
         } catch (SQLException e) {
             e.printStackTrace();
+            System.out.println("Logging Out Failed\n");
         }
     }
 
