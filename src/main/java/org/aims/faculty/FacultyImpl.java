@@ -1,5 +1,7 @@
 package org.aims.faculty;
 
+import org.aims.dataAccess.facultyDAO;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.sql.ResultSet;
@@ -24,6 +26,7 @@ public class FacultyImpl implements userDAL {
     private final String username = "postgres";
     private final String databasePassword = "2020csb1068";
 
+    private final facultyDAO facultyDAO = new facultyDAO();
 
     public FacultyImpl(String Email, String Password) throws PSQLException,SQLException {
         this.email = Email;
@@ -33,26 +36,19 @@ public class FacultyImpl implements userDAL {
 
 
     public boolean login() {
-        try {
-            ResultSet rs1 = con.createStatement().executeQuery("SELECT * FROM passwords WHERE email='" + email + "' AND password='" + password + "' AND role='FACULTY'");
-            if (rs1.next()) {
-                SimpleDateFormat DateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                Date date = new Date();
-                con.createStatement().execute("INSERT INTO login_logs (\"email\",\"login_time\",\"logout_time\") VALUES ('" + email + "','" + DateTime.format(date) + "','2000-01-01 00:00:00');");
-                return true;
-            }
+        if( !email.matches("^[a-zA-Z0-9+_.-]+@iitrpr.ac.in"))
             return false;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+
+        if(facultyDAO.login(email,password)){
+            facultyDAO.loginLogs(email);
+            return true;
         }
+        else
+            return false;
     }
 
-    public boolean logout() throws PSQLException,SQLException {
-        SimpleDateFormat DateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = new Date();
-        con.createStatement().execute("UPDATE login_logs SET logout_time='" + DateTime.format(date) + "' WHERE email='" + email + "' AND logout_time='2000-01-01 00:00:00';");
-        return true;
+    public void logout() throws PSQLException,SQLException {
+        facultyDAO.logoutLogs(email);
     }
 
     public String offerCourse(String courseCode, double cgpaCutoff, String[] prerequisites) throws PSQLException,SQLException {
@@ -117,86 +113,44 @@ public class FacultyImpl implements userDAL {
     }
 
     public String takeBackCourse(String courseCode) throws PSQLException,SQLException {
-        ResultSet rs1 = con.createStatement().executeQuery("SELECT * FROM courses_catalog WHERE course_code='" + courseCode + "'");
-        if (!rs1.next()) {
+
+        if( facultyDAO.checkCourseCatalog(courseCode)){
             return "\nCourse Does Not Exist";
         }
-        ResultSet rs2 = con.createStatement().executeQuery("SELECT * FROM courses_offering WHERE course_code='" + courseCode + "'");
-        if (!rs2.next()) {
+
+        if( facultyDAO.checkCourseOffering(courseCode)){
             return "\nCourse Not Offered";
         }
 
-        ResultSet rs3 = con.createStatement().executeQuery("SELECT faculty_id FROM faculties WHERE email='" + email + "'");
-
-        if (!rs3.next()) {
-            return "\nFaculty Does Not Exist";
+        if(!facultyDAO.checkSemesterStatus("ONGOING-CO")){
+            return "\nCourse Offering is not Open";
         }
 
-        ResultSet rs5 = con.createStatement().executeQuery("SELECT * from time_semester WHERE status='ONGOING-CO'");
+        if( facultyDAO.getfacultyidEmail(email)!=facultyDAO.getfacultyidCourse(courseCode))
+            return "\nYou are not the Faculty of this Course";
 
-        if (!rs5.next()) {
-            return "\nCourse Offering is Not open Right now";
-        }
 
-        if (rs2.getString("faculty_id").equals(rs3.getString("faculty_id"))) {
-            con.createStatement().execute("DELETE FROM courses_pre_req_offering WHERE offering_id='" + rs2.getString("offering_id") + "'");
-            con.createStatement().execute("DELETE FROM courses_offering WHERE offering_id='" + rs2.getString("offering_id") + "'");
-            con.createStatement().execute("DELETE FROM courses_teaching_faculty_" + rs3.getString("faculty_id") + " WHERE catalog_id='" + rs1.getString("catalog_id") + "'");
+        facultyDAO.deleteCourseOffering(email,courseCode);
 
-            ResultSet rs6 = con.createStatement().executeQuery("SELECT student_id as id FROM students");
-
-            while (rs6.next()) {
-                con.createStatement().execute("DELETE FROM courses_enrolled_student_" + rs6.getString("id") + " WHERE catalog_id='" + rs1.getString("catalog_id") + "'");
-            }
 
             return "\nCourse Taken Back Successfully";
-        } else {
-            return "\nCourse Not Offered By You";
-        }
-
-
     }
 
     public String[] viewGrades(String email) throws PSQLException,SQLException {
-        ResultSet rs1 = con.createStatement().executeQuery("SELECT student_id FROM students WHERE email='" + email + "'");
-        if (rs1.next()) {
-            String id = rs1.getString("student_id");
-            ResultSet rs2 = con.createStatement().executeQuery("select count(*) from transcript_student_" + id + " as T ,courses_catalog C WHERE T.catalog_id=C.catalog_id;");
-            int numGrades = 0;
-
-            if (rs2.next()) {
-                numGrades = rs2.getInt("count");
-            }
-
-            String[] grades = new String[numGrades];
-
-            rs2 = con.createStatement().executeQuery("select course_code,grade,semester,year from transcript_student_" + id + " as T ,courses_catalog C WHERE T.catalog_id=C.catalog_id;");
-
-            while (rs2.next()) {
-                grades[rs2.getRow() - 1] = "Course Code: " + rs2.getString("course_code") + " || Grade: " + rs2.getString("grade") + " || Semester: " + rs2.getString("semester") + " || Year: " + rs2.getString("year");
-            }
-
-            return grades;
-        } else {
-            return null;
-        }
+        return facultyDAO.viewGrades(email);
     }
 
     public String changePassword(String oldPassword, String newPassword) throws PSQLException,SQLException {
-
         if( newPassword.matches("[\\w]*\\s[\\w]*")){
             return "\nPassword Cannot Contain Spaces";
         }
 
-
-
-        ResultSet rs1 = con.createStatement().executeQuery("SELECT * FROM passwords WHERE email='" + email + "' AND password='" + oldPassword + "' AND role='FACULTY'");
-        if (rs1.next()) {
-            con.createStatement().execute("UPDATE passwords SET password='" + newPassword + "' WHERE email='" + email + "'");
-            return "\nPassword Changed to New";
-        } else {
-            return "\nIncorrect Old Password";
+        if(facultyDAO.checkPassword(email,oldPassword)){
+            facultyDAO.changePassword(email,newPassword);
+            return "\nPassword Changed Successfully";
         }
+        else
+            return "\nIncorrect Old Password";
     }
 
     public String updateGrades(String path, String courseCode) throws PSQLException,SQLException {

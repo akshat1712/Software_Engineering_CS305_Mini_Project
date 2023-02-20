@@ -62,13 +62,9 @@ public class StudentService implements UserService {
     }
 
     public void logoutService() {
-        try {
-            Student.logout();
-            System.out.println("Logging Out Successfully\n");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("Logging Out Failed\n");
-        }
+        Student.logout();
+        System.out.println("Logging Out Successfully\n");
+
     }
 
     private void changePasswordService() {
@@ -127,7 +123,7 @@ public class StudentService implements UserService {
     private void computeCGPAService() {
         System.out.println("Compute CGPA");
         try {
-            String response = Student.computeCGPA();
+            double response = Student.computeCGPA();
             System.out.println(response);
         } catch (Exception e) {
             e.printStackTrace();
@@ -135,8 +131,6 @@ public class StudentService implements UserService {
     }
 
     private void CoursesEnrolledService(){
-        System.out.println("Courses Enrolled");
-        System.out.println("=====================================");
         try{
             String[] response = Student.viewCoursesEnrolled();
             System.out.println("Enrolled Courses");
