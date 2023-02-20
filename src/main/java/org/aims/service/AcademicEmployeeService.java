@@ -34,6 +34,7 @@ public class AcademicEmployeeService implements UserService {
             System.out.println("[7] Generate Report");
             System.out.println("[8] Create Course Types");
             System.out.println("[9] Check Graduation");
+            System.out.println("[10] Start Grade Submission");
             System.out.print("\nEnter your option: ");
 
             try{
@@ -56,6 +57,7 @@ public class AcademicEmployeeService implements UserService {
                 case 7 -> generateReportService(); // Checking Done
                 case 8 -> createCourseTypesService(); // Checking Done
                 case 9 -> checkGraduationService(); // Checking Done
+                case 10 -> startGradeSubmissionService(); // Checking Done
                 default -> System.out.println("\nInvalid option\n");
             }
         }
@@ -278,7 +280,6 @@ public class AcademicEmployeeService implements UserService {
         }
     }
 
-
     private void checkGraduationService() {
         System.out.println("Check Graduation");
         Scanner sc = new Scanner(System.in);
@@ -289,6 +290,16 @@ public class AcademicEmployeeService implements UserService {
             String response = AcademicEmployee.checkGraduation(email);
             System.out.println(response);
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void startGradeSubmissionService () {
+        System.out.println("Start Grade Submission");
+
+        try {
+            String response = AcademicEmployee.startGradeSubmission();
+        }catch (Exception e) {
             e.printStackTrace();
         }
     }

@@ -26,7 +26,7 @@ public class StudentService implements UserService {
             System.out.println("[3] View Grades");
             System.out.println("[4] Computer CGPA");
             System.out.println("[5] Change Password");
-            System.out.println("[6] Check SGPA");
+            System.out.println("[6] Courses Offering & Enrolled");
             System.out.print("Enter your option: ");
             try {
                 option = sc.nextInt();
@@ -44,6 +44,8 @@ public class StudentService implements UserService {
                 case 3 -> viewGradesService();  // Checking Done
                 case 4 -> computeCGPAService(); // Checking Done
                 case 5 -> changePasswordService(); // Checking Done
+                case 6 -> CoursesEnrolledService(); // Checking Done
+
                 default -> System.out.println("Invalid option");
             }
         }
@@ -132,5 +134,24 @@ public class StudentService implements UserService {
         }
     }
 
-
+    private void CoursesEnrolledService(){
+        System.out.println("Courses Enrolled");
+        System.out.println("=====================================");
+        try{
+            String[] response = Student.viewCoursesEnrolled();
+            System.out.println("Enrolled Courses");
+            System.out.println("=====================================");
+            for (String s : response){
+                System.out.println(s);
+            }
+            System.out.println("Courses Offering");
+            System.out.println("=====================================");
+            response = Student.viewCoursesOffered();
+            for (String s : response){
+                System.out.println(s);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 }

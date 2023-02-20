@@ -1,6 +1,7 @@
 package org.aims.academics;
 
 import org.aims.dataAccess.userDAL;
+import org.postgresql.util.PSQLException;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -55,7 +56,7 @@ public class AcademicEmployeeImpl implements userDAL {
 
     public String addCourseInCatalog(String courseCode, String courseName, String department,
                                      int lectures, int tutorial, int practicals, int self_study, double credits,
-                                     String[] prerequisite) throws SQLException {
+                                     String[] prerequisite) throws PSQLException,SQLException {
 
         for (String s : prerequisite) {
             if (s.equals(courseCode))
@@ -90,7 +91,7 @@ public class AcademicEmployeeImpl implements userDAL {
         return "COURSE ADDED IN CATALOG SUCCESSFULLY\n";
     }
 
-    public String createCurriculum(int batch, String[] courses, String[] credits, String Department) throws SQLException {
+    public String createCurriculum(int batch, String[] courses, String[] credits, String Department) throws PSQLException,SQLException {
 
         ResultSet rs1 = con.createStatement().executeQuery("SELECT * FROM batch WHERE batch=" + batch + "");
         if (!rs1.next()) {
@@ -148,7 +149,7 @@ public class AcademicEmployeeImpl implements userDAL {
 
     }
 
-    public String startSemester(int Year, String Semester) throws SQLException {
+    public String startSemester(int Year, String Semester) throws PSQLException,SQLException {
         ResultSet rs1 = con.createStatement().executeQuery("SELECT * FROM time_semester WHERE status!='ENDED'");
         ResultSet rs2 = con.createStatement().executeQuery("SELECT * FROM time_semester WHERE year=" + Year + " AND semester='" + Semester + "'");
         if (rs1.next()) {
@@ -156,15 +157,15 @@ public class AcademicEmployeeImpl implements userDAL {
         } else if (rs2.next()) {
             return "This is not valid semester\n";
         } else {
-            con.createStatement().executeUpdate("INSERT INTO time_semester VALUES ('" + Semester + "','" + Year + "','ONGOING')");
+            con.createStatement().executeUpdate("INSERT INTO time_semester VALUES ('" + Semester + "','" + Year + "','ONGOING-CO')");
             return "Semester Started\n";
         }
     }
 
-    public String endSemester() throws SQLException {
-        ResultSet rs1 = con.createStatement().executeQuery("SELECT * FROM time_semester WHERE status='ONGOING'");
+    public String endSemester() throws PSQLException,SQLException {
+        ResultSet rs1 = con.createStatement().executeQuery("SELECT * FROM time_semester WHERE status='ONGOING-GS'");
         if (!rs1.next()) {
-            return "\nNo Semester Ongoing\n";
+            return "\nGrade Submission Not being done\n";
         }
 
         ResultSet rs2 = con.createStatement().executeQuery("SELECT student_id,entry_number FROM students");
@@ -185,7 +186,8 @@ public class AcademicEmployeeImpl implements userDAL {
         while (rs4.next()) {
             String id = rs4.getString("student_id");
             String query = "INSERT INTO transcript_student_" + id + " (\"catalog_id\",\"grade\",\"semester\",\"year\") SELECT catalog_id,grade," + rs1.getString("semester") + "," + rs1.getString("year") + " FROM courses_enrolled_student_" + id;
-//            System.out.println(query);
+            System.out.println(query);
+
             con.createStatement().execute(query);
             con.createStatement().execute("TRUNCATE TABLE courses_enrolled_student_" + id);
         }
@@ -194,18 +196,20 @@ public class AcademicEmployeeImpl implements userDAL {
         while (rs5.next()) {
             String id = rs5.getString("faculty_id");
             String query = "INSERT INTO transcript_faculty_" + id + " (\"catalog_id\",\"semester\",\"year\") SELECT catalog_id," + rs1.getString("semester") + "," + rs1.getString("year") + " FROM courses_teaching_faculty_" + id;
-//            System.out.println(query);
+            System.out.println(query);
+
             con.createStatement().execute(query);
             con.createStatement().execute("TRUNCATE TABLE courses_teaching_faculty_" + id);
         }
-        con.createStatement().executeUpdate("UPDATE time_semester SET status='ENDED' WHERE status='ONGOING'");
-        con.createStatement().executeQuery("TRUNCATE TABLE courses_offering");
-        con.createStatement().executeQuery("TRUNCATE TABLE courses_pre_req_offering");
+
+        con.createStatement().executeUpdate("UPDATE time_semester SET status='ENDED' WHERE status!='ENDED'");
+        con.createStatement().execute("TRUNCATE TABLE courses_offering CASCADE");
+
 
         return "Semester Ended\n";
     }
 
-    public String[] viewGrades(String email) throws SQLException {
+    public String[] viewGrades(String email) throws PSQLException,SQLException {
         ResultSet rs1 = con.createStatement().executeQuery("SELECT student_id FROM students WHERE email='" + email + "'");
         if (rs1.next()) {
             String id = rs1.getString("student_id");
@@ -240,7 +244,7 @@ public class AcademicEmployeeImpl implements userDAL {
         }
     }
 
-    public Map<String, String[]> generateReport() throws Exception {
+    public Map<String, String[]> generateReport() throws PSQLException,SQLException {
 
         ResultSet rs1 = con.createStatement().executeQuery("SELECT * FROM students");
 
@@ -253,7 +257,7 @@ public class AcademicEmployeeImpl implements userDAL {
         return transcriptAllStudents;
     }
 
-    public String createCourseTypes(String courseType, String alias) {
+    public String createCourseTypes(String courseType, String alias) throws PSQLException,SQLException{
         try {
             String query = "INSERT INTO course_types VALUES ('" + courseType + "','" + alias + "')";
             System.out.println(query);
@@ -265,7 +269,7 @@ public class AcademicEmployeeImpl implements userDAL {
     }
 
 
-    public String checkGraduation(String email) throws SQLException {
+    public String checkGraduation(String email) throws PSQLException,SQLException {
         ResultSet rs1 = con.createStatement().executeQuery("SELECT student_id,batch,dept_id FROM students WHERE email='" + email + "'");
         if (!rs1.next()) {
             return "\nStudent Not Found";
@@ -332,6 +336,18 @@ public class AcademicEmployeeImpl implements userDAL {
         }
 
         return "YES";
+    }
+
+
+    public String startGradeSubmission() throws PSQLException, SQLException{
+        ResultSet rs1=con.createStatement().executeQuery("SELECT * FROM time_semester WHERE status='ONGOING-CO'");
+        if( !rs1.next() ){
+            return "NO ONGOING CO SEMESTER";
+        }
+        else{
+            con.createStatement().execute("UPDATE time_semester SET status='ONGOING-GS' WHERE status='ONGOING-CO'");
+            return "Grade Submission Started\n";
+        }
     }
 }
 

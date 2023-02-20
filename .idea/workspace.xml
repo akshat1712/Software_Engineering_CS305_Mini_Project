@@ -4,16 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="793ca995-c85c-4b5c-99eb-10b3a8b12ea8" name="Changes" comment="CODING DONE, IF TIME REMAINS THEN GO FOR CONCRETE DAO">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/aims/dataAccess/userDAL.java" afterDir="false" />
+    <list default="true" id="793ca995-c85c-4b5c-99eb-10b3a8b12ea8" name="Changes" comment="HAVE TO ADD DIFFERENT EVENTS IN A SEMESTER">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Grades/grades_HS103.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Grades/grades_GE103.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/academics/AcademicEmployeeImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/academics/AcademicEmployeeImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/admin/AdminImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/admin/AdminImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/dao/UserDAO.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/faculty/FacultyImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/faculty/FacultyImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/service/AcademicEmployeeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/service/AcademicEmployeeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/service/StudentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/service/StudentService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/student/StudentImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/student/StudentImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/aims/admin/AdminImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/aims/admin/AdminImplTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/aims/service/AdminServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/aims/service/AdminServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,7 +99,7 @@
       <recent name="org.aims.service" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.AdminImplTest">
+  <component name="RunManager">
     <configuration name="AdminImplTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -219,8 +217,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.AdminImplTest.addAcademicStaffTest1" />
         <item itemvalue="Gradle.AdminImplTest" />
+        <item itemvalue="Gradle.AdminImplTest.addAcademicStaffTest1" />
         <item itemvalue="Gradle.AdminImplTest.addDepartmentTest4" />
         <item itemvalue="Gradle.AdminImplTest.addDepartmentTest3" />
         <item itemvalue="Gradle.AdminImplTest.addDepartmentTest2" />
@@ -397,7 +395,14 @@
       <option name="project" value="LOCAL" />
       <updated>1676818332609</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="HAVE TO ADD DIFFERENT EVENTS IN A SEMESTER">
+      <created>1676837310781</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1676837310782</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -437,7 +442,8 @@
     <MESSAGE value="CODING DONE , CHECKING REMAINING" />
     <MESSAGE value="CODING DONE , CHECKING REMAINING , FORMATTING DONE ALSO" />
     <MESSAGE value="CODING DONE, IF TIME REMAINS THEN GO FOR CONCRETE DAO" />
-    <option name="LAST_COMMIT_MESSAGE" value="CODING DONE, IF TIME REMAINS THEN GO FOR CONCRETE DAO" />
+    <MESSAGE value="HAVE TO ADD DIFFERENT EVENTS IN A SEMESTER" />
+    <option name="LAST_COMMIT_MESSAGE" value="HAVE TO ADD DIFFERENT EVENTS IN A SEMESTER" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Mini_Project$AdminServiceTest_ShowmenuTest.ic" NAME="AdminServiceTest.ShowmenuTest Coverage Results" MODIFIED="1676819103689" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />

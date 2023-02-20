@@ -81,7 +81,7 @@ public class StudentImpl implements userDAL {
         if (rs3.next()) {
             return "\nCourse Already Registered";
         }
-        ResultSet rs10 = con.createStatement().executeQuery("SELECT semester,year FROM time_semester WHERE status='ONGOING'");
+        ResultSet rs10 = con.createStatement().executeQuery("SELECT semester,year FROM time_semester WHERE status='ONGOING-CO'");
         ResultSet rs11 = con.createStatement().executeQuery("select credits from courses_enrolled_student_" + rs2.getString("student_id") + " P , courses_catalog Q WHERE P.catalog_id=Q.catalog_id;");
         ResultSet rs12 = con.createStatement().executeQuery("select credits from courses_catalog where catalog_id=" + rs1.getString("catalog_id"));
         if (!rs10.next()) {
@@ -168,6 +168,12 @@ public class StudentImpl implements userDAL {
         if (!rs3.next()) {
             return "\nCourse Not Registered";
         }
+
+        ResultSet rs4=con.createStatement().executeQuery("SELECT * FROM time_semester WHERE status='ONGOING-CO'");
+
+        if(!rs4.next())
+            return "\nGrade Submission has started, So you cannot drop the course";
+
         con.createStatement().execute("DELETE FROM courses_enrolled_student_" + rs2.getString("student_id") + " WHERE catalog_id=" + rs1.getString("catalog_id"));
         return "\nCourse Dropped";
     }
@@ -240,5 +246,42 @@ public class StudentImpl implements userDAL {
         return credits;
     }
 
+    public String [] viewCoursesEnrolled() throws PSQLException,SQLException{
+        ResultSet rs1=con.createStatement().executeQuery("SELECT student_id FROM students WHERE email='"+email+"'");
+        if(!rs1.next())
+            return null;
+        String id=rs1.getString("student_id");
+        ResultSet rs2=con.createStatement().executeQuery("SELECT count(*) FROM courses_enrolled_student_"+id);
+        int numCourses=0;
+        if(rs2.next())
+            numCourses=rs2.getInt("count");
+        String [] courses=new String[numCourses];
+        rs2=con.createStatement().executeQuery("SELECT Q.course_code,credits FROM courses_enrolled_student_"+id+" as P , courses_catalog as Q WHERE P.catalog_id=Q.catalog_id");
+
+        while(rs2.next()){
+            courses[rs2.getRow()-1]="Course Code: "+rs2.getString("course_code")+" || Credits: "+rs2.getString("credits");
+        }
+
+        return courses;
+    }
+
+    public String [] viewCoursesOffered() throws PSQLException,SQLException{
+        ResultSet rs1=con.createStatement().executeQuery("SELECT student_id FROM students WHERE email='"+email+"'");
+        if(!rs1.next())
+            return null;
+        String id=rs1.getString("student_id");
+        ResultSet rs2=con.createStatement().executeQuery("SELECT count(*) FROM courses_offering");
+        int numCourses=0;
+        if(rs2.next())
+            numCourses=rs2.getInt("count");
+        String [] courses=new String[numCourses];
+        rs2=con.createStatement().executeQuery("SELECT Q.course_code,credits FROM courses_offering as P , courses_catalog as Q WHERE P.catalog_id=Q.catalog_id");
+
+        while(rs2.next()){
+            courses[rs2.getRow()-1]="Course Code: "+rs2.getString("course_code")+" || Credits: "+rs2.getString("credits");
+        }
+
+        return courses;
+    }
 }
 

@@ -55,7 +55,7 @@ public class FacultyImpl implements userDAL {
         return true;
     }
 
-    public String offerCourse(String courseCode, double cgpaCutoff, String[] prerequisites) throws SQLException {
+    public String offerCourse(String courseCode, double cgpaCutoff, String[] prerequisites) throws PSQLException,SQLException {
         ResultSet rs1 = con.createStatement().executeQuery("SELECT catalog_id FROM courses_catalog WHERE course_code='" + courseCode + "'");
         if (!rs1.next()) {
             return "\nCourse Does Not Exist";
@@ -65,7 +65,7 @@ public class FacultyImpl implements userDAL {
             return "\nCourse Already Offered";
         }
 
-        ResultSet rs3 = con.createStatement().executeQuery("SELECT * from time_semester WHERE status='ONGOING'");
+        ResultSet rs3 = con.createStatement().executeQuery("SELECT * from time_semester WHERE status='ONGOING-CO'");
 
         if (!rs3.next()) {
             return "\nSemester Not Started";
@@ -116,7 +116,7 @@ public class FacultyImpl implements userDAL {
         return "\nCourse Offered Successfully";
     }
 
-    public String takeBackCourse(String courseCode) throws SQLException {
+    public String takeBackCourse(String courseCode) throws PSQLException,SQLException {
         ResultSet rs1 = con.createStatement().executeQuery("SELECT * FROM courses_catalog WHERE course_code='" + courseCode + "'");
         if (!rs1.next()) {
             return "\nCourse Does Not Exist";
@@ -132,10 +132,10 @@ public class FacultyImpl implements userDAL {
             return "\nFaculty Does Not Exist";
         }
 
-        ResultSet rs5 = con.createStatement().executeQuery("SELECT * from time_semester WHERE status='ONGOING'");
+        ResultSet rs5 = con.createStatement().executeQuery("SELECT * from time_semester WHERE status='ONGOING-CO'");
 
         if (!rs5.next()) {
-            return "\nSemester Has ended";
+            return "\nCourse Offering is Not open Right now";
         }
 
         if (rs2.getString("faculty_id").equals(rs3.getString("faculty_id"))) {
@@ -157,7 +157,7 @@ public class FacultyImpl implements userDAL {
 
     }
 
-    public String[] viewGrades(String email) throws SQLException {
+    public String[] viewGrades(String email) throws PSQLException,SQLException {
         ResultSet rs1 = con.createStatement().executeQuery("SELECT student_id FROM students WHERE email='" + email + "'");
         if (rs1.next()) {
             String id = rs1.getString("student_id");
@@ -182,7 +182,7 @@ public class FacultyImpl implements userDAL {
         }
     }
 
-    public String changePassword(String oldPassword, String newPassword) throws SQLException {
+    public String changePassword(String oldPassword, String newPassword) throws PSQLException,SQLException {
 
         if( newPassword.matches("[\\w]*\\s[\\w]*")){
             return "\nPassword Cannot Contain Spaces";
@@ -199,7 +199,7 @@ public class FacultyImpl implements userDAL {
         }
     }
 
-    public String updateGrades(String path, String courseCode) throws SQLException {
+    public String updateGrades(String path, String courseCode) throws PSQLException,SQLException {
 
         ResultSet rs1 = con.createStatement().executeQuery(("SELECT catalog_id FROM courses_offering WHERE course_code='" + courseCode + "'"));
         if (!rs1.next()) {
@@ -214,6 +214,12 @@ public class FacultyImpl implements userDAL {
         ResultSet rs3 = con.createStatement().executeQuery("SELECT * from courses_teaching_faculty_" + rs2.getString("faculty_id") + " WHERE catalog_id='" + rs1.getString("catalog_id") + "'");
         if (!rs3.next()) {
             return "\nCourse Not Offered By You";
+        }
+
+        ResultSet rs6= con.createStatement().executeQuery("SELECT * from time_semester WHERE status='ONGOING-GS'");
+
+        if( !rs6.next()){
+            return "Grade Submission Not Ongoing";
         }
 
 
