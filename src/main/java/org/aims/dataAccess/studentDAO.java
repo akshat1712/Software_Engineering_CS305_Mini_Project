@@ -437,25 +437,22 @@ public class studentDAO {
         }
     }
 
-
-    public String[] getPreReqOffer(String courseCode) {
-        try {
-            String query = "select Q.pre_req from courses_offering P , courses_pre_req_offering Q where P.offering_id=Q.offering_id AND Q.offering_id=" + getOfferingId(courseCode);
-            System.out.println(query);
-            ResultSet rs = con.createStatement().executeQuery(query);
+    public String[] getPreReqOffer( String courseCode){
+        try{
+            ResultSet rs = con.createStatement().executeQuery("select Q.pre_req from courses_offering P , courses_pre_req_offering Q where P.offering_id=Q.offering_id AND P.course_code='" +courseCode+"'");
             int count = 0;
             while (rs.next())
                 count++;
             String[] preReq = new String[count];
-            rs = con.createStatement().executeQuery(query);
+            rs = con.createStatement().executeQuery("select Q.pre_req from courses_offering P , courses_pre_req_offering Q where P.offering_id=Q.offering_id AND P.course_code='" +courseCode+"'");
             int i = 0;
             while (rs.next()) {
-                preReq[i] = rs.getString("course_code");
+                preReq[i] = rs.getString("pre_req");
                 i++;
             }
             return preReq;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
             return null;
         }
     }
@@ -464,8 +461,11 @@ public class studentDAO {
     public boolean checkCourseTranscript(String email, String courseCode) {
         try {
             ResultSet rs = con.createStatement().executeQuery("SELECT * FROM transcript_student_" + getStudentid(email) + " WHERE catalog_id='" + getCatalogid(courseCode) + "'");
-            if (rs.next() & rs.getInt("grade") >= 4)
-                return true;
+            if (rs.next() ){
+                if( rs.getInt("grade") >=4)
+                    return true;
+                return false;
+            }
             else
                 return false;
         } catch (SQLException e) {
@@ -489,10 +489,31 @@ public class studentDAO {
         }
     }
 
-    public static void main(String[] args) {
-        studentDAO s = new studentDAO();
-        String [] preReq = s.getPreReqOffer("CS301");
-        for(int i=0;i<preReq.length;i++)
-            System.out.println(preReq[i]);
+
+    public int getGradeCourse(String email, String courseCode){
+        try{
+            ResultSet rs = con.createStatement().executeQuery("SELECT grade FROM transcript_student_" + getStudentid(email) + " WHERE catalog_id='" + getCatalogid(courseCode) + "'");
+            if (rs.next())
+                return rs.getInt("grade");
+            else
+                return -1;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return -2;
+        }
     }
+
+    public int getReqGradeOffer(String CourseCode,String PreReqcourseCode){
+        try{
+            ResultSet rs = con.createStatement().executeQuery("SELECT grade FROM courses_pre_req_offering WHERE pre_req='" + PreReqcourseCode + "' AND offering_id='" + getOfferingId(CourseCode) + "'");
+            if (rs.next())
+                return rs.getInt("grade");
+            else
+                return -1;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return -2;
+        }
+    }
+
 }

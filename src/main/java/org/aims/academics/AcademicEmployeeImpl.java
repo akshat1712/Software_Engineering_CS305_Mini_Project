@@ -1,5 +1,7 @@
 package org.aims.academics;
 
+import org.aims.dataAccess.academicDAO;
+
 import org.aims.dataAccess.userDAL;
 import org.postgresql.util.PSQLException;
 
@@ -24,6 +26,8 @@ public class AcademicEmployeeImpl implements userDAL {
     private final String username = "postgres";
     private final String databasePassword = "2020csb1068";
 
+    private final academicDAO academicDAO = new academicDAO();
+
     public AcademicEmployeeImpl(String Email, String Password) throws SQLException {
         this.email = Email;
         this.password = Password;
@@ -32,79 +36,56 @@ public class AcademicEmployeeImpl implements userDAL {
 
 
     public boolean login() {
-        try {
-            ResultSet rs1 = con.createStatement().executeQuery("SELECT * FROM passwords WHERE email='" + email + "' AND password='" + password + "' AND role='ACAD_STAFF'");
-            if (rs1.next()) {
-                SimpleDateFormat DateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                Date date = new Date();
-                con.createStatement().execute("INSERT INTO login_logs (\"email\",\"login_time\",\"logout_time\") VALUES ('" + email + "','" + DateTime.format(date) + "','2000-01-01 00:00:00');");
-                return true;
-            }
+        if (!email.matches("^[a-zA-Z0-9+_.-]+@iitrpr.ac.in"))
             return false;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
 
-    public String logout() throws SQLException {
-        SimpleDateFormat DateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = new Date();
-        con.createStatement().execute("UPDATE login_logs SET logout_time='" + DateTime.format(date) + "' WHERE email='" + email + "' AND logout_time='2000-01-01 00:00:00';");
-        return "Logged Out Successfully\n";
-    }
+        if (academicDAO.login(email, password)) {
+            academicDAO.loginLogs(email);
+            return true;
+        } else
+            return false;
+    } //DONE
+
+    public String logout() {
+        academicDAO.logoutLogs(email);
+        return "LOGGED OUT SUCCESSFULLY";
+    } //DONE
+
 
     public String addCourseInCatalog(String courseCode, String courseName, String department,
                                      int lectures, int tutorial, int practicals, int self_study, double credits,
-                                     String[] prerequisite) throws PSQLException,SQLException {
+                                     String[] prerequisite) {
+
+        if (academicDAO.checkCourseCatalog(courseCode))
+            return "Course Already Exists";
 
         for (String s : prerequisite) {
             if (s.equals(courseCode))
                 continue;
-
-            String query = "SELECT * FROM courses_catalog WHERE course_code='" + s + "'";
-            System.out.println(query);
-            ResultSet rs1 = con.createStatement().executeQuery("SELECT * FROM courses_catalog WHERE course_code='" + s + "'");
-            if (!rs1.next()) {
+            if (!academicDAO.checkCourseCatalog(s))
                 return "Prerequisite Course Does Not Exist";
-            }
         }
-        ResultSet rs2 = con.createStatement().executeQuery("SELECT dept_id FROM departments WHERE name='" + department + "'");
-        if (!rs2.next()) {
+
+        if (academicDAO.getdepartmentid(department) == -1)
             return "Department Does Not Exist";
-        }
 
 
-        con.createStatement().executeQuery("SELECT INSERT_COURSE_CATALOG('" + courseName + "','" + courseCode + "','" + rs2.getString("dept_id") + "'," + lectures + "," + tutorial + "," + practicals + "," + self_study + "," + credits + ")");
-
-        ResultSet rs3 = con.createStatement().executeQuery("SELECT MAX(catalog_id) as id FROM courses_catalog;");
-
-        if (!rs3.next()) {
-            return "Course Not added Successfully";
-        }
+        academicDAO.insertCourseCatalog(courseCode, courseName, department, lectures, tutorial, practicals, self_study, credits);
 
         for (String s : prerequisite) {
             if (s.equals(courseCode))
                 continue;
-            con.createStatement().execute("INSERT INTO courses_pre_req (\"catalog_id\", \"pre_req\") VALUES ('" + rs3.getString("id") + "','" + s + "')");
+            academicDAO.insertCoursePre(courseCode, s);
         }
         return "COURSE ADDED IN CATALOG SUCCESSFULLY\n";
-    }
+    } //DONE
 
-    public String createCurriculum(int batch, String[] courses, String[] credits, String Department) throws PSQLException,SQLException {
+    public String createCurriculum(int batch, String[] courses, String[] credits, String Department) throws PSQLException, SQLException {
 
-        ResultSet rs1 = con.createStatement().executeQuery("SELECT * FROM batch WHERE batch=" + batch + "");
-        if (!rs1.next()) {
-            ResultSet rs2 = con.createStatement().executeQuery("SELECT BATCH_TABLE_CREATION(" + batch + ")");
-            if (!rs2.next()) {
-                return "Batch Not Created";
-            }
-        }
+        academicDAO.createbatch(batch);
 
-        ResultSet rs3 = con.createStatement().executeQuery("SELECT dept_id FROM departments WHERE name='" + Department + "'");
-        if (!rs3.next()) {
+        if (academicDAO.getdepartmentid(Department) == -1)
             return "Department Does Not Exist";
-        }
 
         for (String s : credits) {
             String[] split = s.split(" ");
@@ -116,135 +97,86 @@ public class AcademicEmployeeImpl implements userDAL {
 
         for (String s : courses) {
             String[] split = s.split(" ");
-            ResultSet rs4 = con.createStatement().executeQuery("SELECT catalog_id FROM courses_catalog WHERE course_code='" + split[0] + "'");
-            if (!rs4.next()) {
-                return "Course Does Not Exist " + split[0];
-            }
 
-            ResultSet rs5 = con.createStatement().executeQuery("SELECT * FROM course_types WHERE type_alias='" + split[1] + "'");
-            if (!rs5.next()) {
+            if (!academicDAO.checkCourseCatalog(split[0]))
+                return "Course Does Not Exist in Catalog " + split[0];
+
+            if (!academicDAO.checkCourseTypes(split[1]))
                 return "Invalid Course Type " + split[1];
-            }
-
-            String query = "INSERT INTO batch_curriculum_" + batch + " (\"department_id\",\"catalog_id\",\"type\") VALUES('" + rs3.getString("dept_id") + "','" + rs4.getString("catalog_id") + "','" + split[1] + "')";
-//            System.out.println(query);
-            con.createStatement().execute(query);
-
         }
 
+        for (String s : courses) {
+            String[] split = s.split(" ");
+            String query = "INSERT INTO batch_curriculum_" + batch + " (\"department_id\",\"catalog_id\",\"type\") VALUES('" + academicDAO.getdepartmentid(Department) + "','" + academicDAO.getCatalogid(split[0]) + "','" + split[1] + "')";
+
+            con.createStatement().execute(query);
+        }
         for (String s : credits) {
             String[] split = s.split(" ");
-            ResultSet rs4 = con.createStatement().executeQuery("SELECT * FROM course_types WHERE type_alias='" + split[0] + "'");
-            if (!rs4.next()) {
-                return "Invalid Course Type " + split[0];
-            }
-
-            String query = "INSERT INTO batch_credits_" + batch + " (\"department_id\",\"type\",\"credits\") VALUES('" + rs3.getString("dept_id") + "','" + split[0] + "','" + split[1] + "')";
-//            System.out.println(query);
+            String query = "INSERT INTO batch_credits_" + batch + " (\"department_id\",\"type\",\"credits\") VALUES('" + academicDAO.getdepartmentid(Department) + "','" + split[0] + "','" + split[1] + "')";
             con.createStatement().execute(query);
         }
-
-
         return "Curriculum Created Successfully\n";
 
-    }
+    } // DONE
 
-    public String startSemester(int Year, String Semester) throws PSQLException,SQLException {
-        ResultSet rs1 = con.createStatement().executeQuery("SELECT * FROM time_semester WHERE status!='ENDED'");
-        ResultSet rs2 = con.createStatement().executeQuery("SELECT * FROM time_semester WHERE year=" + Year + " AND semester='" + Semester + "'");
-        if (rs1.next()) {
+    public String startSemester(int Year, String Semester) {
+
+        if (academicDAO.checkSemesterStatus("ONGOING-GS") || academicDAO.checkSemesterStatus("ONGOING-CO"))
             return "A Semester Already Ongoing\n";
-        } else if (rs2.next()) {
-            return "This is not valid semester\n";
-        } else {
-            con.createStatement().executeUpdate("INSERT INTO time_semester VALUES ('" + Semester + "','" + Year + "','ONGOING-CO')");
-            return "Semester Started\n";
-        }
-    }
 
-    public String endSemester() throws PSQLException,SQLException {
-        ResultSet rs1 = con.createStatement().executeQuery("SELECT * FROM time_semester WHERE status='ONGOING-GS'");
-        if (!rs1.next()) {
-            return "\nGrade Submission Not being done\n";
-        }
+        if (academicDAO.checkSemesterValidity(Semester, Year))
+            return "Semester Already Exists\n";
 
-        ResultSet rs2 = con.createStatement().executeQuery("SELECT student_id,entry_number FROM students");
+        academicDAO.newSemester(Semester, Year);
+        return "Semester Started Successfully\n";
+    } // DONE
 
-        while (rs2.next()) {
-            String id = rs2.getString("student_id");
-            ResultSet rs3 = con.createStatement().executeQuery("SELECT * FROM courses_enrolled_student_" + id);
-            while (rs3.next()) {
-                String grade = rs3.getString("grade");
-                if (grade == null) {
-                    return "\n Grade Not submitted for the student " + rs2.getString("entry_number");
-                }
-            }
+    public String endSemester() throws PSQLException, SQLException {
+
+        if( academicDAO.checkSemesterStatus("ONGOING-CO"))
+            return "Grade Submission Not started\n";
+
+        String[] students=academicDAO.getStudentids();
+
+        for( String s: students){
+            if( academicDAO.checkGradeSubmission(s))
+                return "Grade Not Submitted for the student "+s;
         }
 
-
-        ResultSet rs4 = con.createStatement().executeQuery("SELECT student_id FROM students");
-        while (rs4.next()) {
-            String id = rs4.getString("student_id");
-            String query = "INSERT INTO transcript_student_" + id + " (\"catalog_id\",\"grade\",\"semester\",\"year\") SELECT catalog_id,grade," + rs1.getString("semester") + "," + rs1.getString("year") + " FROM courses_enrolled_student_" + id;
-            System.out.println(query);
-
-            con.createStatement().execute(query);
-            con.createStatement().execute("TRUNCATE TABLE courses_enrolled_student_" + id);
+        for( String s: students){
+            academicDAO.updateStudentTranscript(s);
         }
 
-        ResultSet rs5 = con.createStatement().executeQuery("SELECT faculty_id FROM faculties");
-        while (rs5.next()) {
-            String id = rs5.getString("faculty_id");
-            String query = "INSERT INTO transcript_faculty_" + id + " (\"catalog_id\",\"semester\",\"year\") SELECT catalog_id," + rs1.getString("semester") + "," + rs1.getString("year") + " FROM courses_teaching_faculty_" + id;
-            System.out.println(query);
+        String[] faculties=academicDAO.getfacultyids();
 
-            con.createStatement().execute(query);
-            con.createStatement().execute("TRUNCATE TABLE courses_teaching_faculty_" + id);
+        for( String s: faculties){
+            academicDAO.updateFacultyTranscript(s);
         }
 
         con.createStatement().executeUpdate("UPDATE time_semester SET status='ENDED' WHERE status!='ENDED'");
         con.createStatement().execute("TRUNCATE TABLE courses_offering CASCADE");
 
-
         return "Semester Ended\n";
-    }
+    } //DONE
 
-    public String[] viewGrades(String email) throws PSQLException,SQLException {
-        ResultSet rs1 = con.createStatement().executeQuery("SELECT student_id FROM students WHERE email='" + email + "'");
-        if (rs1.next()) {
-            String id = rs1.getString("student_id");
-            ResultSet rs2 = con.createStatement().executeQuery("select count(*) from transcript_student_" + id + " as T ,courses_catalog C WHERE T.catalog_id=C.catalog_id;");
-            int numGrades = 0;
+    public String[] viewGrades(String email) {
+        return academicDAO.viewGrades(email);
+    } // DONE
 
-            if (rs2.next()) {
-                numGrades = rs2.getInt("count");
-            }
-
-            String[] grades = new String[numGrades];
-
-            rs2 = con.createStatement().executeQuery("select course_code,grade,semester,year from transcript_student_" + id + " as T ,courses_catalog C WHERE T.catalog_id=C.catalog_id;");
-
-            while (rs2.next()) {
-                grades[rs2.getRow() - 1] = "Course Code: " + rs2.getString("course_code") + " || Grade: " + rs2.getString("grade") + " || Semester: " + rs2.getString("semester") + " || Year: " + rs2.getString("year");
-            }
-
-            return grades;
-        } else {
-            return null;
+    public String changePassword(String oldPassword, String newPassword) {
+        if (newPassword.matches("[\\w]*\\s[\\w]*")) {
+            return "\nPassword Cannot Contain Spaces";
         }
-    }
 
-    public String changePassword(String oldPassword, String newPassword) throws SQLException {
-        ResultSet rs1 = con.createStatement().executeQuery("SELECT * FROM passwords WHERE email='" + email + "' AND password='" + oldPassword + "' AND role='ACAD_STAFF'");
-        if (rs1.next()) {
-            con.createStatement().execute("UPDATE passwords SET password='" + newPassword + "' WHERE email='" + email + "'");
-            return "Password Changed to New\n";
-        } else {
-            return "Incorrect Old Password\n";
-        }
-    }
+        if (academicDAO.checkPassword(email, oldPassword)) {
+            academicDAO.changePassword(email, newPassword);
+            return "\nPassword Changed Successfully";
+        } else
+            return "\nIncorrect Old Password";
+    } // DONE
 
-    public Map<String, String[]> generateReport() throws PSQLException,SQLException {
+    public Map<String, String[]> generateReport() throws PSQLException, SQLException {
 
         ResultSet rs1 = con.createStatement().executeQuery("SELECT * FROM students");
 
@@ -255,21 +187,20 @@ public class AcademicEmployeeImpl implements userDAL {
             transcriptAllStudents.put(rs1.getString("entry_number"), grades);
         }
         return transcriptAllStudents;
-    }
+    } // No Need for DAO
 
-    public String createCourseTypes(String courseType, String alias) throws PSQLException,SQLException{
+    public String createCourseTypes(String courseType, String alias) {
         try {
             String query = "INSERT INTO course_types VALUES ('" + courseType + "','" + alias + "')";
-            System.out.println(query);
             con.createStatement().execute("INSERT INTO course_types VALUES ('" + courseType + "','" + alias + "')");
             return "Course Type Created Successfully\n";
         } catch (SQLException e) {
             return "Course Type Already Exists\n";
         }
-    }
+    } // No Need for DAO
 
 
-    public String checkGraduation(String email) throws PSQLException,SQLException {
+    public String checkGraduation(String email) throws PSQLException, SQLException {
         ResultSet rs1 = con.createStatement().executeQuery("SELECT student_id,batch,dept_id FROM students WHERE email='" + email + "'");
         if (!rs1.next()) {
             return "\nStudent Not Found";
@@ -336,18 +267,14 @@ public class AcademicEmployeeImpl implements userDAL {
         }
 
         return "YES";
-    }
+    }  // HAVE TO BE CONVERTED TO DAO
 
 
-    public String startGradeSubmission() throws PSQLException, SQLException{
-        ResultSet rs1=con.createStatement().executeQuery("SELECT * FROM time_semester WHERE status='ONGOING-CO'");
-        if( !rs1.next() ){
-            return "NO ONGOING CO SEMESTER";
-        }
-        else{
-            con.createStatement().execute("UPDATE time_semester SET status='ONGOING-GS' WHERE status='ONGOING-CO'");
-            return "Grade Submission Started\n";
-        }
-    }
+    public String startGradeSubmission() {
+        if (!academicDAO.checkSemesterStatus("ONGOING-CO"))
+            return "Cannot Start Grade Submission";
+        academicDAO.updateSemesterStatus("ONGOING-CO", "ONGOING-GS");
+        return "Grade Submission Started";
+    } //DONE
 }
 

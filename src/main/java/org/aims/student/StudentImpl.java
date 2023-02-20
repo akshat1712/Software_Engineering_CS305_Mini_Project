@@ -60,9 +60,9 @@ public class StudentImpl implements userDAL {
             return "\nIncorrect Old Password";
     }
 
-    public String registerCourse(String courseCode) throws PSQLException, SQLException {
+    public String registerCourse(String courseCode)  {
 
-        if (studentDAO.checkCourseOffering(courseCode)) {
+        if (!studentDAO.checkCourseOffering(courseCode)) {
             return "\nCourse Not Offered";
         }
 
@@ -70,13 +70,15 @@ public class StudentImpl implements userDAL {
             return "\nCourse Already Enrolled";
         }
 
-        if (studentDAO.checkSemesterStatus("ONGOING-CO")) {
+        if (!studentDAO.checkSemesterStatus("ONGOING-CO")) {
             return "\nSemester Not Started";
         }
 
-        double credits_enrolled_ = studentDAO.creditsEnrolled(email);
+        double credits_enrolled = studentDAO.creditsEnrolled(email);
         double credits_courses = studentDAO.getCreditsCourse(courseCode);
 
+        System.out.println(credits_enrolled);
+        System.out.println(credits_courses);
 
         String semester = studentDAO.getSemester();
         int year = studentDAO.getYear();
@@ -85,16 +87,19 @@ public class StudentImpl implements userDAL {
         if (semester.equals("2")) {
             prevSemesterCredits = studentDAO.creditsEarnedSemesterYear(email, "1", year) + studentDAO.creditsEarnedSemesterYear(email, "2", year - 1);
         } else {
-            prevSemesterCredits = studentDAO.creditsEarnedSemesterYear(email, "2", year - 1) + studentDAO.creditsEarnedSemesterYear(email, "2", year - 1);
+            prevSemesterCredits = studentDAO.creditsEarnedSemesterYear(email, "2", year - 1) + studentDAO.creditsEarnedSemesterYear(email, "1", year - 1);
         }
 
+        System.out.println(prevSemesterCredits);
 
-        if (credits_courses + credits_enrolled_ > 0.625 * (prevSemesterCredits))
+        if (credits_courses + credits_enrolled > 0.625 * (prevSemesterCredits))
             return "\nCredits Exceeded";
 
         double CGPA = computeCGPA();
 
         double CGPA_pre_req = studentDAO.getCGPAcriteria(courseCode);
+
+        System.out.println(CGPA_pre_req);
 
         if (CGPA_pre_req > CGPA)
             return "\nCGPA Criteria Not Satisfied";
@@ -116,21 +121,21 @@ public class StudentImpl implements userDAL {
             }
         }
 
-//        ResultSet rs7 = con.createStatement().executeQuery("SELECT * FROM courses_pre_req_offering WHERE offering_id=" + rs1.getString("offering_id"));
-//        while (rs7.next()) {
-//            String preReq = rs7.getString("pre_req");
-//            String preReqGrade = rs7.getString("grade");
-//            ResultSet rs8 = con.createStatement().executeQuery("SELECT * FROM courses_catalog WHERE course_code='" + preReq + "'");
-//            if (rs8.next()) {
-//                String query = "Select * from transcript_student_" + rs2.getString("student_id") + " P where P.grade>='" + preReqGrade + "' AND P.catalog_id=" + rs8.getString("catalog_id");
-////                System.out.println(query);
-//                ResultSet rs9 = con.createStatement().executeQuery(query);
-//                if (!rs9.next()) {
-//                    return "\nYou Do not satify the Faculty prerequisite";
-//                }
-//            }
-//        }
-//
+        preReq = studentDAO.getPreReqOffer(courseCode);
+
+        for( String s:preReq){
+            if(!studentDAO.checkCourseTranscript(email,s)){
+                return "\nYou Do not satify the Offer prerequisite";
+            }
+
+            int grade1=studentDAO.getGradeCourse(email,s);
+            int grade2=studentDAO.getReqGradeOffer(courseCode,s);
+
+            if( grade1<grade2)
+                return "\nYou Do not satify the Offer prerequisite";
+        }
+
+
         if (studentDAO.insertCourseEnrollement(email, courseCode))
             return "\nCourse Registered";
         else

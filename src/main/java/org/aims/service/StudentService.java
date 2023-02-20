@@ -134,12 +134,11 @@ public class StudentService implements UserService {
         try{
             String[] response = Student.viewCoursesEnrolled();
             System.out.println("Enrolled Courses");
-            System.out.println("=====================================");
             for (String s : response){
                 System.out.println(s);
             }
-            System.out.println("Courses Offering");
             System.out.println("=====================================");
+            System.out.println("Courses Offering");
             response = Student.viewCoursesOffered();
             for (String s : response){
                 System.out.println(s);

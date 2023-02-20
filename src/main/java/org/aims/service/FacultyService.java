@@ -84,7 +84,7 @@ public class FacultyService implements UserService {
             }
         }
         if(n>0)
-            System.out.println("Enter prerequisites with grades separated from other prerequisites by ,");
+            System.out.println("Enter prerequisites with grades separated by ,");
         String[] prerequisites = new String[n];
 
         sc.nextLine();
@@ -124,6 +124,10 @@ public class FacultyService implements UserService {
         String email = sc.nextLine();
         try {
             String[] response = Faculty.viewGrades(email);
+            if(response==null){
+                System.out.println("No grades available");
+                return;
+            }
             for (String s : response) {
                 System.out.println(s);
             }

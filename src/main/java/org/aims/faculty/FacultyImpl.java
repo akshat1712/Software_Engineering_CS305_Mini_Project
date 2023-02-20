@@ -51,74 +51,51 @@ public class FacultyImpl implements userDAL {
         facultyDAO.logoutLogs(email);
     }
 
-    public String offerCourse(String courseCode, double cgpaCutoff, String[] prerequisites) throws PSQLException,SQLException {
-        ResultSet rs1 = con.createStatement().executeQuery("SELECT catalog_id FROM courses_catalog WHERE course_code='" + courseCode + "'");
-        if (!rs1.next()) {
+    public String offerCourse(String courseCode, double cgpaCutoff, String[] prerequisites) {
+
+        if( !facultyDAO.checkCourseCatalog(courseCode))
             return "\nCourse Does Not Exist";
-        }
-        ResultSet rs2 = con.createStatement().executeQuery("SELECT * FROM courses_offering WHERE course_code='" + courseCode + "'");
-        if (rs2.next()) {
+
+        if( facultyDAO.checkCourseOffering(courseCode))
             return "\nCourse Already Offered";
-        }
 
-        ResultSet rs3 = con.createStatement().executeQuery("SELECT * from time_semester WHERE status='ONGOING-CO'");
+        if( !facultyDAO.checkSemesterStatus("ONGOING-CO"))
+            return "\nCourse Offering is not Available";
 
-        if (!rs3.next()) {
-            return "\nSemester Not Started";
-        }
-
-        ResultSet rs4 = con.createStatement().executeQuery("SELECT faculty_id FROM faculties WHERE email='" + email + "'");
-
-        if (!rs4.next()) {
-            return "\nFaculty Does Not Exist";
-        }
+        if( (cgpaCutoff < 0 || cgpaCutoff > 10) && cgpaCutoff != -1 )
+            return "\nInvalid CGPA Cutoff";
 
         for (String s : prerequisites) {
-            String[] split1 = s.split(",");
-            for (String s1 : split1) {
-                String[] split2 = s1.split(" ");
-                ResultSet rs7 = con.createStatement().executeQuery("SELECT * FROM courses_catalog WHERE course_code='" + split2[0] + "'");
-                if (!rs7.next()) {
-                    return "\nPrerequisite Course Does Not Exist";
-                }
-                if (Integer.parseInt(split2[1]) < 0 || Integer.parseInt(split2[1]) > 10) {
-                    return "\nInvalid Grade";
-                }
+            String[] split = s.split(",");
+            if (!facultyDAO.checkCourseCatalog(split[0])) {
+                return "\nPrerequisite Course Does Not Exist";
+            }
+            if (Integer.parseInt(split[1]) < 0 || Integer.parseInt(split[1]) > 10) {
+                return "\nInvalid Grade";
             }
         }
 
-        ResultSet rs5 = con.createStatement().executeQuery("SELECT INSERT_COURSE_OFFERED('" + rs1.getString("catalog_id") + "','" + rs4.getString("faculty_id") + "','" + courseCode + "'," + cgpaCutoff + ")");
-        ResultSet rs6 = con.createStatement().executeQuery("SELECT * FROM courses_offering WHERE course_code='" + courseCode + "'");
-
-        if (!rs5.next() || !rs6.next()) {
-            return "Error in Offering the Course";
-        }
-
+        facultyDAO.insertCourse(email,courseCode,cgpaCutoff);
 
         int count = 0;
         for (String s : prerequisites) {
-            String[] split1 = s.split(",");
+            String[] split = s.split(",");
             count += 1;
-            for (String s1 : split1) {
-                String[] split2 = s1.split(" ");
-                String query = "INSERT INTO courses_pre_req_offering (\"offering_id\",\"pre_req\",\"grade\",\"type\") VALUES ('" + rs6.getString("offering_id") + "','" + split2[0] + "','" + split2[1] + "','" + count + "')";
-                con.createStatement().execute(query);
-            }
+            facultyDAO.insertCoursePreReq(courseCode,split[0],split[1],count);
         }
 
-
-        con.createStatement().execute("INSERT INTO courses_teaching_faculty_" + rs4.getString("faculty_id") + " VALUES('" + rs1.getString("catalog_id") + "')");
+        facultyDAO.insertCourseFaculty(email,courseCode);
 
         return "\nCourse Offered Successfully";
     }
 
-    public String takeBackCourse(String courseCode) throws PSQLException,SQLException {
+    public String takeBackCourse(String courseCode)  {
 
-        if( facultyDAO.checkCourseCatalog(courseCode)){
+        if( !facultyDAO.checkCourseCatalog(courseCode)){
             return "\nCourse Does Not Exist";
         }
 
-        if( facultyDAO.checkCourseOffering(courseCode)){
+        if( !facultyDAO.checkCourseOffering(courseCode)){
             return "\nCourse Not Offered";
         }
 
@@ -132,15 +109,21 @@ public class FacultyImpl implements userDAL {
 
         facultyDAO.deleteCourseOffering(email,courseCode);
 
+        String [] studentEmail= facultyDAO.getStudentEmail();
 
-            return "\nCourse Taken Back Successfully";
+        for(String s:studentEmail){
+            facultyDAO.deleteCourseEnrollement(s,courseCode);
+        }
+
+
+        return "\nCourse Taken Back Successfully";
     }
 
-    public String[] viewGrades(String email) throws PSQLException,SQLException {
+    public String[] viewGrades(String email)  {
         return facultyDAO.viewGrades(email);
     }
 
-    public String changePassword(String oldPassword, String newPassword) throws PSQLException,SQLException {
+    public String changePassword(String oldPassword, String newPassword)  {
         if( newPassword.matches("[\\w]*\\s[\\w]*")){
             return "\nPassword Cannot Contain Spaces";
         }
@@ -153,27 +136,17 @@ public class FacultyImpl implements userDAL {
             return "\nIncorrect Old Password";
     }
 
-    public String updateGrades(String path, String courseCode) throws PSQLException,SQLException {
+    public String updateGrades(String path, String courseCode)  {
 
-        ResultSet rs1 = con.createStatement().executeQuery(("SELECT catalog_id FROM courses_offering WHERE course_code='" + courseCode + "'"));
-        if (!rs1.next()) {
+        if( !facultyDAO.checkCourseOffering(courseCode)){
             return "\nCourse Not Offered";
         }
 
-        ResultSet rs2 = con.createStatement().executeQuery("SELECT faculty_id FROM faculties WHERE email='" + email + "'");
-        if (!rs2.next()) {
-            return "\nFaculty Does Not Exist";
-        }
+        if( facultyDAO.getfacultyidEmail(email)!=facultyDAO.getfacultyidCourse(courseCode))
+            return "\nYou are not the Faculty of this Course";
 
-        ResultSet rs3 = con.createStatement().executeQuery("SELECT * from courses_teaching_faculty_" + rs2.getString("faculty_id") + " WHERE catalog_id='" + rs1.getString("catalog_id") + "'");
-        if (!rs3.next()) {
-            return "\nCourse Not Offered By You";
-        }
-
-        ResultSet rs6= con.createStatement().executeQuery("SELECT * from time_semester WHERE status='ONGOING-GS'");
-
-        if( !rs6.next()){
-            return "Grade Submission Not Ongoing";
+        if(!facultyDAO.checkSemesterStatus("ONGOING-GS")){
+            return "\nCourse Offering is not Open for Grading";
         }
 
 
@@ -189,15 +162,8 @@ public class FacultyImpl implements userDAL {
                     return "\nInvalid Grade " + data[1] + " Present";
                 }
 
-                ResultSet rs4 = con.createStatement().executeQuery("SELECT student_id FROM students WHERE entry_number='" + data[0] + "'");
-                if (rs4.next()) {
-                    String query = "SELECT * FROM courses_enrolled_student_" + rs4.getString("student_id") + " WHERE catalog_id=" + rs1.getString("catalog_id") + ";";
-                    ResultSet rs5 = con.createStatement().executeQuery(query);
-                    if (!rs5.next()) {
-                        return "\nStudent " + data[0] + " Not Enrolled In Course";
-                    }
-                } else {
-                    return "\nInvalid Entry Number Present";
+                if( !facultyDAO.checkCourseEnrollment(data[0],courseCode)){
+                    return "\nStudent Not Enrolled in the Course";
                 }
                 line = br.readLine();
             }
@@ -215,10 +181,7 @@ public class FacultyImpl implements userDAL {
 
             while (line != null) {
                 String[] data = line.split(",");
-                ResultSet rs4 = con.createStatement().executeQuery("SELECT student_id FROM students WHERE entry_number='" + data[0] + "'");
-                if (rs4.next()) {
-                    con.createStatement().execute("UPDATE courses_enrolled_student_" + rs4.getString("student_id") + " SET grade='" + data[1] + "' WHERE catalog_id='" + rs1.getString("catalog_id") + "'");
-                }
+                facultyDAO.updateGrade(data[0],courseCode,data[1]);
                 line = br.readLine();
             }
             br.close();

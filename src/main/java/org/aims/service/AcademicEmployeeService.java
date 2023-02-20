@@ -135,7 +135,7 @@ public class AcademicEmployeeService implements UserService {
         try {
             String response = AcademicEmployee.startSemester(semesterYear, semesterNumber);
             System.out.println(response);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error in Starting the semester\n");
         }

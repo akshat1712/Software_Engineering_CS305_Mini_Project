@@ -110,7 +110,6 @@ public class facultyDAO {
             System.out.println(e);
             return -1;
         }
-
     }
     //Checked
     public String[] viewGrades(String email) {
@@ -202,7 +201,6 @@ public class facultyDAO {
         }
     }
 
-
     // Checked
     public int getOfferingId(String courseCode) {
         try {
@@ -242,12 +240,110 @@ public class facultyDAO {
             return false;
         }
     }
-    public static void main(String[] args) {
-        facultyDAO s = new facultyDAO();
 
-        System.out.println(s.getfacultyidEmail("nitin@iitrpr.ac.in"));
+    public String[] getStudentEmail(){
+        try {
+            ResultSet rs = con.createStatement().executeQuery("SELECT email FROM students");
+            int count=0;
+            while(rs.next()){
+                count++;
+            }
+            String[] studentid = new String[count];
 
+            rs = con.createStatement().executeQuery("SELECT email FROM students");
+            int i = 0;
+            while (rs.next()) {
+                studentid[i] = rs.getString("email");
+                i++;
+            }
+            return studentid;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return null;
+        }
     }
+
+    public boolean deleteCourseEnrollement(String email, String courseCode) {
+        try {
+            con.createStatement().execute("DELETE FROM courses_enrolled_student_" + getStudentid(email) + " WHERE catalog_id='" + getCatalogid(courseCode) + "'");
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return false;
+        }
+    }
+
+    public boolean checkCourseTranscript(String email, String courseCode) {
+        try {
+            ResultSet rs = con.createStatement().executeQuery("SELECT * FROM transcript_student_" + getStudentid(email) + " WHERE catalog_id='" + getCatalogid(courseCode) + "'");
+            if (rs.next() ){
+                if( rs.getInt("grade") >=4)
+                    return true;
+                return false;
+            }
+            else
+                return false;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return false;
+        }
+    }
+
+    public boolean checkCourseEnrollment(String email, String CourseCode) {
+        try {
+            ResultSet rs = con.createStatement().executeQuery("SELECT * FROM courses_enrolled_student_" + getStudentid(email) + " WHERE catalog_id=" + getCatalogid(CourseCode));
+            if (rs.next())
+                return true;
+            else
+                return false;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return false;
+        }
+    }
+
+    public boolean updateGrade(String email, String courseCode, String grade) {
+        try {
+            con.createStatement().execute("UPDATE transcript_student_" + getStudentid(email) + " SET grade='" + grade + "' WHERE catalog_id='" + getCatalogid(courseCode) + "'");
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return false;
+        }
+    }
+
+    public boolean insertCourse(String email, String courseCode, double CGPA) {
+        try {
+            con.createStatement().execute("SELECT INSERT_COURSE_OFFERED('" + getCatalogid(courseCode) + "','" + getfacultyidEmail(email) + "','" + courseCode + "','" + CGPA + "')");
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return false;
+        }
+    }
+
+    public boolean insertCoursePreReq(String courseCode, String preReq,String grade,int type) {
+        try {
+            String query = "INSERT INTO courses_pre_req_offering (\"offering_id\",\"pre_req\",\"grade\",\"type\") VALUES ('" + getOfferingId(courseCode) + "','" + preReq + "','" + grade + "','" + type + "')";
+            con.createStatement().execute(query);
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return false;
+        }
+    }
+
+    public boolean insertCourseFaculty(String email, String courseCode) {
+        try {
+            con.createStatement().execute("INSERT INTO courses_teaching_faculty_" + getfacultyidEmail(email) + " (\"catalog_id\") VALUES ('" + getCatalogid(courseCode) + "')");
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return false;
+        }
+    }
+
+
 
 }
 
