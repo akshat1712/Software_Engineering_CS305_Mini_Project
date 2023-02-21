@@ -9,11 +9,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
+
 
 public class AcademicEmployeeImpl implements userDAL {
 
@@ -70,7 +68,7 @@ public class AcademicEmployeeImpl implements userDAL {
             return "Department Does Not Exist";
 
 
-        academicDAO.insertCourseCatalog(courseCode, courseName, department, lectures, tutorial, practicals, self_study, credits);
+        academicDAO.insertCourseCatalog(courseName, courseCode, department, lectures, tutorial, practicals, self_study, credits);
 
         for (String s : prerequisite) {
             if (s.equals(courseCode))
@@ -132,32 +130,35 @@ public class AcademicEmployeeImpl implements userDAL {
         return "Semester Started Successfully\n";
     } // DONE
 
-    public String endSemester() throws PSQLException, SQLException {
-
-        if( academicDAO.checkSemesterStatus("ONGOING-CO"))
+    public String endSemester() {
+        if (academicDAO.checkSemesterStatus("ONGOING-CO"))
             return "Grade Submission Not started\n";
 
-        String[] students=academicDAO.getStudentids();
+        String[] students = academicDAO.getStudentids();
 
-        for( String s: students){
-            if( academicDAO.checkGradeSubmission(s))
-                return "Grade Not Submitted for the student "+s;
+        for (String s : students) {
+            if (!academicDAO.checkGradeSubmission(s))
+                return "Grade Not Submitted for the student ";
         }
 
-        for( String s: students){
+        for (String s : students) {
             academicDAO.updateStudentTranscript(s);
         }
 
-        String[] faculties=academicDAO.getfacultyids();
+        String[] faculties = academicDAO.getfacultyids();
 
-        for( String s: faculties){
+        for (String s : faculties) {
             academicDAO.updateFacultyTranscript(s);
         }
+        try {
+            con.createStatement().execute("UPDATE time_semester SET status='ENDED' WHERE status!='ENDED'");
+            con.createStatement().execute("TRUNCATE TABLE courses_offering CASCADE");
+            return "Semester Ended\n";
+        } catch (SQLException e) {
+            return "Unable to end the semester";
 
-        con.createStatement().executeUpdate("UPDATE time_semester SET status='ENDED' WHERE status!='ENDED'");
-        con.createStatement().execute("TRUNCATE TABLE courses_offering CASCADE");
+        }
 
-        return "Semester Ended\n";
     } //DONE
 
     public String[] viewGrades(String email) {
@@ -180,7 +181,7 @@ public class AcademicEmployeeImpl implements userDAL {
 
         ResultSet rs1 = con.createStatement().executeQuery("SELECT * FROM students");
 
-        Map<String, String[]> transcriptAllStudents = new HashMap<String, String[]>();
+        Map<String, String[]> transcriptAllStudents = new HashMap<>();
 
         while (rs1.next()) {
             String[] grades = viewGrades(rs1.getString("email"));
@@ -191,7 +192,6 @@ public class AcademicEmployeeImpl implements userDAL {
 
     public String createCourseTypes(String courseType, String alias) {
         try {
-            String query = "INSERT INTO course_types VALUES ('" + courseType + "','" + alias + "')";
             con.createStatement().execute("INSERT INTO course_types VALUES ('" + courseType + "','" + alias + "')");
             return "Course Type Created Successfully\n";
         } catch (SQLException e) {
@@ -200,73 +200,29 @@ public class AcademicEmployeeImpl implements userDAL {
     } // No Need for DAO
 
 
-    public String checkGraduation(String email) throws PSQLException, SQLException {
-        ResultSet rs1 = con.createStatement().executeQuery("SELECT student_id,batch,dept_id FROM students WHERE email='" + email + "'");
-        if (!rs1.next()) {
-            return "\nStudent Not Found";
-        }
-        String query1 = "select course_code,Q.credits,type from transcript_student_" + rs1.getString("student_id") + " P, courses_catalog Q, batch_curriculum_" + rs1.getString("batch") + " R WHERE P.catalog_id=Q.catalog_id AND Q.catalog_id=R.catalog_id AND R.department_id=" + rs1.getString("dept_id");
-        String query2 = "SELECT * from transcript_student_" + rs1.getString("student_id") + ";";
+    public String checkGraduation(String email)  {
 
-        System.out.println(query1);
+        String[] courses_Curriculum = academicDAO.getCurriculumCourse(email);
 
-        ResultSet rs2 = con.createStatement().executeQuery(query1);
-        ResultSet rs3 = con.createStatement().executeQuery(query2);
-
-        int size1 = 0;
-        int size2 = 0;
-
-        while (rs2.next()) {
-            size1++;
-        }
-        while (rs3.next()) {
-            size2++;
+        for (String s : courses_Curriculum) {
+            if (!academicDAO.checkCourseTranscript(email, s))
+                return "Not all Courses Completed";
         }
 
-        if (size1 != size2) {
-            return "\nNot all courses of this students has been defined a type";
+        Map<String, Double> creditsTypeCount = academicDAO.getEnrolledCreditsType(email);
+
+        int credits_Open_Elective = 0;
+        for (Map.Entry<String, Double> entry : creditsTypeCount.entrySet()) {
+            if (entry.getValue() < academicDAO.getCreditsType(email, entry.getKey()))
+                return "Not Enough Credits of " + entry.getKey();
+            else
+                credits_Open_Elective += entry.getValue() - academicDAO.getCreditsType(email, entry.getKey());
         }
 
-        Map<String, Double> creditsTypeCount = new HashMap<String, Double>();
+        if (credits_Open_Elective < academicDAO.getCreditsType(email, "OE"))
+            return "Not Enough Credits of Open Elective";
 
-        ResultSet rs4 = con.createStatement().executeQuery(query1);
-
-        while (rs4.next()) {
-            if (creditsTypeCount.containsKey(rs4.getString("type"))) {
-                creditsTypeCount.put(rs4.getString("type"), creditsTypeCount.get(rs4.getString("type")) + rs4.getDouble("credits"));
-            } else {
-                creditsTypeCount.put(rs4.getString("type"), rs4.getDouble("credits"));
-            }
-        }
-
-
-        ResultSet rs5 = con.createStatement().executeQuery("SELECT * FROM batch_credits_" + rs1.getString("batch"));
-
-        Double total_credits = 0.0;
-        Double credits_without_open_elective = 0.0;
-        Double open_elective_required = 0.0;
-        while (rs5.next()) {
-            total_credits += rs5.getDouble("credits");
-            if (Objects.equals(rs5.getString("type"), "OE")) {
-                open_elective_required = rs5.getDouble("credits");
-                continue;
-            }
-            credits_without_open_elective += rs5.getDouble("credits");
-
-            if (creditsTypeCount.containsKey(rs5.getString("type"))) {
-                if (creditsTypeCount.get(rs5.getString("type")) < rs5.getDouble("credits")) {
-                    return "\nNot enough credits of type " + rs5.getString("type");
-                }
-            } else {
-                return "\nNot enough credits of type " + rs5.getString("type");
-            }
-        }
-
-        if (total_credits - credits_without_open_elective < open_elective_required) {
-            return "\nNot enough credits of type OE";
-        }
-
-        return "YES";
+        return "Student can Graduate";
     }  // HAVE TO BE CONVERTED TO DAO
 
 

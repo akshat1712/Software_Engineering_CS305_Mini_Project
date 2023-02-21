@@ -24,12 +24,8 @@ public class studentDAO {
     public boolean login(String email, String password) {
         try {
             ResultSet rs = con.createStatement().executeQuery("SELECT * FROM passwords WHERE email='" + email + "' AND password='" + password + "' AND role='STUDENT'");
-            if (rs.next())
-                return true;
-            else
-                return false;
+            return rs.next();
         } catch (SQLException e) {
-            System.out.println(e);
             return false;
         }
     }
@@ -42,7 +38,6 @@ public class studentDAO {
             con.createStatement().execute("INSERT INTO login_logs (\"email\",\"login_time\",\"logout_time\") VALUES ('" + email + "','" + DateTime.format(date) + "','2000-01-01 00:00:00');");
             return true;
         } catch (SQLException e) {
-            System.out.println(e);
             return false;
         }
     }
@@ -55,7 +50,6 @@ public class studentDAO {
             con.createStatement().execute("UPDATE login_logs SET logout_time='" + DateTime.format(date) + "' WHERE email='" + email + "' AND logout_time='2000-01-01 00:00:00';");
             return true;
         } catch (SQLException e) {
-            System.out.println(e);
             return false;
         }
     }
@@ -64,10 +58,7 @@ public class studentDAO {
     public boolean checkPassword(String email, String oldPassword) {
         try {
             ResultSet rs1 = con.createStatement().executeQuery("SELECT * FROM passwords WHERE email='" + email + "' AND password='" + oldPassword + "' AND role='STUDENT'");
-            if (rs1.next())
-                return true;
-            else
-                return false;
+            return rs1.next();
         } catch (SQLException e) {
             return false;
         }
@@ -79,7 +70,6 @@ public class studentDAO {
             con.createStatement().execute("UPDATE passwords SET password='" + newPassword + "' WHERE email='" + email + "'");
             return true;
         } catch (SQLException e) {
-            System.out.println(e);
             return false;
         }
     }
@@ -89,12 +79,8 @@ public class studentDAO {
     public boolean checkCourseOffering(String CourseCode) {
         try {
             ResultSet rs = con.createStatement().executeQuery("SELECT * FROM courses_offering WHERE course_code='" + CourseCode + "'");
-            if (rs.next())
-                return true;
-            else
-                return false;
+            return rs.next();
         } catch (SQLException e) {
-            System.out.println(e);
             return false;
         }
     }
@@ -108,7 +94,6 @@ public class studentDAO {
             else
                 return null;
         } catch (SQLException e) {
-            System.out.println(e);
             return null;
         }
     }
@@ -117,12 +102,8 @@ public class studentDAO {
     public boolean checkCourseEnrollment(String email, String CourseCode) {
         try {
             ResultSet rs = con.createStatement().executeQuery("SELECT * FROM courses_enrolled_student_" + getStudentid(email) + " WHERE catalog_id=" + getCatalogid(CourseCode));
-            if (rs.next())
-                return true;
-            else
-                return false;
+            return rs.next();
         } catch (SQLException e) {
-            System.out.println(e);
             return false;
         }
     }
@@ -131,12 +112,8 @@ public class studentDAO {
     public boolean checkSemesterStatus(String Status) {
         try {
             ResultSet rs = con.createStatement().executeQuery("SELECT * FROM time_semester WHERE status='" + Status + "'");
-            if (rs.next())
-                return true;
-            else
-                return false;
+            return rs.next();
         } catch (SQLException e) {
-            System.out.println(e);
             return false;
         }
     }
@@ -151,7 +128,6 @@ public class studentDAO {
             }
             return total_credits;
         } catch (SQLException e) {
-            System.out.println(e);
             return -1;
         }
     }
@@ -165,7 +141,6 @@ public class studentDAO {
             else
                 return -1;
         } catch (SQLException e) {
-            System.out.println(e);
             return -1;
         }
     }
@@ -179,7 +154,6 @@ public class studentDAO {
             else
                 return null;
         } catch (SQLException e) {
-            System.out.println(e);
             return null;
         }
     }
@@ -193,7 +167,6 @@ public class studentDAO {
             else
                 return -1;
         } catch (SQLException e) {
-            System.out.println(e);
             return -1;
         }
     }
@@ -208,7 +181,6 @@ public class studentDAO {
             }
             return total_credits;
         } catch (SQLException e) {
-            System.out.println(e);
             return -1;
         }
     }
@@ -229,7 +201,6 @@ public class studentDAO {
             return totalCredits;
 
         } catch (SQLException e) {
-            System.out.println(e);
             return -1;
         }
     }
@@ -250,7 +221,6 @@ public class studentDAO {
             }
             return totalGradePoints;
         } catch (SQLException e) {
-            System.out.println(e);
             return -1;
         }
     }
@@ -264,7 +234,6 @@ public class studentDAO {
             else
                 return -1;
         } catch (SQLException e) {
-            System.out.println(e);
             return -1;
         }
     }
@@ -278,7 +247,6 @@ public class studentDAO {
             else
                 return -1;
         } catch (SQLException e) {
-            System.out.println(e);
             return -1;
         }
     }
@@ -292,7 +260,6 @@ public class studentDAO {
             else
                 return -1;
         } catch (SQLException e) {
-            System.out.println(e);
             return -1;
         }
 
@@ -314,7 +281,6 @@ public class studentDAO {
             }
             return grades;
         } catch (SQLException e) {
-            System.out.println(e);
             return null;
         }
     }
@@ -325,7 +291,6 @@ public class studentDAO {
             con.createStatement().execute("DELETE FROM courses_enrolled_student_" + getStudentid(email) + " WHERE catalog_id='" + getCatalogid(courseCode) + "'");
             return true;
         } catch (SQLException e) {
-            System.out.println(e);
             return false;
         }
     }
@@ -336,7 +301,7 @@ public class studentDAO {
             con.createStatement().execute("INSERT INTO courses_enrolled_student_" + getStudentid(email) + " VALUES('" + getCatalogid(courseCode) + "')");
             return true;
         } catch (SQLException e) {
-            System.out.println(e);
+
             return false;
         }
     }
@@ -375,7 +340,7 @@ public class studentDAO {
             }
             return courses;
         } catch (SQLException e) {
-            System.out.println(e);
+
             return null;
         }
     }
@@ -397,7 +362,6 @@ public class studentDAO {
             }
             return courses;
         } catch (SQLException e) {
-            System.out.println(e);
             return null;
         }
     }
@@ -411,7 +375,6 @@ public class studentDAO {
             else
                 return -1;
         } catch (SQLException e) {
-            System.out.println(e);
             return -2;
         }
     }
@@ -432,19 +395,18 @@ public class studentDAO {
             }
             return preReq;
         } catch (SQLException e) {
-            System.out.println(e);
             return null;
         }
     }
 
-    public String[] getPreReqOffer( String courseCode){
-        try{
-            ResultSet rs = con.createStatement().executeQuery("select Q.pre_req from courses_offering P , courses_pre_req_offering Q where P.offering_id=Q.offering_id AND P.course_code='" +courseCode+"'");
+    public String[] getPreReqOffer(String courseCode) {
+        try {
+            ResultSet rs = con.createStatement().executeQuery("select Q.pre_req from courses_offering P , courses_pre_req_offering Q where P.offering_id=Q.offering_id AND P.course_code='" + courseCode + "'");
             int count = 0;
             while (rs.next())
                 count++;
             String[] preReq = new String[count];
-            rs = con.createStatement().executeQuery("select Q.pre_req from courses_offering P , courses_pre_req_offering Q where P.offering_id=Q.offering_id AND P.course_code='" +courseCode+"'");
+            rs = con.createStatement().executeQuery("select Q.pre_req from courses_offering P , courses_pre_req_offering Q where P.offering_id=Q.offering_id AND P.course_code='" + courseCode + "'");
             int i = 0;
             while (rs.next()) {
                 preReq[i] = rs.getString("pre_req");
@@ -452,7 +414,6 @@ public class studentDAO {
             }
             return preReq;
         } catch (SQLException e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -461,15 +422,11 @@ public class studentDAO {
     public boolean checkCourseTranscript(String email, String courseCode) {
         try {
             ResultSet rs = con.createStatement().executeQuery("SELECT * FROM transcript_student_" + getStudentid(email) + " WHERE catalog_id='" + getCatalogid(courseCode) + "'");
-            if (rs.next() ){
-                if( rs.getInt("grade") >=4)
-                    return true;
-                return false;
-            }
-            else
+            if (rs.next()) {
+                return rs.getInt("grade") >= 4;
+            } else
                 return false;
         } catch (SQLException e) {
-            System.out.println(e);
             return false;
         }
     }
@@ -484,34 +441,31 @@ public class studentDAO {
             else
                 return -1;
         } catch (SQLException e) {
-            System.out.println(e);
             return -2;
         }
     }
 
 
-    public int getGradeCourse(String email, String courseCode){
-        try{
+    public int getGradeCourse(String email, String courseCode) {
+        try {
             ResultSet rs = con.createStatement().executeQuery("SELECT grade FROM transcript_student_" + getStudentid(email) + " WHERE catalog_id='" + getCatalogid(courseCode) + "'");
             if (rs.next())
                 return rs.getInt("grade");
             else
                 return -1;
         } catch (SQLException e) {
-            System.out.println(e);
             return -2;
         }
     }
 
-    public int getReqGradeOffer(String CourseCode,String PreReqcourseCode){
-        try{
+    public int getReqGradeOffer(String CourseCode, String PreReqcourseCode) {
+        try {
             ResultSet rs = con.createStatement().executeQuery("SELECT grade FROM courses_pre_req_offering WHERE pre_req='" + PreReqcourseCode + "' AND offering_id='" + getOfferingId(CourseCode) + "'");
             if (rs.next())
                 return rs.getInt("grade");
             else
                 return -1;
         } catch (SQLException e) {
-            System.out.println(e);
             return -2;
         }
     }

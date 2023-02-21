@@ -5,7 +5,6 @@ import org.aims.academics.AcademicEmployeeImpl;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.sql.SQLException;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -37,9 +36,9 @@ public class AcademicEmployeeService implements UserService {
             System.out.println("[10] Start Grade Submission");
             System.out.print("\nEnter your option: ");
 
-            try{
+            try {
                 option = sc.nextInt();
-            }catch (Exception e){
+            } catch (Exception e) {
                 System.out.println("Invalid Input");
                 sc.nextLine();
                 continue;
@@ -158,6 +157,8 @@ public class AcademicEmployeeService implements UserService {
         String email = sc.nextLine();
         try {
             String[] response = AcademicEmployee.viewGrades(email);
+            if (response == null)
+                System.out.println("No Grades Available");
             for (String s : response) {
                 System.out.println(s);
             }
@@ -294,12 +295,13 @@ public class AcademicEmployeeService implements UserService {
         }
     }
 
-    private void startGradeSubmissionService () {
+    private void startGradeSubmissionService() {
         System.out.println("Start Grade Submission");
 
         try {
             String response = AcademicEmployee.startGradeSubmission();
-        }catch (Exception e) {
+            System.out.println(response);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

@@ -4,14 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="793ca995-c85c-4b5c-99eb-10b3a8b12ea8" name="Changes" comment="IN MIDDLE OF CHANGING CODE">
+    <list default="true" id="793ca995-c85c-4b5c-99eb-10b3a8b12ea8" name="Changes" comment="ONLY TESTING REMAINS">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/academics/AcademicEmployeeImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/academics/AcademicEmployeeImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/admin/AdminImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/admin/AdminImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/dataAccess/academicDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/dataAccess/academicDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/dataAccess/facultyDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/dataAccess/facultyDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/dataAccess/studentDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/dataAccess/studentDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/faculty/FacultyImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/faculty/FacultyImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/service/AcademicEmployeeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/service/AcademicEmployeeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/service/AdminService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/service/AdminService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/service/FacultyService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/service/FacultyService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/service/StudentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/service/StudentService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/student/StudentImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/student/StudentImpl.java" afterDir="false" />
@@ -102,7 +104,7 @@
       <recent name="org.aims.admin" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.academicDAO">
     <configuration name="academicDAO" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.aims.dataAccess.academicDAO" />
       <module name="Mini_Project.main" />
@@ -389,7 +391,14 @@
       <option name="project" value="LOCAL" />
       <updated>1676914377384</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="TESTING OF ACADEMIC DAO REMAINS AND FINAL TESTING ALSO REMAINS">
+      <created>1676929599835</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1676929599835</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -407,8 +416,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Started_Coding" />
-    <MESSAGE value="Flow Control understood at a primitive level" />
     <MESSAGE value="Changed according to framework DAO" />
     <MESSAGE value="ADMIN TASKS DONE" />
     <MESSAGE value="DATBASE FILES ADDED" />
@@ -432,7 +439,9 @@
     <MESSAGE value="HAVE TO ADD DIFFERENT EVENTS IN A SEMESTER" />
     <MESSAGE value="CODING DONE, TESTING REMAINING" />
     <MESSAGE value="IN MIDDLE OF CHANGING CODE" />
-    <option name="LAST_COMMIT_MESSAGE" value="IN MIDDLE OF CHANGING CODE" />
+    <MESSAGE value="TESTING OF ACADEMIC DAO REMAINS AND FINAL TESTING ALSO REMAINS" />
+    <MESSAGE value="ONLY TESTING REMAINS" />
+    <option name="LAST_COMMIT_MESSAGE" value="ONLY TESTING REMAINS" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Mini_Project$AdminServiceTest_ShowmenuTest.ic" NAME="AdminServiceTest.ShowmenuTest Coverage Results" MODIFIED="1676819103689" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />

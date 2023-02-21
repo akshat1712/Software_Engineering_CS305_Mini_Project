@@ -130,20 +130,20 @@ public class StudentService implements UserService {
         }
     }
 
-    private void CoursesEnrolledService(){
-        try{
+    private void CoursesEnrolledService() {
+        try {
             String[] response = Student.viewCoursesEnrolled();
             System.out.println("Enrolled Courses");
-            for (String s : response){
+            for (String s : response) {
                 System.out.println(s);
             }
             System.out.println("=====================================");
             System.out.println("Courses Offering");
             response = Student.viewCoursesOffered();
-            for (String s : response){
+            for (String s : response) {
                 System.out.println(s);
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

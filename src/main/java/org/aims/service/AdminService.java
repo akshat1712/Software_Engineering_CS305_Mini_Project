@@ -29,8 +29,7 @@ public class AdminService implements UserService {
             System.out.print("Enter your option: ");
             try {
                 option = sc.nextInt();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println("\nINVALID OPTION\n");
                 sc.nextLine();
                 continue;

@@ -4,7 +4,7 @@ import org.aims.dataAccess.facultyDAO;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.sql.ResultSet;
+
 
 import org.aims.dataAccess.userDAL;
 import org.postgresql.util.PSQLException;
@@ -12,8 +12,6 @@ import org.postgresql.util.PSQLException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class FacultyImpl implements userDAL {
 
@@ -28,7 +26,7 @@ public class FacultyImpl implements userDAL {
 
     private final facultyDAO facultyDAO = new facultyDAO();
 
-    public FacultyImpl(String Email, String Password) throws PSQLException,SQLException {
+    public FacultyImpl(String Email, String Password) throws PSQLException, SQLException {
         this.email = Email;
         this.password = Password;
         con = DriverManager.getConnection(connectionString, username, databasePassword);
@@ -36,33 +34,32 @@ public class FacultyImpl implements userDAL {
 
 
     public boolean login() {
-        if( !email.matches("^[a-zA-Z0-9+_.-]+@iitrpr.ac.in"))
+        if (!email.matches("^[a-zA-Z0-9+_.-]+@iitrpr.ac.in"))
             return false;
 
-        if(facultyDAO.login(email,password)){
+        if (facultyDAO.login(email, password)) {
             facultyDAO.loginLogs(email);
             return true;
-        }
-        else
+        } else
             return false;
     }
 
-    public void logout() throws PSQLException,SQLException {
+    public void logout()  {
         facultyDAO.logoutLogs(email);
     }
 
     public String offerCourse(String courseCode, double cgpaCutoff, String[] prerequisites) {
 
-        if( !facultyDAO.checkCourseCatalog(courseCode))
+        if (!facultyDAO.checkCourseCatalog(courseCode))
             return "\nCourse Does Not Exist";
 
-        if( facultyDAO.checkCourseOffering(courseCode))
+        if (facultyDAO.checkCourseOffering(courseCode))
             return "\nCourse Already Offered";
 
-        if( !facultyDAO.checkSemesterStatus("ONGOING-CO"))
+        if (!facultyDAO.checkSemesterStatus("ONGOING-CO"))
             return "\nCourse Offering is not Available";
 
-        if( (cgpaCutoff < 0 || cgpaCutoff > 10) && cgpaCutoff != -1 )
+        if ((cgpaCutoff < 0 || cgpaCutoff > 10) && cgpaCutoff != -1)
             return "\nInvalid CGPA Cutoff";
 
         for (String s : prerequisites) {
@@ -75,77 +72,76 @@ public class FacultyImpl implements userDAL {
             }
         }
 
-        facultyDAO.insertCourse(email,courseCode,cgpaCutoff);
+        facultyDAO.insertCourse(email, courseCode, cgpaCutoff);
 
         int count = 0;
         for (String s : prerequisites) {
             String[] split = s.split(",");
             count += 1;
-            facultyDAO.insertCoursePreReq(courseCode,split[0],split[1],count);
+            facultyDAO.insertCoursePreReq(courseCode, split[0], split[1], count);
         }
 
-        facultyDAO.insertCourseFaculty(email,courseCode);
+        facultyDAO.insertCourseFaculty(email, courseCode);
 
         return "\nCourse Offered Successfully";
     }
 
-    public String takeBackCourse(String courseCode)  {
+    public String takeBackCourse(String courseCode) {
 
-        if( !facultyDAO.checkCourseCatalog(courseCode)){
+        if (!facultyDAO.checkCourseCatalog(courseCode)) {
             return "\nCourse Does Not Exist";
         }
 
-        if( !facultyDAO.checkCourseOffering(courseCode)){
+        if (!facultyDAO.checkCourseOffering(courseCode)) {
             return "\nCourse Not Offered";
         }
 
-        if(!facultyDAO.checkSemesterStatus("ONGOING-CO")){
+        if (!facultyDAO.checkSemesterStatus("ONGOING-CO")) {
             return "\nCourse Offering is not Open";
         }
 
-        if( facultyDAO.getfacultyidEmail(email)!=facultyDAO.getfacultyidCourse(courseCode))
+        if (facultyDAO.getfacultyidEmail(email) != facultyDAO.getfacultyidCourse(courseCode))
             return "\nYou are not the Faculty of this Course";
 
 
-        facultyDAO.deleteCourseOffering(email,courseCode);
+        facultyDAO.deleteCourseOffering(email, courseCode);
 
-        String [] studentEmail= facultyDAO.getStudentEmail();
+        String[] studentEmail = facultyDAO.getStudentEmail();
 
-        for(String s:studentEmail){
-            facultyDAO.deleteCourseEnrollement(s,courseCode);
+        for (String s : studentEmail) {
+            facultyDAO.deleteCourseEnrollement(s, courseCode);
         }
 
 
         return "\nCourse Taken Back Successfully";
     }
 
-    public String[] viewGrades(String email)  {
+    public String[] viewGrades(String email) {
         return facultyDAO.viewGrades(email);
     }
 
-    public String changePassword(String oldPassword, String newPassword)  {
-        if( newPassword.matches("[\\w]*\\s[\\w]*")){
+    public String changePassword(String oldPassword, String newPassword) {
+        if (newPassword.matches("[\\w]*\\s[\\w]*")) {
             return "\nPassword Cannot Contain Spaces";
         }
 
-        if(facultyDAO.checkPassword(email,oldPassword)){
-            facultyDAO.changePassword(email,newPassword);
+        if (facultyDAO.checkPassword(email, oldPassword)) {
+            facultyDAO.changePassword(email, newPassword);
             return "\nPassword Changed Successfully";
-        }
-        else
+        } else
             return "\nIncorrect Old Password";
     }
 
-    public String updateGrades(String path, String courseCode)  {
+    public String updateGrades(String path, String courseCode) {
 
-        if( !facultyDAO.checkCourseOffering(courseCode)){
+        if (!facultyDAO.checkCourseOffering(courseCode)) {
             return "\nCourse Not Offered";
         }
 
-        if( facultyDAO.getfacultyidEmail(email)!=facultyDAO.getfacultyidCourse(courseCode))
+        if (facultyDAO.getfacultyidEmail(email) != facultyDAO.getfacultyidCourse(courseCode))
             return "\nYou are not the Faculty of this Course";
 
-        if(!facultyDAO.checkSemesterStatus("ONGOING-GS")){
+        if (!facultyDAO.checkSemesterStatus("ONGOING-GS")) {
             return "\nCourse Offering is not Open for Grading";
         }
 
@@ -162,14 +158,13 @@ public class FacultyImpl implements userDAL {
                     return "\nInvalid Grade " + data[1] + " Present";
                 }
 
-                if( !facultyDAO.checkCourseEnrollment(data[0],courseCode)){
+                if (!facultyDAO.checkCourseEnrollment(data[0], courseCode)) {
                     return "\nStudent Not Enrolled in the Course";
                 }
                 line = br.readLine();
             }
             br.close();
         } catch (Exception e) {
-            System.out.println(e);
             return "\nFile Does Not Exist1";
         }
 
@@ -181,12 +176,11 @@ public class FacultyImpl implements userDAL {
 
             while (line != null) {
                 String[] data = line.split(",");
-                facultyDAO.updateGrade(data[0],courseCode,data[1]);
+                facultyDAO.updateGrade(data[0], courseCode, data[1]);
                 line = br.readLine();
             }
             br.close();
         } catch (Exception e) {
-            System.out.println(e);
             return "\nFile Does Not Exist2";
         }
 

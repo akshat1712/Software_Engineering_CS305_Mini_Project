@@ -2,15 +2,14 @@ package org.aims.student;
 
 import org.aims.dataAccess.studentDAO;
 import org.aims.dataAccess.userDAL;
-import org.postgresql.util.PSQLException;
+
 
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
+
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
 
 public class StudentImpl implements userDAL {
 
@@ -60,7 +59,7 @@ public class StudentImpl implements userDAL {
             return "\nIncorrect Old Password";
     }
 
-    public String registerCourse(String courseCode)  {
+    public String registerCourse(String courseCode) {
 
         if (!studentDAO.checkCourseOffering(courseCode)) {
             return "\nCourse Not Offered";
@@ -123,15 +122,15 @@ public class StudentImpl implements userDAL {
 
         preReq = studentDAO.getPreReqOffer(courseCode);
 
-        for( String s:preReq){
-            if(!studentDAO.checkCourseTranscript(email,s)){
+        for (String s : preReq) {
+            if (!studentDAO.checkCourseTranscript(email, s)) {
                 return "\nYou Do not satify the Offer prerequisite";
             }
 
-            int grade1=studentDAO.getGradeCourse(email,s);
-            int grade2=studentDAO.getReqGradeOffer(courseCode,s);
+            int grade1 = studentDAO.getGradeCourse(email, s);
+            int grade2 = studentDAO.getReqGradeOffer(courseCode, s);
 
-            if( grade1<grade2)
+            if (grade1 < grade2)
                 return "\nYou Do not satify the Offer prerequisite";
         }
 
