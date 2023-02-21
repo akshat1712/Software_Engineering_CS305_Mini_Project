@@ -179,6 +179,9 @@ public class studentDAO {
             while (rs.next()) {
                 total_credits += Double.parseDouble(rs.getString("credits"));
             }
+            if(total_credits==0)
+                return 6;
+
             return total_credits;
         } catch (SQLException e) {
             return -1;

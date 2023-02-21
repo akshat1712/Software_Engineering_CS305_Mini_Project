@@ -137,7 +137,7 @@ public class AcademicEmployeeImpl implements userDAL {
         String[] students = academicDAO.getStudentids();
 
         for (String s : students) {
-            if (!academicDAO.checkGradeSubmission(s))
+            if (academicDAO.checkGradeSubmission(s))
                 return "Grade Not Submitted for the student ";
         }
 

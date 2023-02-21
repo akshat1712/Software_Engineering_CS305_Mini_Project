@@ -288,8 +288,8 @@ public class academicDAO {
 
     public boolean checkGradeSubmission(String id) {
         try {
-            ResultSet rs = con.createStatement().executeQuery("SELECT * FROM transcript_student_" + id + " WHERE grade IS NULL");
-            return !rs.next();
+            ResultSet rs = con.createStatement().executeQuery("SELECT * FROM courses_enrolled_student_" + id + " WHERE grade is NULL");
+            return rs.next();
         } catch (SQLException e) {
 
             return false;
@@ -440,8 +440,8 @@ public class academicDAO {
     }
 
 //
-//    public static void main(String[] args) {
-//        academicDAO s = new academicDAO();
-//        System.out.println(s.getCreditsType("2020csb1068@iitrpr.ac.in", "GE"));
-//    }
+    public static void main(String[] args) {
+        academicDAO s = new academicDAO();
+        System.out.println(s.checkGradeSubmission("4"));
+    }
 }
