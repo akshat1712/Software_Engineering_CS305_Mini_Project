@@ -1,8 +1,7 @@
-package org.aims.academics;
+package org.aims.userimpl;
 
 import org.aims.dataAccess.academicDAO;
 
-import org.aims.dataAccess.userDAL;
 import org.postgresql.util.PSQLException;
 
 import java.sql.Connection;

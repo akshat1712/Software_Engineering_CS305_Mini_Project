@@ -1,46 +1,46 @@
 package org.aims.service;
 
-import org.aims.admin.AdminImpl;
-
+import org.aims.userimpl.AdminImpl;
 import java.sql.SQLException;
 import java.util.Scanner;
+
 
 public class AdminService implements UserService {
 
     private AdminImpl Admin;
-
+    Scanner sc;
     public AdminService() {
-
+        sc= new Scanner(System.in);
     }
 
     @Override
     public void showmenu() {
-        System.out.println("\nWelcome to Admin Menu\n");
-
-        int option = -1;
-
-        Scanner sc = new Scanner(System.in);
-        while (option != 0) {
-            System.out.println("[0] LOGOUT");
-            System.out.println("[1] Add Faculty"); // CHECKING DONE PROPERLY
-            System.out.println("[2] Add Student"); // CHECKING DONE PROPERLY
-            System.out.println("[3] Add Academic Staff"); // CHECKING DONE PROPERLY
-            System.out.println("[4] Add Department");    // CHECKING DONE PROPERLY
-            System.out.print("Enter your option: ");
+        Scanner sc1= new Scanner(System.in);
+        System.out.println("Welcome to Admin Menu");
+        String option = "F";
+        while (!option.equals("A")) {
+            System.out.println("[A] LOGOUT");
+            System.out.println("[B] Add Faculty"); // CHECKING DONE PROPERLY
+            System.out.println("[C] Add Student"); // CHECKING DONE PROPERLY
+            System.out.println("[D] Add Academic Staff"); // CHECKING DONE PROPERLY
+            System.out.println("[E] Add Department");    // CHECKING DONE PROPERLY
+            System.out.println("Enter your option");
             try {
-                option = sc.nextInt();
+                option = sc1.nextLine();
+                System.out.println(option);
             } catch (Exception e) {
-                System.out.println("\nINVALID OPTION\n");
-                sc.nextLine();
+                System.out.println(e);
+                System.out.println("INVALID OPTION");
+                sc1.nextLine();
                 continue;
             }
             switch (option) {
-                case 0 -> System.out.println("\nLogging out...\n");
-                case 1 -> AddFacultyService(); // Checking Done
-                case 2 -> AddStudentService(); // Checking Done
-                case 3 -> AddAcademicStaffService(); // Checking Done
-                case 4 -> AddDepartmentService(); // Checking Done
-                default -> System.out.println("\nINVALID OPTION\n");
+                case "A" -> System.out.println("Logging out");
+                case "B" -> AddFacultyService(); // Checking Done
+                case "C" -> AddStudentService(); // Checking Done
+                case "D" -> AddAcademicStaffService(); // Checking Done
+                case "E" -> AddDepartmentService(sc1); // Checking Done
+                default -> System.out.println("INVALID OPTION");
             }
         }
     }
@@ -58,7 +58,6 @@ public class AdminService implements UserService {
 
     private void AddFacultyService() {
         System.out.println("\nWelcome to Add Faculty\n");
-        Scanner sc = new Scanner(System.in);
 
         System.out.print("Name: ");
         String name = sc.nextLine();
@@ -83,7 +82,6 @@ public class AdminService implements UserService {
     }
 
     private void AddStudentService() {
-        Scanner sc = new Scanner(System.in);
         System.out.println("\nWelcome to Add Student\n");
         System.out.print("Name: ");
         String name = sc.nextLine();
@@ -111,7 +109,6 @@ public class AdminService implements UserService {
 
     private void AddAcademicStaffService() {
         System.out.println("\nWelcome to Add Academic Staff\n");
-        Scanner sc = new Scanner(System.in);
 
         System.out.print("Name: ");
         String name = sc.nextLine();
@@ -134,18 +131,18 @@ public class AdminService implements UserService {
         }
     }
 
-    private void AddDepartmentService() {
-        System.out.println("\nWelcome to Add Department\n");
+    private void AddDepartmentService(Scanner sc1) {
+        System.out.println("Welcome to Add Department");
         System.out.print("Enter Department Name: ");
-        Scanner sc = new Scanner(System.in);
-        String name = sc.nextLine();
-        System.out.println();
+        String name = sc1.nextLine();
         try {
             String response = Admin.AddDepartment(name);
             System.out.println(response);
-        } catch (SQLException e) {
+        } catch (Exception e) {
+            System.out.println(e);
             e.printStackTrace();
             System.out.println("Error in adding department");
         }
     }
+
 }

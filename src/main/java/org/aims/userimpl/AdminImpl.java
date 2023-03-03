@@ -1,6 +1,5 @@
-package org.aims.admin;
+package org.aims.userimpl;
 
-import org.aims.dataAccess.userDAL;
 import org.postgresql.util.PSQLException;
 
 

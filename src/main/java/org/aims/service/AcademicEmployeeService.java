@@ -1,6 +1,6 @@
 package org.aims.service;
 
-import org.aims.academics.AcademicEmployeeImpl;
+import org.aims.userimpl.AcademicEmployeeImpl;
 
 
 import java.io.File;

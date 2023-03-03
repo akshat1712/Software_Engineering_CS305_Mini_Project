@@ -1,8 +1,6 @@
-package org.aims.student;
+package org.aims.userimpl;
 
 import org.aims.dataAccess.studentDAO;
-import org.aims.dataAccess.userDAL;
-
 
 
 import java.sql.Connection;

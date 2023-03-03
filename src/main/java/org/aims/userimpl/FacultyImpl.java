@@ -1,4 +1,4 @@
-package org.aims.faculty;
+package org.aims.userimpl;
 
 import org.aims.dataAccess.facultyDAO;
 
@@ -6,7 +6,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 
 
-import org.aims.dataAccess.userDAL;
 import org.postgresql.util.PSQLException;
 
 import java.sql.Connection;

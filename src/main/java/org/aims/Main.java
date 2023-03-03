@@ -7,73 +7,77 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
 
-        int option; // variable to hold the option chosen
+
+        String option = "F";
+        Scanner sc = new Scanner(System.in);
 
         while (true) {
 
-            System.out.println("Select [1] for Student");
-            System.out.println("Select [2] for Faculty");
-            System.out.println("Select [3] for Academic Staff");
-            System.out.println("Select [4] for Admin");
-            System.out.println("Select [5] to Exit");
-            System.out.print("Please enter your choice: ");
-            Scanner sc = new Scanner(System.in);
+            System.out.println("Select [A] for Student");
+            System.out.println("Select [B] for Faculty");
+            System.out.println("Select [C] for Academic Staff");
+            System.out.println("Select [D] for Admin");
+            System.out.println("Select [E] to Exit");
+            System.out.println("Please enter your choice ");
+
             try {
-                option = sc.nextInt();
+                option = sc.nextLine();
             } catch (Exception e) {
-                System.out.println("\nInvalid option\n");
+                System.out.println("Invalid option");
+                sc.nextLine();
                 continue;
             }
 
 
-            if (option == 5) {
-                System.out.println("\nThank you for using the system");
+            if (option.equals("E")) {
+                System.out.println("Thank you for using the system");
                 break;
-            } else if (option < 1 || option > 5) {
-                System.out.println("\nInvalid option");
-                continue;
             }
 
             String email;
             String password;
 
-            System.out.print("\nPlease enter your email: ");
-            email = sc.next();
-            System.out.print("\nPlease enter your password: ");
-            password = sc.next();
+            System.out.println("Please enter your email: ");
+            email = sc.nextLine();
+            System.out.println("Please enter your password: ");
+            password = sc.nextLine();
 
-            if (option == 1) {
+            if (option.equals("A")) {
                 UserService studentService = new StudentService();
                 if (studentService.login(email, password)) {
-                    System.out.println("\nLogin Successful\n");
+                    System.out.println("Login Successful");
                     studentService.showmenu();
                 } else {
-                    System.out.println("\nLogin Failed\n");
+                    System.out.println("Login Failed");
                 }
-            } else if (option == 2) {
+            } else if (option.equals("B")) {
                 UserService facultyService = new FacultyService();
                 if (facultyService.login(email, password)) {
-                    System.out.println("\nLogin Successful\n");
+                    System.out.println("Login Successful");
                     facultyService.showmenu();
                 } else {
-                    System.out.println("\nLogin Failed\n");
+                    System.out.println("Login Failed");
                 }
-            } else if (option == 3) {
+            } else if (option.equals("C")) {
                 UserService academicEmployeeService = new AcademicEmployeeService();
                 if (academicEmployeeService.login(email, password)) {
-                    System.out.println("\nLogin Successful\n");
+                    System.out.println("Login Successful");
                     academicEmployeeService.showmenu();
                 } else {
-                    System.out.println("\nLogin Failed\n");
+                    System.out.println("Login Failed");
                 }
-            } else {
+            } else if( option.equals("D")) {
                 UserService adminService = new AdminService();
                 if (adminService.login(email, password)) {
-                    System.out.println("\nLogin Successful");
+                    System.out.println("Login Successful");
                     adminService.showmenu();
                 } else {
-                    System.out.println("\nLogin Failed\n");
+                    System.out.println("Login Failed");
                 }
+                adminService=null;
+            }
+            else {
+                System.out.println("Invalid option");
             }
         }
 

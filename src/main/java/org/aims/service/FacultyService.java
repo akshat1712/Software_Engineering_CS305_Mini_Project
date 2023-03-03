@@ -1,7 +1,7 @@
 package org.aims.service;
 
 
-import org.aims.faculty.FacultyImpl;
+import org.aims.userimpl.FacultyImpl;
 
 import java.util.Scanner;
 

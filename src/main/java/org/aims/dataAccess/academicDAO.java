@@ -440,8 +440,8 @@ public class academicDAO {
     }
 
 //
-    public static void main(String[] args) {
-        academicDAO s = new academicDAO();
-        System.out.println(s.checkGradeSubmission("4"));
-    }
+//    public static void main(String[] args) {
+//        academicDAO s = new academicDAO();
+//        System.out.println(s.checkGradeSubmission("4"));
+//    }
 }

@@ -1,7 +1,7 @@
 package org.aims.service;
 
 
-import org.aims.student.StudentImpl;
+import org.aims.userimpl.StudentImpl;
 
 import java.sql.SQLException;
 import java.util.Scanner;
