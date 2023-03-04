@@ -20,6 +20,7 @@ dependencies {
     implementation("org.postgresql:postgresql:42.5.1")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.6.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-params:5.6.2")
+    testImplementation("org.mockito:mockito-core:3.+") // 3.11.2
 
 }
 

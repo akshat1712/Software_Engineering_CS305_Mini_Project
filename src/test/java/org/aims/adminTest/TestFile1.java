@@ -1,119 +1,127 @@
 package org.aims.adminTest;
 
+
 import org.aims.service.AdminService;
+import org.aims.userimpl.AdminImpl;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.util.Scanner;
+import java.sql.SQLException;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class TestFile1 {
 
-    AdminService testAdmin=new AdminService();
+    private static AdminImpl mockAdminImpl;
+    private static AdminService testAdminService;
 
     private static final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private static final PrintStream originalOut = System.out;
 
+    @BeforeAll()
+    public static void setup() {
+        mockAdminImpl = mock( AdminImpl.class);
+        testAdminService = new AdminService(mockAdminImpl);
 
-    @BeforeAll
-    public static void setUpStreams() {
         System.setOut(new PrintStream(outContent));
     }
-    @AfterAll
-    public static void restoreStreams() {
+
+    @AfterAll()
+    public static void teardown() {
         System.setOut(originalOut);
-
-        try {
-            String connectionString = "jdbc:postgresql://localhost:5432/postgres";
-            String username = "postgres";
-            String databasePassword = "2020csb1068";
-            Connection con = DriverManager.getConnection(connectionString, username, databasePassword);
-
-
-            con.createStatement().execute("DELETE FROM departments WHERE name='CSE'");
-        }
-        catch (Exception e){
-            System.out.println(e);
-        }
-
-
     }
-    String correctEmail="postgres@iitrpr.ac.in";
-    String correctPassword="2020csb1068";
 
     @Test
-    @Order(1)
-    public void testLogin1(){
-        assertTrue(testAdmin.login("postgres@iitrpr.ac.in","2020csb1068"));
+    public void testLogin() {
+
+        when(mockAdminImpl.login(isA(String.class),isA(String.class))).thenReturn(true);
+        assertTrue(testAdminService.login("postgres@iitrpr.ac.in","2020csb1068"));
+
+        when(mockAdminImpl.login(isA(String.class),isA(String.class))).thenReturn(false);
+        assertTrue(!testAdminService.login("postgres@gmail.com","2020csb1068"));
+
+
     }
+
     @Test
-    @Order(2)
-    public void testLogin2(){
-        assertFalse(testAdmin.login("postgres@iitrpr.ac.in","2020csbadmin"));
+    public void testAddDepartmentService1() throws SQLException {
+        when(mockAdminImpl.AddDepartment(isA(String.class))).thenReturn("ADDED");
+        String input="E\nCSE\nA\n";
+        System.setIn(new java.io.ByteArrayInputStream(input.getBytes()));
+        testAdminService.showmenu();
+        assertTrue(outContent.toString().contains("ADDED"));
     }
+
     @Test
-    @Order(3)
-    public void testLogin3(){
-        assertFalse(testAdmin.login("postgres@gmail.com","2020csb1068"));
+    public void testAddDepartmentService2() throws SQLException {
+        when(mockAdminImpl.AddDepartment(isA(String.class))).thenThrow(SQLException.class);
+        String input="E\nCSE\nA\n";
+        System.setIn(new java.io.ByteArrayInputStream(input.getBytes()));
+        testAdminService.showmenu();
+        assertTrue(outContent.toString().contains("Error in adding department"));
     }
+
     @Test
-    @Order(4)
-    public void testLogin4(){
-        assertFalse(testAdmin.login("postgres@gmail.com","2020csbadmin"));
+    public void testAddAcademic1() throws SQLException {
+        when(mockAdminImpl.AddAcademicStaff(isA(String.class),isA(String.class),isA(String.class),isA(String.class),isA(String.class))).thenReturn("ADDED");
+        String input="D\n1\n2\n3\n4\n5\nA\n";
+        System.setIn(new java.io.ByteArrayInputStream(input.getBytes()));
+        testAdminService.showmenu();
+        assertTrue(outContent.toString().contains("ADDED"));
     }
 
 
-    @ParameterizedTest
-    @CsvSource({"A"})
-    @Order(5)
-    public void testMenu1(String chosen_1){
-        String input=chosen_1+System.lineSeparator();
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes());
-        System.setIn(inputStream);
-        testAdmin.showmenu();
-        assertTrue(outContent.toString().contains("Logging out"));
+    @Test
+    public void testAddAcademic2() throws SQLException {
+        when(mockAdminImpl.AddAcademicStaff(isA(String.class),isA(String.class),isA(String.class),isA(String.class),isA(String.class))).thenThrow(SQLException.class);
+        String input="D\n1\n2\n3\n4\n5\nA\n";
+        System.setIn(new java.io.ByteArrayInputStream(input.getBytes()));
+        testAdminService.showmenu();
+        assertTrue(outContent.toString().contains("Error in adding academic staff"));
     }
 
 
-    @ParameterizedTest
-    @CsvSource({"-1","7","1.2","CHOSEN"})
-    @Order(6)
-    public void testMenu2(String chosen_1){
-        String input=chosen_1+"\n"+"A"+"\n";
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes());
-        System.setIn(inputStream);
-        testAdmin.showmenu();
-        assertTrue(outContent.toString().contains("INVALID OPTION"));
-    }
-
-    @ParameterizedTest
-    @CsvSource({"E,CSE,1","E,CSE,2"})
-    @Order(6)
-    public void testAddDepartment2(String chose,String Department,int type){
-        String input=chose+"\n"+Department+"\nA\n";
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes());
-        System.setIn(inputStream);
-        testAdmin.login(correctEmail,correctPassword);
-        testAdmin.showmenu();
-        if(type==1){
-            assertTrue(outContent.toString().contains("Department added successfully"));
-        }
-        else{
-            assertTrue(outContent.toString().contains("Department already exists"));
-        }
+    @Test
+    public void testAddFaculty1() throws SQLException {
+        when(mockAdminImpl.AddFaculty(isA(String.class),isA(String.class),isA(String.class),isA(String.class),isA(String.class),isA(String.class))).thenReturn("ADDED");
+        String input="B\n1\n2\n3\n4\n5\n6\nA\n";
+        System.setIn(new java.io.ByteArrayInputStream(input.getBytes()));
+        testAdminService.showmenu();
+        assertTrue(outContent.toString().contains("ADDED"));
     }
 
 
+    @Test
+    public void testAddFaculty2() throws SQLException {
+        when(mockAdminImpl.AddFaculty(isA(String.class),isA(String.class),isA(String.class),isA(String.class),isA(String.class),isA(String.class))).thenThrow(SQLException.class);
+        String input="B\n1\n2\n3\n4\n5\n6\nA\n";
+        System.setIn(new java.io.ByteArrayInputStream(input.getBytes()));
+        testAdminService.showmenu();
+        assertTrue(outContent.toString().contains("Error in adding faculty"));
+    }
 
+    @Test
+    public void testStudent1() throws SQLException {
+        when(mockAdminImpl.AddStudent(isA(String.class),isA(String.class),isA(String.class),isA(String.class),isA(String.class),isA(String.class),isA(String.class))).thenReturn("ADDED");
+        String input="C\n1\n2\n3\n4\n5\n6\n7\nA\n";
+        System.setIn(new java.io.ByteArrayInputStream(input.getBytes()));
+        testAdminService.showmenu();
+        assertTrue(outContent.toString().contains("ADDED"));
+    }
+
+
+    @Test
+    public void testStudent2() throws SQLException {
+        when(mockAdminImpl.AddStudent(isA(String.class),isA(String.class),isA(String.class),isA(String.class),isA(String.class),isA(String.class),isA(String.class))).thenThrow(SQLException.class);
+        String input="C\n1\n2\n3\n4\n5\n6\n7\nA\n";
+        System.setIn(new java.io.ByteArrayInputStream(input.getBytes()));
+        testAdminService.showmenu();
+        assertTrue(outContent.toString().contains("Error in adding student"));
+    }
 }

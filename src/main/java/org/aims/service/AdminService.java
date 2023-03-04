@@ -1,23 +1,24 @@
 package org.aims.service;
 
 import org.aims.userimpl.AdminImpl;
+
 import java.sql.SQLException;
 import java.util.Scanner;
-
 
 public class AdminService implements UserService {
 
     private AdminImpl Admin;
     Scanner sc;
-    public AdminService() {
+    public AdminService( AdminImpl admin) {
         sc= new Scanner(System.in);
+        this.Admin= admin;
     }
 
     @Override
     public void showmenu() {
-        Scanner sc1= new Scanner(System.in);
         System.out.println("Welcome to Admin Menu");
         String option = "F";
+        sc= new Scanner(System.in);
         while (!option.equals("A")) {
             System.out.println("[A] LOGOUT");
             System.out.println("[B] Add Faculty"); // CHECKING DONE PROPERLY
@@ -26,12 +27,12 @@ public class AdminService implements UserService {
             System.out.println("[E] Add Department");    // CHECKING DONE PROPERLY
             System.out.println("Enter your option");
             try {
-                option = sc1.nextLine();
+                option = sc.nextLine();
                 System.out.println(option);
             } catch (Exception e) {
                 System.out.println(e);
                 System.out.println("INVALID OPTION");
-                sc1.nextLine();
+                sc.nextLine();
                 continue;
             }
             switch (option) {
@@ -39,7 +40,7 @@ public class AdminService implements UserService {
                 case "B" -> AddFacultyService(); // Checking Done
                 case "C" -> AddStudentService(); // Checking Done
                 case "D" -> AddAcademicStaffService(); // Checking Done
-                case "E" -> AddDepartmentService(sc1); // Checking Done
+                case "E" -> AddDepartmentService(); // Checking Done
                 default -> System.out.println("INVALID OPTION");
             }
         }
@@ -48,8 +49,7 @@ public class AdminService implements UserService {
     @Override
     public boolean login(String email, String password) {
         try {
-            Admin = new AdminImpl(email, password);
-            return Admin.login();
+            return Admin.login(email,password);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -57,7 +57,7 @@ public class AdminService implements UserService {
     }
 
     private void AddFacultyService() {
-        System.out.println("\nWelcome to Add Faculty\n");
+        System.out.println("Welcome to Add Faculty");
 
         System.out.print("Name: ");
         String name = sc.nextLine();
@@ -75,14 +75,14 @@ public class AdminService implements UserService {
         try {
             String response = Admin.AddFaculty(name, email, department, joiningDate, phoneNumber, address);
             System.out.println(response);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("\nError in adding faculty\n");
+            System.out.println("Error in adding faculty");
         }
     }
 
     private void AddStudentService() {
-        System.out.println("\nWelcome to Add Student\n");
+        System.out.println("Welcome to Add Student");
         System.out.print("Name: ");
         String name = sc.nextLine();
         System.out.print("Email: ");
@@ -101,14 +101,14 @@ public class AdminService implements UserService {
         try {
             String response = Admin.AddStudent(name, email, entryNumber, department, batch, phoneNumber, address);
             System.out.println(response);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Error in adding student");
         }
     }
 
     private void AddAcademicStaffService() {
-        System.out.println("\nWelcome to Add Academic Staff\n");
+        System.out.println("Welcome to Add Academic Staff");
 
         System.out.print("Name: ");
         String name = sc.nextLine();
@@ -131,14 +131,14 @@ public class AdminService implements UserService {
         }
     }
 
-    private void AddDepartmentService(Scanner sc1) {
+    private void AddDepartmentService() {
         System.out.println("Welcome to Add Department");
         System.out.print("Enter Department Name: ");
-        String name = sc1.nextLine();
+        String name = sc.nextLine();
         try {
             String response = Admin.AddDepartment(name);
             System.out.println(response);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println(e);
             e.printStackTrace();
             System.out.println("Error in adding department");

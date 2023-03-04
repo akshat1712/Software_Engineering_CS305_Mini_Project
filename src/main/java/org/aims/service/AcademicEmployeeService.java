@@ -64,8 +64,8 @@ public class AcademicEmployeeService implements UserService {
 
     public boolean login(String email, String password) {
         try {
-            AcademicEmployee = new AcademicEmployeeImpl(email, password);
-            return AcademicEmployee.login();
+            AcademicEmployee = new AcademicEmployeeImpl();
+            return AcademicEmployee.login(email, password);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -80,8 +80,6 @@ public class AcademicEmployeeService implements UserService {
             e.printStackTrace();
         }
     }
-
-
     private void addCourseInCatalogService() {
         try {
             Scanner sc = new Scanner(System.in);

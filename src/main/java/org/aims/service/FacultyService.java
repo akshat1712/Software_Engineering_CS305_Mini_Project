@@ -3,44 +3,45 @@ package org.aims.service;
 
 import org.aims.userimpl.FacultyImpl;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class FacultyService implements UserService {
     private FacultyImpl Faculty;
 
-    public FacultyService() {
-
+    Scanner sc;
+    public FacultyService( FacultyImpl faculty) {
+        this.Faculty= faculty;
+        sc= new Scanner(System.in);
     }
 
     public void showmenu() {
         System.out.println("Welcome to Faculty Menu");
-        System.out.println();
-        int option = -1;
+        String option = "E";
 
         Scanner sc = new Scanner(System.in);
-        while (option != 0) {
-            System.out.println("\n[0] LOGOUT");
-            System.out.println("[1] Offer Course");  // Checking Done
-            System.out.println("[2] Take Back course");  // Checking Done
-            System.out.println("[3] View Grades"); // Checking Done
-            System.out.println("[4] Change Password"); // Checking Done
-            System.out.println("[5] Update Grades"); //Checking Done
+        while (!option.equals("A")) {
+            System.out.println("[A] LOGOUT");
+            System.out.println("[B] Offer Course");  // Checking Done
+            System.out.println("[C] Take Back course");  // Checking Done
+            System.out.println("[D] View Grades"); // Checking Done
+            System.out.println("[E] Change Password"); // Checking Done
+            System.out.println("[F] Update Grades"); //Checking Done
             System.out.print("Enter your option: ");
             try {
-                option = sc.nextInt();
+                option = sc.nextLine();
             } catch (Exception e) {
                 System.out.println("Invalid option");
                 sc.nextLine();
                 continue;
             }
-            System.out.println();
             switch (option) {
-                case 0 -> logoutService(); // Checking Done
-                case 1 -> offerCourseService(); // Checking Done  ( HAVE TO THINK HOW TO MINIMIZE IT )
-                case 2 -> takeBackCourseService(); // Checking Done
-                case 3 -> viewGradesService(); // Checking Done
-                case 4 -> changePasswordService(); // Checking Done
-                case 5 -> updateGradesService(); // Checking Done
+                case "A" -> logoutService(); // Checking Done
+                case "B" -> offerCourseService(); // Checking Done  ( HAVE TO THINK HOW TO MINIMIZE IT )
+                case "C" -> takeBackCourseService(); // Checking Done
+                case "D" -> viewGradesService(sc); // Checking Done
+                case "E" -> changePasswordService(); // Checking Done
+                case "F" -> updateGradesService(); // Checking Done
                 default -> System.out.println("Invalid option");
             }
         }
@@ -48,8 +49,7 @@ public class FacultyService implements UserService {
 
     public boolean login(String email, String password) {
         try {
-            Faculty = new FacultyImpl(email, password);
-            return Faculty.login();
+            return Faculty.login(email, password);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -59,14 +59,14 @@ public class FacultyService implements UserService {
     public void logoutService() {
         try {
             Faculty.logout();
-            System.out.println("\nLogged out successfully\n");
-        } catch (Exception e) {
+            System.out.println("Logged out successfully");
+        } catch ( Exception e) {
             e.printStackTrace();
         }
     }
 
     private void offerCourseService() {
-        Scanner sc = new Scanner(System.in);
+//        Scanner sc = new Scanner(System.in);
         System.out.println("Offer Course");
         System.out.print("Enter the course code: ");
         String courseCode = sc.nextLine();
@@ -103,7 +103,7 @@ public class FacultyService implements UserService {
     }
 
     private void takeBackCourseService() {
-        Scanner sc = new Scanner(System.in);
+//        Scanner sc = new Scanner(System.in);
         System.out.println("Take Back Course");
         System.out.print("Enter the course code: ");
         String courseCode = sc.nextLine();
@@ -117,10 +117,10 @@ public class FacultyService implements UserService {
         }
     }
 
-    private void viewGradesService() {
+    private void viewGradesService(Scanner sc) {
         System.out.println("View Grades");
         System.out.print("Enter the email address of the student: ");
-        Scanner sc = new Scanner(System.in);
+//        Scanner sc = new Scanner(System.in);
         String email = sc.nextLine();
         try {
             String[] response = Faculty.viewGrades(email);
@@ -138,7 +138,7 @@ public class FacultyService implements UserService {
 
     private void changePasswordService() {
         System.out.println("Change Password");
-        Scanner sc = new Scanner(System.in);
+//        Scanner sc = new Scanner(System.in);
         System.out.print("Enter the old password: ");
         String oldPassword = sc.nextLine();
         System.out.print("Enter the new password: ");
@@ -154,7 +154,7 @@ public class FacultyService implements UserService {
 
     private void updateGradesService() {
         System.out.println("Update Grades");
-        Scanner sc = new Scanner(System.in);
+//        Scanner sc = new Scanner(System.in);
         String courseCode;
         System.out.print("Enter the course code: ");
         courseCode = sc.nextLine();

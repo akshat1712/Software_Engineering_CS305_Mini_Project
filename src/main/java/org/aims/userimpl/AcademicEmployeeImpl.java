@@ -14,8 +14,8 @@ import java.util.Map;
 
 public class AcademicEmployeeImpl implements userDAL {
 
-    private final String email;
-    private final String password;
+    private  String email;
+    private  String password;
 
     private final Connection con;
 
@@ -25,14 +25,14 @@ public class AcademicEmployeeImpl implements userDAL {
 
     private final academicDAO academicDAO = new academicDAO();
 
-    public AcademicEmployeeImpl(String Email, String Password) throws SQLException {
-        this.email = Email;
-        this.password = Password;
+    public AcademicEmployeeImpl() throws SQLException {
         con = DriverManager.getConnection(connectionString, username, databasePassword);
     }
 
 
-    public boolean login() {
+    public boolean login(String email, String password) {
+        this.email = email;
+        this.password = password;
         if (!email.matches("^[a-zA-Z0-9+_.-]+@iitrpr.ac.in"))
             return false;
 

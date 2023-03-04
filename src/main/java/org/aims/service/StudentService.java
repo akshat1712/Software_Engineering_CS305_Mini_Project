@@ -53,8 +53,8 @@ public class StudentService implements UserService {
 
     public boolean login(String email, String password) {
         try {
-            Student = new StudentImpl(email, password);
-            return Student.login();
+            Student = new StudentImpl();
+            return Student.login(email, password);
         } catch (SQLException e) {
             e.printStackTrace();
             return false;

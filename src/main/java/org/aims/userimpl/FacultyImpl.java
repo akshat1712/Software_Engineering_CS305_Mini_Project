@@ -14,8 +14,8 @@ import java.sql.SQLException;
 
 public class FacultyImpl implements userDAL {
 
-    private final String email;
-    private final String password;
+    private  String email;
+    private  String password;
 
     private final Connection con;
 
@@ -23,16 +23,17 @@ public class FacultyImpl implements userDAL {
     private final String username = "postgres";
     private final String databasePassword = "2020csb1068";
 
-    private final facultyDAO facultyDAO = new facultyDAO();
+    private final facultyDAO facultyDAO;
 
-    public FacultyImpl(String Email, String Password) throws PSQLException, SQLException {
-        this.email = Email;
-        this.password = Password;
+    public FacultyImpl( facultyDAO FacultyDAO ) throws PSQLException, SQLException {
+        this.facultyDAO = FacultyDAO;
         con = DriverManager.getConnection(connectionString, username, databasePassword);
     }
 
 
-    public boolean login() {
+    public boolean login(String email, String password) {
+        this.email = email;
+        this.password = password;
         if (!email.matches("^[a-zA-Z0-9+_.-]+@iitrpr.ac.in"))
             return false;
 
@@ -50,24 +51,24 @@ public class FacultyImpl implements userDAL {
     public String offerCourse(String courseCode, double cgpaCutoff, String[] prerequisites) {
 
         if (!facultyDAO.checkCourseCatalog(courseCode))
-            return "\nCourse Does Not Exist";
+            return "Course Does Not Exist";
 
         if (facultyDAO.checkCourseOffering(courseCode))
-            return "\nCourse Already Offered";
+            return "Course Already Offered";
 
         if (!facultyDAO.checkSemesterStatus("ONGOING-CO"))
-            return "\nCourse Offering is not Available";
+            return "Course Offering is not Available";
 
         if ((cgpaCutoff < 0 || cgpaCutoff > 10) && cgpaCutoff != -1)
-            return "\nInvalid CGPA Cutoff";
+            return "Invalid CGPA Cutoff";
 
         for (String s : prerequisites) {
             String[] split = s.split(",");
             if (!facultyDAO.checkCourseCatalog(split[0])) {
-                return "\nPrerequisite Course Does Not Exist";
+                return "Prerequisite Course Does Not Exist";
             }
             if (Integer.parseInt(split[1]) < 0 || Integer.parseInt(split[1]) > 10) {
-                return "\nInvalid Grade";
+                return "Invalid Grade";
             }
         }
 
@@ -82,25 +83,25 @@ public class FacultyImpl implements userDAL {
 
         facultyDAO.insertCourseFaculty(email, courseCode);
 
-        return "\nCourse Offered Successfully";
+        return "Course Offered Successfully";
     }
 
     public String takeBackCourse(String courseCode) {
 
         if (!facultyDAO.checkCourseCatalog(courseCode)) {
-            return "\nCourse Does Not Exist";
+            return "Course Does Not Exist";
         }
 
         if (!facultyDAO.checkCourseOffering(courseCode)) {
-            return "\nCourse Not Offered";
+            return "Course Not Offered";
         }
 
         if (!facultyDAO.checkSemesterStatus("ONGOING-CO")) {
-            return "\nCourse Offering is not Open";
+            return "Course Offering is not Open";
         }
 
         if (facultyDAO.getfacultyidEmail(email) != facultyDAO.getfacultyidCourse(courseCode))
-            return "\nYou are not the Faculty of this Course";
+            return "You are not the Faculty of this Course";
 
 
         facultyDAO.deleteCourseOffering(email, courseCode);
@@ -112,7 +113,7 @@ public class FacultyImpl implements userDAL {
         }
 
 
-        return "\nCourse Taken Back Successfully";
+        return "Course Taken Back Successfully";
     }
 
     public String[] viewGrades(String email) {
@@ -121,14 +122,14 @@ public class FacultyImpl implements userDAL {
 
     public String changePassword(String oldPassword, String newPassword) {
         if (newPassword.matches("[\\w]*\\s[\\w]*")) {
-            return "\nPassword Cannot Contain Spaces";
+            return "Password Cannot Contain Spaces";
         }
 
         if (facultyDAO.checkPassword(email, oldPassword)) {
             facultyDAO.changePassword(email, newPassword);
-            return "\nPassword Changed Successfully";
+            return "Password Changed Successfully";
         } else
-            return "\nIncorrect Old Password";
+            return "Incorrect Old Password";
     }
 
     public String updateGrades(String path, String courseCode) {
