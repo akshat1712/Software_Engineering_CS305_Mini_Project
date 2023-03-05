@@ -4,12 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="793ca995-c85c-4b5c-99eb-10b3a8b12ea8" name="Changes" comment="FACULTY EMPL ALSO COMPLETE">
+    <list default="true" id="793ca995-c85c-4b5c-99eb-10b3a8b12ea8" name="Changes" comment="FACULTY DAO ALSO COMPLETE">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/dataAccess/studentDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/dataAccess/studentDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/userimpl/StudentImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/userimpl/StudentImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/aims/facultyTest/TestFile3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/aims/facultyTest/TestFile3.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/aims/studentTest/TestFile2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/aims/studentTest/TestFile2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/dataAccess/academicDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/dataAccess/academicDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/service/AcademicEmployeeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/service/AcademicEmployeeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/userimpl/AcademicEmployeeImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/userimpl/AcademicEmployeeImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,7 +103,7 @@
       <recent name="org.aims.admin" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.TestFile3">
+  <component name="RunManager">
     <configuration name="TestFile2 (1)" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -477,7 +476,14 @@
       <option name="project" value="LOCAL" />
       <updated>1678044961634</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="FACULTY DAO ALSO COMPLETE">
+      <created>1678052515437</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1678052515437</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -495,7 +501,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="ACADEMIC EMPLOYEE WORK STARTED" />
     <MESSAGE value="ACADEMIC EMPLOYEE WORK HALFWAY DONE" />
     <MESSAGE value="FACULTY WORK STARTED" />
     <MESSAGE value="FACULTY WORK COMPLETED FOR NOW &amp; LOGIN LOGS WORKING IN ACADEMIC EMPLOYEE" />
@@ -520,7 +525,8 @@
     <MESSAGE value="TESTING ONGOING ( SHOULD COMPLETE IT TOMMOROW )" />
     <MESSAGE value="SERVICE &amp; MAIN TESTING COMPLETED&#10;SERVER AND DAO REMAINING , SHOULD COMPLETE BY 6TH EVENING" />
     <MESSAGE value="FACULTY EMPL ALSO COMPLETE" />
-    <option name="LAST_COMMIT_MESSAGE" value="FACULTY EMPL ALSO COMPLETE" />
+    <MESSAGE value="FACULTY DAO ALSO COMPLETE" />
+    <option name="LAST_COMMIT_MESSAGE" value="FACULTY DAO ALSO COMPLETE" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Mini_Project$AdminServiceTest_Showmenu_Department_Test1.ic" NAME="AdminServiceTest.Showmenu_Department_Test1 Coverage Results" MODIFIED="1676820704506" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
