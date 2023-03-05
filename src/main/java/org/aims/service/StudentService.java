@@ -9,142 +9,105 @@ import java.util.Scanner;
 public class StudentService implements UserService {
     private StudentImpl Student;
 
-    public StudentService() {
-
+    Scanner sc;
+    public StudentService(StudentImpl student) {
+        this.Student = student;
     }
 
     public void showmenu() {
         System.out.println("Welcome to Student Menu");
 
-        int option = -1;
+        String option = "Z";
 
-        Scanner sc = new Scanner(System.in);
-        while (option != 0) {
-            System.out.println("\n[0] LOGOUT");
-            System.out.println("[1] Register Courses");
-            System.out.println("[2] De-Register Courses");
-            System.out.println("[3] View Grades");
-            System.out.println("[4] Computer CGPA");
-            System.out.println("[5] Change Password");
-            System.out.println("[6] Courses Offering & Enrolled");
+        this.sc = new Scanner(System.in);
+        while (!option.equals("A")) {
+            System.out.println("[A] LOGOUT");
+            System.out.println("[B] Register Courses");
+            System.out.println("[C] De-Register Courses");
+            System.out.println("[D] View Grades");
+            System.out.println("[E] Computer CGPA");
+            System.out.println("[F] Change Password");
+            System.out.println("[G] Courses Offering & Enrolled");
             System.out.print("Enter your option: ");
-            try {
-                option = sc.nextInt();
-            } catch (Exception e) {
-                System.out.println("\nInvalid Option");
-                sc.nextLine();
-                continue;
-            }
-            System.out.println();
+            option = this.sc.nextLine();
 
             switch (option) {
-                case 0 -> logoutService(); // Checking Done
-                case 1 -> registerCourseService(); // Checking Done
-                case 2 -> deRegisterCourseService(); // Checking Done
-                case 3 -> viewGradesService();  // Checking Done
-                case 4 -> computeCGPAService(); // Checking Done
-                case 5 -> changePasswordService(); // Checking Done
-                case 6 -> CoursesEnrolledService(); // Checking Done
-
+                case "A" -> logoutService(); // Checking Done
+                case "B" -> registerCourseService(); // Checking Done
+                case "C" -> deRegisterCourseService(); // Checking Done
+                case "D" -> viewGradesService();  // Checking Done
+                case "E" -> computeCGPAService(); // Checking Done
+                case "F" -> changePasswordService(); // Checking Done
+                case "G" -> CoursesEnrolledService(); // Checking Done
                 default -> System.out.println("Invalid option");
             }
         }
     }
 
     public boolean login(String email, String password) {
-        try {
-            Student = new StudentImpl();
-            return Student.login(email, password);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return Student.login(email, password);
     }
 
     public void logoutService() {
         Student.logout();
-        System.out.println("Logging Out Successfully\n");
-
+        System.out.println("Logging Out Successfully");
     }
 
     private void changePasswordService() {
         System.out.println("Change Password");
-        Scanner sc = new Scanner(System.in);
         System.out.print("Enter the old password: ");
-        String oldPassword = sc.nextLine();
+        String oldPassword = this.sc.nextLine();
         System.out.print("Enter the new password: ");
-        String newPassword = sc.nextLine();
-        try {
-            String response = Student.changePassword(oldPassword, newPassword);
-            System.out.println(response);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        String newPassword = this.sc.nextLine();
+        String response = Student.changePassword(oldPassword, newPassword);
+        System.out.println(response);
     }
 
     private void registerCourseService() {
         System.out.println("Register Course");
-        Scanner sc = new Scanner(System.in);
         System.out.print("Enter the course code: ");
-        String courseCode = sc.nextLine();
-        try {
-            String response = Student.registerCourse(courseCode);
-            System.out.println(response);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        String courseCode = this.sc.nextLine();
+        String response = Student.registerCourse(courseCode);
+        System.out.println(response);
     }
 
     private void deRegisterCourseService() {
         System.out.println("De-Register Course");
-        Scanner sc = new Scanner(System.in);
         System.out.print("Enter the course code: ");
-        String courseCode = sc.nextLine();
-        try {
-            String response = Student.dropCourse(courseCode);
-            System.out.println(response);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        String courseCode = this.sc.nextLine();
+        String response = Student.dropCourse(courseCode);
+        System.out.println(response);
     }
 
     private void viewGradesService() {
         System.out.println("View Grades");
-        try {
-            String[] response = Student.viewGrades();
-            for (String s : response) {
-                System.out.println(s);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        String[] response = Student.viewGrades();
+        if(response == null) {
+            System.out.println("No Grades Available");
+            return;
+        }
+        for (String s : response) {
+            System.out.println(s);
         }
     }
 
     private void computeCGPAService() {
         System.out.println("Compute CGPA");
-        try {
-            double response = Student.computeCGPA();
-            System.out.println(response);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        double response = Student.computeCGPA();
+        System.out.println(response);
     }
 
     private void CoursesEnrolledService() {
-        try {
-            String[] response = Student.viewCoursesEnrolled();
-            System.out.println("Enrolled Courses");
-            for (String s : response) {
-                System.out.println(s);
-            }
-            System.out.println("=====================================");
-            System.out.println("Courses Offering");
-            response = Student.viewCoursesOffered();
-            for (String s : response) {
-                System.out.println(s);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        String[] response = Student.viewCoursesEnrolled();
+        System.out.println("Enrolled Courses");
+        for (String s : response) {
+            System.out.println(s);
+        }
+        System.out.println("=====================================");
+        System.out.println("Courses Offering");
+        response = Student.viewCoursesOffered();
+        for (String s : response) {
+            System.out.println(s);
         }
     }
 }

@@ -23,9 +23,10 @@ public class AcademicEmployeeImpl implements userDAL {
     private final String username = "postgres";
     private final String databasePassword = "2020csb1068";
 
-    private final academicDAO academicDAO = new academicDAO();
+    private academicDAO academicDAO;
 
-    public AcademicEmployeeImpl() throws SQLException {
+    public AcademicEmployeeImpl( academicDAO AcademicDAO) throws SQLException {
+        this.academicDAO= AcademicDAO;
         con = DriverManager.getConnection(connectionString, username, databasePassword);
     }
 
@@ -105,7 +106,6 @@ public class AcademicEmployeeImpl implements userDAL {
         for (String s : courses) {
             String[] split = s.split(" ");
             String query = "INSERT INTO batch_curriculum_" + batch + " (\"department_id\",\"catalog_id\",\"type\") VALUES('" + academicDAO.getdepartmentid(Department) + "','" + academicDAO.getCatalogid(split[0]) + "','" + split[1] + "')";
-
             con.createStatement().execute(query);
         }
         for (String s : credits) {
@@ -120,18 +120,18 @@ public class AcademicEmployeeImpl implements userDAL {
     public String startSemester(int Year, String Semester) {
 
         if (academicDAO.checkSemesterStatus("ONGOING-GS") || academicDAO.checkSemesterStatus("ONGOING-CO"))
-            return "A Semester Already Ongoing\n";
+            return "A Semester Already Ongoing";
 
         if (academicDAO.checkSemesterValidity(Semester, Year))
-            return "Semester Already Exists\n";
+            return "Semester Already Exists";
 
         academicDAO.newSemester(Semester, Year);
-        return "Semester Started Successfully\n";
+        return "Semester Started Successfully";
     } // DONE
 
     public String endSemester() {
         if (academicDAO.checkSemesterStatus("ONGOING-CO"))
-            return "Grade Submission Not started\n";
+            return "Grade Submission Not started";
 
         String[] students = academicDAO.getStudentids();
 
@@ -152,7 +152,7 @@ public class AcademicEmployeeImpl implements userDAL {
         try {
             con.createStatement().execute("UPDATE time_semester SET status='ENDED' WHERE status!='ENDED'");
             con.createStatement().execute("TRUNCATE TABLE courses_offering CASCADE");
-            return "Semester Ended\n";
+            return "Semester Ended";
         } catch (SQLException e) {
             return "Unable to end the semester";
 
@@ -165,7 +165,7 @@ public class AcademicEmployeeImpl implements userDAL {
     } // DONE
 
     public String changePassword(String oldPassword, String newPassword) {
-        if (newPassword.matches("[\\w]*\\s[\\w]*")) {
+        if (newPassword.matches("[\\w]*\\s+[\\w]*")) {
             return "\nPassword Cannot Contain Spaces";
         }
 
@@ -192,9 +192,9 @@ public class AcademicEmployeeImpl implements userDAL {
     public String createCourseTypes(String courseType, String alias) {
         try {
             con.createStatement().execute("INSERT INTO course_types VALUES ('" + courseType + "','" + alias + "')");
-            return "Course Type Created Successfully\n";
+            return "Course Type Created Successfully";
         } catch (SQLException e) {
-            return "Course Type Already Exists\n";
+            return "Course Type Already Exists";
         }
     } // No Need for DAO
 

@@ -11,241 +11,196 @@ import java.util.Scanner;
 public class AcademicEmployeeService implements UserService {
     private AcademicEmployeeImpl AcademicEmployee;
 
-    public AcademicEmployeeService() {
-
+    Scanner sc;
+    public AcademicEmployeeService( AcademicEmployeeImpl AcademicEmployee) {
+        this.AcademicEmployee = AcademicEmployee;
     }
+
 
     public void showmenu() {
         System.out.println("Welcome to Academic Staff Menu\n");
 
-        int option = -1;
+        String option="Z";
 
-        Scanner sc = new Scanner(System.in);
+        this.sc = new Scanner(System.in);
 
-        while (option != 0) {
-            System.out.println("[0] LOGOUT");
-            System.out.println("[1] Add Course in Catalog");
-            System.out.println("[2] Start Semester");
-            System.out.println("[3] End Semester");
-            System.out.println("[4] View Grades");
-            System.out.println("[5] Create Batch");
-            System.out.println("[6] Change Password");
-            System.out.println("[7] Generate Report");
-            System.out.println("[8] Create Course Types");
-            System.out.println("[9] Check Graduation");
-            System.out.println("[10] Start Grade Submission");
-            System.out.print("\nEnter your option: ");
+        while (!option.equals("A")) {
+            System.out.println("[A] LOGOUT");
+            System.out.println("[B] Add Course in Catalog");
+            System.out.println("[C] Start Semester");
+            System.out.println("[D] End Semester");
+            System.out.println("[E] View Grades");
+            System.out.println("[G] Create Batch");
+            System.out.println("[G] Change Password");
+            System.out.println("[H] Generate Report");
+            System.out.println("[I] Create Course Types");
+            System.out.println("[J] Check Graduation");
+            System.out.println("[K] Start Grade Submission");
+            System.out.println("Enter your option");
+            option = this.sc.nextLine();
 
-            try {
-                option = sc.nextInt();
-            } catch (Exception e) {
-                System.out.println("Invalid Input");
-                sc.nextLine();
-                continue;
-            }
-
-            System.out.println();
+            System.out.println(option);
             switch (option) {
-                case 0 -> logoutService();   // Checking Done
-                case 1 -> addCourseInCatalogService(); // Checking Done
-                case 2 -> startSemesterService(); // Checking Done
-                case 3 -> endSemesterService(); // Checking Done
-                case 4 -> viewGradesService(); // Checking Done
-                case 5 -> createCurriculumService(); // Checking Done
-                case 6 -> changePasswordService();  // Checking Done
-                case 7 -> generateReportService(); // Checking Done
-                case 8 -> createCourseTypesService(); // Checking Done
-                case 9 -> checkGraduationService(); // Checking Done
-                case 10 -> startGradeSubmissionService(); // Checking Done
-                default -> System.out.println("\nInvalid option\n");
+                case "A" -> logoutService();   // Checking Done
+                case "B" -> addCourseInCatalogService(); // Checking Done
+                case "C" -> startSemesterService(); // Checking Done
+                case "D" -> endSemesterService(); // Checking Done
+                case "E" -> viewGradesService(); // Checking Done
+                case "F" -> createCurriculumService(); // Checking Done
+                case "G" -> changePasswordService();  // Checking Done
+                case "H" -> generateReportService(); // Checking Done
+                case "I" -> createCourseTypesService(); // Checking Done
+                case "J" -> checkGraduationService(); // Checking Done
+                case "K" -> startGradeSubmissionService(); // Checking Done
+                default -> System.out.println("Invalid option");
             }
         }
     }
 
     public boolean login(String email, String password) {
-        try {
-            AcademicEmployee = new AcademicEmployeeImpl();
-            return AcademicEmployee.login(email, password);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+        return AcademicEmployee.login(email, password);
     }
 
     private void logoutService() {
-        try {
-            String response = AcademicEmployee.logout();
-            System.out.println(response);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        String response = AcademicEmployee.logout();
+        System.out.println(response);
     }
     private void addCourseInCatalogService() {
         try {
-            Scanner sc = new Scanner(System.in);
-            System.out.println("Add Course in Catalog\n");
+            System.out.println("Add Course in Catalog");
             System.out.print("Enter Course Code: ");
-            String courseCode = sc.nextLine();
+            String courseCode = this.sc.nextLine();
             System.out.print("Enter Course Name: ");
-            String courseName = sc.nextLine();
+            String courseName = this.sc.nextLine();
             System.out.print("Enter Course Department: ");
-            String courseDepartment = sc.nextLine();
+            String courseDepartment = this.sc.nextLine();
             System.out.print("Enter Course Lectures Hours: ");
-            int Lectures = sc.nextInt();
+            int Lectures = this.sc.nextInt();
             System.out.print("Enter Course Tutorials Hours: ");
-            int Tutorials = sc.nextInt();
+            int Tutorials = this.sc.nextInt();
             System.out.print("Enter Course Practical Hours: ");
-            int Practical = sc.nextInt();
+            int Practical = this.sc.nextInt();
             System.out.print("Enter Course Self-Study Hours: ");
-            int SelfStudy = sc.nextInt();
+            int SelfStudy = this.sc.nextInt();
             System.out.print("Enter Course Credits: ");
-            double Credits = sc.nextDouble();
+            double Credits = this.sc.nextDouble();
             System.out.print("Enter Number of Pre-Requisite: ");
-            int preRequisite = sc.nextInt();
+            int preRequisite = this.sc.nextInt();
             String[] preRequisiteList = new String[preRequisite + 1];
             if (preRequisite > 0)
                 System.out.println("Enter Pre-Requisite Course Code each in new line: ");
             preRequisiteList[0] = courseCode;
             for (int i = 1; i < preRequisite + 1; i++) {
-                String data = sc.nextLine();
+                String data = this.sc.nextLine();
                 if (data.equals(""))
-                    data = sc.nextLine();
+                    data = this.sc.nextLine();
                 preRequisiteList[i] = data;
             }
 
-            System.out.println();
             String response = AcademicEmployee.addCourseInCatalog(courseCode, courseName, courseDepartment, Lectures, Tutorials, Practical, SelfStudy, Credits, preRequisiteList);
             System.out.println(response);
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Error in Adding Course in Catalog\n");
+            System.out.println("Error in Adding Course in Catalog");
         }
     }
 
     private void startSemesterService() {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Enter the Semester Number: ");
-        String semesterNumber = sc.nextLine();
-        System.out.print("Enter the Semester Year: ");
-        int semesterYear = sc.nextInt();
-        System.out.println();
-        try {
-            String response = AcademicEmployee.startSemester(semesterYear, semesterNumber);
-            System.out.println(response);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Error in Starting the semester\n");
+        System.out.println("Enter the Semester Number");
+        String semesterNumber = this.sc.nextLine();
+        int semesterYear;
+        while (true) {
+            try {
+                System.out.println("Enter the Semester Year");
+                semesterYear = Integer.parseInt(this.sc.nextLine());
+                break;
+            } catch (Exception e) {
+                System.out.println("Invalid Input");
+            }
         }
+        String response = AcademicEmployee.startSemester(semesterYear, semesterNumber);
+        System.out.println(response);
     }
 
     private void endSemesterService() {
-        try {
-            String response = AcademicEmployee.endSemester();
-            System.out.println(response);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Error in Ending the semester\n");
-        }
+        String response = AcademicEmployee.endSemester();
+        System.out.println(response);
     }
 
     private void viewGradesService() {
         System.out.println("View Grades");
-        System.out.print("Enter the email address of the student: ");
-        Scanner sc = new Scanner(System.in);
-        String email = sc.nextLine();
-        try {
-            String[] response = AcademicEmployee.viewGrades(email);
-            if (response == null)
-                System.out.println("No Grades Available");
-            for (String s : response) {
-                System.out.println(s);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        System.out.println("Enter the email address of the student");
+        String email = this.sc.nextLine();
+        String[] response = AcademicEmployee.viewGrades(email);
+        if (response == null){
+            System.out.println("No Grades Available");
+            return;
+        }
+        for (String s : response) {
+            System.out.println(s);
         }
     }
 
     private void createCurriculumService() {
-        System.out.println("Create Batch");
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Enter the batch number: ");
-        int batchNumber = sc.nextInt();
-        System.out.print("Enter the Department: ");
-        String department = sc.nextLine();
-
-        if (department.equals(""))
-            department = sc.nextLine();
-
-        System.out.print("\nEnter Number of courses you want to enter in whole Curriculum: ");
-        int numberOfCourses = sc.nextInt();
-        String[] courses = new String[numberOfCourses];
-
-        if (numberOfCourses > 0)
-            System.out.println("Enter Course Code followed by type alias in new lines: ");
-        for (int i = 0; i < numberOfCourses; i++) {
-            String data = sc.nextLine();
-            if (data.equals(""))
-                data = sc.nextLine();
-            courses[i] = data;
-        }
-
-        System.out.print("\nEnter Number of credit-types you want to enter in whole Curriculum: ");
-        int numberOfCreditTypes = sc.nextInt();
-
-        String[] credits = new String[numberOfCreditTypes];
-
-        if (numberOfCreditTypes > 0)
-            System.out.println("Enter Credit Type followed by Number of Credits in new lines");
-
-        for (int i = 0; i < numberOfCreditTypes; i++) {
-            String data = sc.nextLine();
-            if (data.equals(""))
-                data = sc.nextLine();
-            credits[i] = data;
-        }
-
-        System.out.println();
         try {
+            System.out.println("Create Batch");
+            System.out.print("Enter the batch number: ");
+            int batchNumber = this.sc.nextInt();
+            System.out.print("Enter the Department: ");
+            String department = this.sc.nextLine();
+            if (department.equals(""))
+                department = this.sc.nextLine();
+            System.out.println("Enter Number of courses you want to enter in whole Curriculum: ");
+            int numberOfCourses = sc.nextInt();
+            String[] courses = new String[numberOfCourses];
+            if (numberOfCourses > 0)
+                System.out.println("Enter Course Code followed by type alias in new lines: ");
+            for (int i = 0; i < numberOfCourses; i++) {
+                String data = this.sc.nextLine();
+                if (data.equals(""))
+                    data = this.sc.nextLine();
+                courses[i] = data;
+            }
+            System.out.println("Enter Number of credit-types you want to enter in whole Curriculum: ");
+            int numberOfCreditTypes = this.sc.nextInt();
+
+            String[] credits = new String[numberOfCreditTypes];
+            if (numberOfCreditTypes > 0)
+                System.out.println("Enter Credit Type followed by Number of Credits in new lines");
+            for (int i = 0; i < numberOfCreditTypes; i++) {
+                String data = this.sc.nextLine();
+                if (data.equals(""))
+                    data = this.sc.nextLine();
+                credits[i] = data;
+            }
             String response = AcademicEmployee.createCurriculum(batchNumber, courses, credits, department);
             System.out.println(response);
-        } catch (Exception e) {
-            e.printStackTrace();
+        }
+        catch (Exception e) {
+            System.out.println("Error in Creating Curriculum");
         }
 
     }
 
     private void changePasswordService() {
-        System.out.println("\nChange Password");
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Enter the old password: ");
-        String oldPassword = sc.nextLine();
-        System.out.println();
-        System.out.print("Enter the new password: ");
-        String newPassword = sc.nextLine();
-        System.out.println();
-        System.out.println();
-        try {
-            String response = AcademicEmployee.changePassword(oldPassword, newPassword);
-            System.out.println(response);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        System.out.println("Change Password");
+        System.out.println("Enter the old password");
+        String oldPassword = this.sc.nextLine();
+        System.out.println("Enter the new password");
+        String newPassword = this.sc.nextLine();
+        String response = AcademicEmployee.changePassword(oldPassword, newPassword);
+        System.out.println(response);
     }
 
     private void generateReportService() {
         System.out.println("Generate Report");
-
         try {
             Map<String, String[]> response;
             response = AcademicEmployee.generateReport();
-
             String path = "D:\\CS305\\Mini_Project\\Transcript";
-
 
             // Writing to a file
             for (Map.Entry<String, String[]> entry : response.entrySet()) {
                 File fp = new File(path + "\\" + entry.getKey() + ".txt");
-
                 for (String s : entry.getValue()) {
                     try {
                         FileWriter fw = new FileWriter(fp, true);
@@ -257,7 +212,6 @@ public class AcademicEmployeeService implements UserService {
                     }
                 }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -265,42 +219,25 @@ public class AcademicEmployeeService implements UserService {
 
     private void createCourseTypesService() {
         System.out.println("Create Course Types");
-        Scanner sc = new Scanner(System.in);
-        System.out.print("\nEnter the name of the Course Type: ");
-        String courseType = sc.nextLine();
-        System.out.print("\nEnter the alias of the Course Type: ");
-        String alias = sc.nextLine();
-        System.out.println();
-        try {
-            String response = AcademicEmployee.createCourseTypes(courseType, alias);
-            System.out.println(response);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        System.out.println("Enter the name of the Course Type: ");
+        String courseType = this.sc.nextLine();
+        System.out.println("Enter the alias of the Course Type: ");
+        String alias = this.sc.nextLine();
+        String response = AcademicEmployee.createCourseTypes(courseType, alias);
+        System.out.println(response);
     }
 
     private void checkGraduationService() {
         System.out.println("Check Graduation");
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Enter the email address of the student: ");
-        String email = sc.nextLine();
-        System.out.println();
-        try {
-            String response = AcademicEmployee.checkGraduation(email);
-            System.out.println(response);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        System.out.println("Enter the email address of the student");
+        String email = this.sc.nextLine();
+        String response = AcademicEmployee.checkGraduation(email);
+        System.out.println(response);
     }
 
     private void startGradeSubmissionService() {
         System.out.println("Start Grade Submission");
-
-        try {
-            String response = AcademicEmployee.startGradeSubmission();
-            System.out.println(response);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        String response = AcademicEmployee.startGradeSubmission();
+        System.out.println(response);
     }
 }

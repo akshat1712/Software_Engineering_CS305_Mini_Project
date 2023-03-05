@@ -1,19 +1,27 @@
 package org.aims;
 
+import org.aims.dataAccess.academicDAO;
 import org.aims.dataAccess.facultyDAO;
+import org.aims.dataAccess.studentDAO;
 import org.aims.service.*;
-import org.aims.userimpl.AdminImpl;
-import org.aims.userimpl.FacultyImpl;
-import org.aims.userimpl.userDAL;
+import org.aims.userimpl.*;
 
 import java.util.Scanner;
 
 public class Main {
 
     private static void studentMain(String email, String password){
-        UserService studentService = new StudentService();
+
+        StudentImpl student;
+        studentDAO studentDAO;
+
+        try{
+            studentDAO = new studentDAO();
+            student = new StudentImpl(studentDAO);
+        }catch (Exception e){return;}
+
+        UserService studentService = new StudentService(student);
         if (studentService.login(email, password)) {
-            System.out.println("Login Successful");
             studentService.showmenu();
         } else {
             System.out.println("Login Failed");
@@ -21,23 +29,17 @@ public class Main {
     }
 
     private static void facultyMain(String email, String password){
-        // MY CODE
         FacultyImpl faculty;
         facultyDAO facultyDAO;
 
         try {
             facultyDAO = new facultyDAO();
             faculty = new FacultyImpl(facultyDAO);
-        } catch (Exception e) {
-            System.out.println("Error in connecting to database");
-            return;
-        }
+        }catch (Exception e){return;}
+
         UserService facultyService = new FacultyService(faculty);
-        // MY CODE
-//        UserService facultyService = new FacultyService();
 
         if (facultyService.login(email, password)) {
-            System.out.println("Login Successful");
             facultyService.showmenu();
         } else {
             System.out.println("Login Failed");
@@ -45,9 +47,17 @@ public class Main {
     }
 
     private static void acadMain(String email, String password){
-        UserService academicEmployeeService = new AcademicEmployeeService();
+
+        AcademicEmployeeImpl academicEmployee;
+        academicDAO academicDAO;
+
+        try{
+            academicDAO = new academicDAO();
+            academicEmployee = new AcademicEmployeeImpl(academicDAO);
+        }catch (Exception e){return;}
+
+        UserService academicEmployeeService = new AcademicEmployeeService(academicEmployee);
         if (academicEmployeeService.login(email, password)) {
-            System.out.println("Login Successful");
             academicEmployeeService.showmenu();
         } else {
             System.out.println("Login Failed");
@@ -59,14 +69,9 @@ public class Main {
         AdminImpl adminImpl;
         try{
             adminImpl = new AdminImpl();
-        }catch (Exception e){
-            System.out.println("Error in connecting to database");
-            return;
-        }
+        }catch (Exception e){return;}
         UserService adminService = new AdminService(adminImpl);
-
         if (adminService.login(email, password)) {
-            System.out.println("Login Successful");
             adminService.showmenu();
         } else {
             System.out.println("Login Failed");
@@ -84,13 +89,7 @@ public class Main {
             System.out.println("Select [D] for Admin");
             System.out.println("Select [E] to Exit");
             System.out.println("Please enter your choice");
-            try {
-                option = sc.nextLine();
-            } catch (Exception e) {
-                System.out.println("Invalid option");
-                sc.nextLine();
-                continue;
-            }
+            option = sc.nextLine();
             if (option.equals("E")) {
                 System.out.println("Thank you for using the system");
                 break;

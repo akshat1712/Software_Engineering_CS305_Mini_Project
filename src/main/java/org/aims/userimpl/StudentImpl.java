@@ -20,9 +20,10 @@ public class StudentImpl implements userDAL {
     private final String username = "postgres";
     private final String databasePassword = "2020csb1068";
 
-    private final studentDAO studentDAO = new studentDAO();
+    private final studentDAO studentDAO;
 
-    public StudentImpl() throws SQLException {
+    public StudentImpl( studentDAO StudentDAO) throws SQLException {
+        this.studentDAO = StudentDAO;
         con = DriverManager.getConnection(connectionString, username, databasePassword);
     }
 
@@ -45,29 +46,29 @@ public class StudentImpl implements userDAL {
 
     public String changePassword(String oldPassword, String newPassword) {
 
-        if (newPassword.matches("[\\w]*\\s[\\w]*")) {
-            return "\nPassword Cannot Contain Spaces";
+        if (newPassword.matches("[\\w]*\\s+[\\w]*")) {
+            return "Password Cannot Contain Spaces";
         }
 
         if (studentDAO.checkPassword(email, oldPassword)) {
             studentDAO.changePassword(email, newPassword);
-            return "\nPassword Changed Successfully";
+            return "Password Changed Successfully";
         } else
-            return "\nIncorrect Old Password";
+            return "Incorrect Old Password";
     }
 
     public String registerCourse(String courseCode) {
 
         if (!studentDAO.checkCourseOffering(courseCode)) {
-            return "\nCourse Not Offered";
+            return "Course Not Offered";
         }
 
         if (studentDAO.checkCourseEnrollment(email, courseCode)) {
-            return "\nCourse Already Enrolled";
+            return "Course Already Enrolled";
         }
 
         if (!studentDAO.checkSemesterStatus("ONGOING-CO")) {
-            return "\nSemester Not Started";
+            return "Semester Not Started";
         }
 
         double credits_enrolled = studentDAO.creditsEnrolled(email);
@@ -89,7 +90,7 @@ public class StudentImpl implements userDAL {
         System.out.println(prevSemesterCredits);
 
         if (credits_courses + credits_enrolled > 0.625 * (prevSemesterCredits))
-            return "\nCredits Exceeded";
+            return "Credits Exceeded";
 
         double CGPA = computeCGPA();
 
@@ -98,14 +99,14 @@ public class StudentImpl implements userDAL {
         System.out.println(CGPA_pre_req);
 
         if (CGPA_pre_req > CGPA)
-            return "\nCGPA Criteria Not Satisfied";
+            return "CGPA Criteria Not Satisfied";
 
         if (studentDAO.checkSemesterStatus("ONGOING-GR")) {
-            return "\nGrade Submission has started, So you cannot register for new courses";
+            return "Grade Submission has started, So you cannot register for new courses";
         }
 
         if (studentDAO.checkCourseTranscript(email, courseCode)) {
-            return "\nCourse Already Taken";
+            return "Course Already Taken";
         }
 
 
@@ -113,7 +114,7 @@ public class StudentImpl implements userDAL {
 
         for (String s : preReq) {
             if (!studentDAO.checkCourseTranscript(email, s)) {
-                return "\nYou Do not satify the College prerequisite";
+                return "You Do not satify the College prerequisite";
             }
         }
 
@@ -121,38 +122,38 @@ public class StudentImpl implements userDAL {
 
         for (String s : preReq) {
             if (!studentDAO.checkCourseTranscript(email, s)) {
-                return "\nYou Do not satify the Offer prerequisite";
+                return "You Do not satify the Offer prerequisite";
             }
 
             int grade1 = studentDAO.getGradeCourse(email, s);
             int grade2 = studentDAO.getReqGradeOffer(courseCode, s);
 
             if (grade1 < grade2)
-                return "\nYou Do not satify the Offer prerequisite";
+                return "You Do not satify the Offer prerequisite";
         }
 
 
         if (studentDAO.insertCourseEnrollement(email, courseCode))
-            return "\nCourse Registered";
+            return "Course Registered";
         else
-            return "\nCourse Not Registered";
+            return "Course Not Registered";
     }
 
     public String dropCourse(String courseCode) {
 
         if (!studentDAO.checkCourseOffering(courseCode))
-            return "\nCourse Not Being Offered Right Now";
+            return "Course Not Being Offered Right Now";
 
         if (!studentDAO.checkCourseEnrollment(email, courseCode))
-            return "\nCourse Not Registered";
+            return "Course Not Registered";
 
         if (!studentDAO.checkSemesterStatus("ONGOING-CO"))
-            return "\nGrade Submission has started, So you cannot drop the course";
+            return "Grade Submission has started, So you cannot drop the course";
 
         if (studentDAO.deleteCourseEnrollement(email, courseCode))
-            return "\nCourse Dropped";
+            return "Course Dropped";
         else
-            return "\nCourse Not Dropped";
+            return "Course Not Dropped";
     }
 
     public String[] viewGrades() {

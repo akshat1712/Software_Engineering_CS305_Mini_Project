@@ -121,7 +121,7 @@ public class FacultyImpl implements userDAL {
     }
 
     public String changePassword(String oldPassword, String newPassword) {
-        if (newPassword.matches("[\\w]*\\s[\\w]*")) {
+        if (newPassword.matches("[\\w]*\\s+[\\w]*")) {
             return "Password Cannot Contain Spaces";
         }
 

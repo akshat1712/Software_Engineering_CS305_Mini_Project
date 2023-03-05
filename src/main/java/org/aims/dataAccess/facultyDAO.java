@@ -28,7 +28,6 @@ public class facultyDAO {
             ResultSet rs = con.createStatement().executeQuery("SELECT * FROM passwords WHERE email='" + email + "' AND password='" + password + "' AND role='FACULTY'");
             return rs.next();
         } catch (SQLException e) {
-
             return false;
         }
     }
@@ -41,7 +40,6 @@ public class facultyDAO {
             con.createStatement().execute("INSERT INTO login_logs (\"email\",\"login_time\",\"logout_time\") VALUES ('" + email + "','" + DateTime.format(date) + "','2000-01-01 00:00:00');");
             return true;
         } catch (SQLException e) {
-
             return false;
         }
     }
@@ -204,7 +202,6 @@ public class facultyDAO {
         }
     }
 
-    //Checked
     public String getCatalogid(String CourseCode) {
         try {
             ResultSet rs = con.createStatement().executeQuery("SELECT catalog_id FROM courses_catalog WHERE course_code='" + CourseCode + "'");
@@ -284,7 +281,6 @@ public class facultyDAO {
             return false;
         }
     }
-
     public boolean updateGrade(String email, String courseCode, String grade) {
         try {
             con.createStatement().execute("UPDATE transcript_student_" + getStudentid(email) + " SET grade='" + grade + "' WHERE catalog_id='" + getCatalogid(courseCode) + "'");
@@ -294,7 +290,6 @@ public class facultyDAO {
             return false;
         }
     }
-
     public boolean insertCourse(String email, String courseCode, double CGPA) {
         try {
             con.createStatement().execute("SELECT INSERT_COURSE_OFFERED('" + getCatalogid(courseCode) + "','" + getfacultyidEmail(email) + "','" + courseCode + "','" + CGPA + "')");
@@ -304,7 +299,6 @@ public class facultyDAO {
             return false;
         }
     }
-
     public boolean insertCoursePreReq(String courseCode, String preReq, String grade, int type) {
         try {
             String query = "INSERT INTO courses_pre_req_offering (\"offering_id\",\"pre_req\",\"grade\",\"type\") VALUES ('" + getOfferingId(courseCode) + "','" + preReq + "','" + grade + "','" + type + "')";
@@ -315,7 +309,6 @@ public class facultyDAO {
             return false;
         }
     }
-
     public boolean insertCourseFaculty(String email, String courseCode) {
         try {
             con.createStatement().execute("INSERT INTO courses_teaching_faculty_" + getfacultyidEmail(email) + " (\"catalog_id\") VALUES ('" + getCatalogid(courseCode) + "')");

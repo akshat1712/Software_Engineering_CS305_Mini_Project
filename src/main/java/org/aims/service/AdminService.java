@@ -26,15 +26,7 @@ public class AdminService implements UserService {
             System.out.println("[D] Add Academic Staff"); // CHECKING DONE PROPERLY
             System.out.println("[E] Add Department");    // CHECKING DONE PROPERLY
             System.out.println("Enter your option");
-            try {
-                option = sc.nextLine();
-                System.out.println(option);
-            } catch (Exception e) {
-                System.out.println(e);
-                System.out.println("INVALID OPTION");
-                sc.nextLine();
-                continue;
-            }
+            option = sc.nextLine();
             switch (option) {
                 case "A" -> System.out.println("Logging out");
                 case "B" -> AddFacultyService(); // Checking Done

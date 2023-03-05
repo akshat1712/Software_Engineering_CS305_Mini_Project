@@ -1,25 +1,20 @@
 package org.aims.service;
-
-
 import org.aims.userimpl.FacultyImpl;
-
 import java.sql.SQLException;
 import java.util.Scanner;
 
 public class FacultyService implements UserService {
     private FacultyImpl Faculty;
-
     Scanner sc;
     public FacultyService( FacultyImpl faculty) {
         this.Faculty= faculty;
-        sc= new Scanner(System.in);
     }
 
     public void showmenu() {
         System.out.println("Welcome to Faculty Menu");
         String option = "E";
 
-        Scanner sc = new Scanner(System.in);
+        this.sc = new Scanner(System.in);
         while (!option.equals("A")) {
             System.out.println("[A] LOGOUT");
             System.out.println("[B] Offer Course");  // Checking Done
@@ -28,18 +23,14 @@ public class FacultyService implements UserService {
             System.out.println("[E] Change Password"); // Checking Done
             System.out.println("[F] Update Grades"); //Checking Done
             System.out.print("Enter your option: ");
-            try {
-                option = sc.nextLine();
-            } catch (Exception e) {
-                System.out.println("Invalid option");
-                sc.nextLine();
-                continue;
-            }
+
+            option = this.sc.nextLine();
+
             switch (option) {
                 case "A" -> logoutService(); // Checking Done
                 case "B" -> offerCourseService(); // Checking Done  ( HAVE TO THINK HOW TO MINIMIZE IT )
                 case "C" -> takeBackCourseService(); // Checking Done
-                case "D" -> viewGradesService(sc); // Checking Done
+                case "D" -> viewGradesService(); // Checking Done
                 case "E" -> changePasswordService(); // Checking Done
                 case "F" -> updateGradesService(); // Checking Done
                 default -> System.out.println("Invalid option");
@@ -48,127 +39,102 @@ public class FacultyService implements UserService {
     }
 
     public boolean login(String email, String password) {
-        try {
-            return Faculty.login(email, password);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+        return Faculty.login(email, password);
     }
 
     public void logoutService() {
-        try {
-            Faculty.logout();
-            System.out.println("Logged out successfully");
-        } catch ( Exception e) {
-            e.printStackTrace();
-        }
+        Faculty.logout();
+        System.out.println("Logged out successfully");
     }
 
     private void offerCourseService() {
-//        Scanner sc = new Scanner(System.in);
         System.out.println("Offer Course");
-        System.out.print("Enter the course code: ");
-        String courseCode = sc.nextLine();
-        System.out.print("Enter the CGPA Cutoff ( Enter -1 if None ): ");
-        double cgpaCutoff = sc.nextDouble();
+        System.out.println("Enter the course code");
+        String courseCode = this.sc.nextLine();
+        double cgpaCutoff;
+        while( true ) {
+            System.out.println("Enter the CGPA Cutoff ( Enter -1 if None )");
+            try {
+                cgpaCutoff = this.sc.nextDouble();
+                break;
+            } catch (Exception e) {
+                System.out.println("Invalid Input");
+                this.sc.nextLine();
+            }
+        }
 
         int n = -1;
         System.out.println("Enter the prerequisites List");
 
         while (n < 0) {
-            System.out.print("Enter number of lines you want to enter: ");
-            n = sc.nextInt();
-            if (n < 0) {
+            System.out.println("Enter number of lines you want to enter");
+            try {
+                n = this.sc.nextInt();
+            }
+            catch (Exception e) {
                 System.out.println("Invalid Input");
+                n=-1;
+                this.sc.nextLine();
+                continue;
+            }
+            if (n < 0) {
+                System.out.println("Enter a valid number");
             }
         }
+
         if (n > 0)
             System.out.println("Enter prerequisites with grades separated by ,");
         String[] prerequisites = new String[n];
 
-        sc.nextLine();
+        this.sc.nextLine();
         for (int i = 0; i < n; i++) {
-            prerequisites[i] = sc.nextLine();
+            prerequisites[i] = this.sc.nextLine();
         }
-        System.out.println();
-        try {
-            String response = Faculty.offerCourse(courseCode, cgpaCutoff, prerequisites);
-            System.out.println(response);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Unable to offer course");
-        }
+        String response = Faculty.offerCourse(courseCode, cgpaCutoff, prerequisites);
+        System.out.println(response);
 
     }
 
     private void takeBackCourseService() {
-//        Scanner sc = new Scanner(System.in);
         System.out.println("Take Back Course");
-        System.out.print("Enter the course code: ");
-        String courseCode = sc.nextLine();
-        System.out.println();
-        try {
-            String response = Faculty.takeBackCourse(courseCode);
-            System.out.println(response);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Unable to take back course");
-        }
+        System.out.println("Enter the course code");
+        String courseCode = this.sc.nextLine();
+        String response = Faculty.takeBackCourse(courseCode);
+        System.out.println(response);
     }
 
-    private void viewGradesService(Scanner sc) {
+    private void viewGradesService() {
         System.out.println("View Grades");
-        System.out.print("Enter the email address of the student: ");
-//        Scanner sc = new Scanner(System.in);
-        String email = sc.nextLine();
-        try {
-            String[] response = Faculty.viewGrades(email);
-            if (response == null) {
-                System.out.println("No grades available");
-                return;
-            }
-            for (String s : response) {
-                System.out.println(s);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        System.out.println("Enter the email address of the student");
+        String email = this.sc.nextLine();
+        String[] response = Faculty.viewGrades(email);
+        if (response == null) {
+            System.out.println("No grades available");
+            return;
+        }
+        for (String s : response) {
+            System.out.println(s);
         }
     }
 
     private void changePasswordService() {
         System.out.println("Change Password");
-//        Scanner sc = new Scanner(System.in);
-        System.out.print("Enter the old password: ");
-        String oldPassword = sc.nextLine();
-        System.out.print("Enter the new password: ");
-        String newPassword = sc.nextLine();
-        System.out.println();
-        try {
-            String response = Faculty.changePassword(oldPassword, newPassword);
-            System.out.println(response);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        System.out.println("Enter the old password");
+        String oldPassword = this.sc.nextLine();
+        System.out.println("Enter the new password");
+        String newPassword = this.sc.nextLine();
+        String response = Faculty.changePassword(oldPassword, newPassword);
+        System.out.println(response);
     }
 
     private void updateGradesService() {
         System.out.println("Update Grades");
-//        Scanner sc = new Scanner(System.in);
         String courseCode;
-        System.out.print("Enter the course code: ");
-        courseCode = sc.nextLine();
-        System.out.print("Enter the path of the csv File: ");
-        String path = sc.nextLine();
-        System.out.println();
-        try {
-            String response = Faculty.updateGrades(path, courseCode);
-            System.out.println(response);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Unable to update grades");
-        }
-
-
+        System.out.println("Enter the course code");
+        courseCode = this.sc.nextLine();
+        System.out.println("Enter the path of the csv File");
+        String path = this.sc.nextLine();
+        String response = Faculty.updateGrades(path, courseCode);
+        System.out.println(response);
     }
 }
