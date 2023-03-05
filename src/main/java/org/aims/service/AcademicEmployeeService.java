@@ -30,7 +30,7 @@ public class AcademicEmployeeService implements UserService {
             System.out.println("[C] Start Semester");
             System.out.println("[D] End Semester");
             System.out.println("[E] View Grades");
-            System.out.println("[G] Create Batch");
+            System.out.println("[F] Create Batch");
             System.out.println("[G] Change Password");
             System.out.println("[H] Generate Report");
             System.out.println("[I] Create Course Types");
@@ -200,7 +200,7 @@ public class AcademicEmployeeService implements UserService {
 
             // Writing to a file
             for (Map.Entry<String, String[]> entry : response.entrySet()) {
-                File fp = new File(path + "\\" + entry.getKey() + ".txt");
+                File fp = new File(path + "\\" + entry.getKey().substring(0,13) + ".txt");
                 for (String s : entry.getValue()) {
                     try {
                         FileWriter fw = new FileWriter(fp, true);

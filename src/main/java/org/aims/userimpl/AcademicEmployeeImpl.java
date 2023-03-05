@@ -1,33 +1,20 @@
 package org.aims.userimpl;
 
 import org.aims.dataAccess.academicDAO;
-
 import org.postgresql.util.PSQLException;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
 
 public class AcademicEmployeeImpl implements userDAL {
-
-    private  String email;
-    private  String password;
-
-    private final Connection con;
-
-    private final String connectionString = "jdbc:postgresql://localhost:5432/postgres";
-    private final String username = "postgres";
-    private final String databasePassword = "2020csb1068";
+    private String email;
+    private String password;
 
     private academicDAO academicDAO;
 
-    public AcademicEmployeeImpl( academicDAO AcademicDAO) throws SQLException {
-        this.academicDAO= AcademicDAO;
-        con = DriverManager.getConnection(connectionString, username, databasePassword);
+    public AcademicEmployeeImpl(academicDAO AcademicDAO) throws SQLException {
+        this.academicDAO = AcademicDAO;
     }
 
 
@@ -105,15 +92,11 @@ public class AcademicEmployeeImpl implements userDAL {
 
         for (String s : courses) {
             String[] split = s.split(" ");
-//            String query = "INSERT INTO batch_curriculum_" + batch + " (\"department_id\",\"catalog_id\",\"type\") VALUES('" + academicDAO.getdepartmentid(Department) + "','" + academicDAO.getCatalogid(split[0]) + "','" + split[1] + "')";
-//            con.createStatement().execute(query);
-            academicDAO.createBatchCurriculum(batch,Department,split[0],split[1]);
+            academicDAO.createBatchCurriculum(batch, Department, split[0], split[1]);
         }
         for (String s : credits) {
             String[] split = s.split(" ");
-//            String query = "INSERT INTO batch_credits_" + batch + " (\"department_id\",\"type\",\"credits\") VALUES('" + academicDAO.getdepartmentid(Department) + "','" + split[0] + "','" + split[1] + "')";
-//            con.createStatement().execute(query);
-            academicDAO.createBatchCredits(batch,Department,split[0],split[1]);
+            academicDAO.createBatchCredits(batch, Department, split[0], split[1]);
         }
         return "Curriculum Created Successfully\n";
 
@@ -151,14 +134,8 @@ public class AcademicEmployeeImpl implements userDAL {
         for (String s : faculties) {
             academicDAO.updateFacultyTranscript(s);
         }
-        try {
-            con.createStatement().execute("UPDATE time_semester SET status='ENDED' WHERE status!='ENDED'");
-            con.createStatement().execute("TRUNCATE TABLE courses_offering CASCADE");
-            return "Semester Ended";
-        } catch (SQLException e) {
-            return "Unable to end the semester";
-
-        }
+        academicDAO.endSemester();
+        return "Semester Ended";
 
     } //DONE
 
@@ -179,29 +156,22 @@ public class AcademicEmployeeImpl implements userDAL {
     } // DONE
 
     public Map<String, String[]> generateReport() throws PSQLException, SQLException {
-
-        ResultSet rs1 = con.createStatement().executeQuery("SELECT * FROM students");
-
+        String[] email = academicDAO.getStudentEmail();
         Map<String, String[]> transcriptAllStudents = new HashMap<>();
-
-        while (rs1.next()) {
-            String[] grades = viewGrades(rs1.getString("email"));
-            transcriptAllStudents.put(rs1.getString("entry_number"), grades);
+        for (String s : email) {
+            String[] grades = viewGrades(s);
+            transcriptAllStudents.put(s, grades);
         }
         return transcriptAllStudents;
-    } // No Need for DAO
+    }
 
     public String createCourseTypes(String courseType, String alias) {
-        try {
-            con.createStatement().execute("INSERT INTO course_types VALUES ('" + courseType + "','" + alias + "')");
-            return "Course Type Created Successfully";
-        } catch (SQLException e) {
-            return "Course Type Already Exists";
-        }
-    } // No Need for DAO
+        academicDAO.CreateCourseTypes(courseType, alias);
+        return "Course Type Created Successfully";
+    }
 
 
-    public String checkGraduation(String email)  {
+    public String checkGraduation(String email) {
 
         String[] courses_Curriculum = academicDAO.getCurriculumCourse(email);
 
@@ -224,7 +194,7 @@ public class AcademicEmployeeImpl implements userDAL {
             return "Not Enough Credits of Open Elective";
 
         return "Student can Graduate";
-    }  // HAVE TO BE CONVERTED TO DAO
+    }
 
 
     public String startGradeSubmission() {
@@ -232,6 +202,6 @@ public class AcademicEmployeeImpl implements userDAL {
             return "Cannot Start Grade Submission";
         academicDAO.updateSemesterStatus("ONGOING-CO", "ONGOING-GS");
         return "Grade Submission Started";
-    } //DONE
+    }
 }
 

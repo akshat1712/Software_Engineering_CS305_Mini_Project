@@ -52,7 +52,7 @@ public class academicDAO {
     }
     public boolean checkPassword(String email, String oldPassword) {
         try {
-            ResultSet rs1 = con.createStatement().executeQuery("SELECT * FROM passwords WHERE email='" + email + "' AND password='" + oldPassword + "' AND role='STUDENT'");
+            ResultSet rs1 = con.createStatement().executeQuery("SELECT * FROM passwords WHERE email='" + email + "' AND password='" + oldPassword + "' AND role='ACAD_STAFF'");
             return rs1.next();
         } catch (SQLException e) {
             return false;
@@ -405,6 +405,43 @@ public class academicDAO {
             return 1;
         }catch(SQLException e){
             return -1;
+        }
+    }
+
+    public int endSemester(){
+        try{
+            con.createStatement().execute("UPDATE time_semester SET status='ENDED' WHERE status!='ENDED'");
+            con.createStatement().execute("TRUNCATE TABLE courses_offering CASCADE");
+            return 1;
+        }catch(SQLException e){
+            return -1;
+        }
+    }
+    public int CreateCourseTypes(String courseType, String alias){
+        try {
+            con.createStatement().execute("INSERT INTO course_types VALUES ('" + courseType + "','" + alias + "')");
+            return 1;
+        } catch (SQLException e) {
+            return -1;
+        }
+    }
+    public String[] getStudentEmail(){
+        try{
+            ResultSet rs = con.createStatement().executeQuery("SELECT email FROM students");
+            int count = 0;
+            while(rs.next()){
+                count++;
+            }
+            String[] emails = new String[count];
+            rs = con.createStatement().executeQuery("SELECT email FROM students");
+            int i = 0;
+            while(rs.next()){
+                emails[i] = rs.getString("email");
+                i++;
+            }
+            return emails;
+        }catch(SQLException e){
+            return null;
         }
     }
 }
