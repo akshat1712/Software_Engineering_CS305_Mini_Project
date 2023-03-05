@@ -6,18 +6,129 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 public class TestFile3 {
-
     facultyDAO testDAO = new facultyDAO();
-    @BeforeAll()
-    public void setup(){
+    static String dummyEmail = "dummy@iitrpr.ac.in";
+    static String dummyPassword = "dummy@123";
+    static String dummyCourseCode="DUM123";
 
+    static String FacultyEmail = "FAC@iitrpr.ac.in";
+    static String StudentEmail = "STU@iitrpr.ac.in";
+    static String Department="DUMMY";
+    static String CourseCode="CS000";
+
+    private static final String connectionString = "jdbc:postgresql://localhost:5432/postgres";
+    private static final String username = "postgres";
+    private static final String databasePassword = "2020csb1068";
+    private static Connection con;
+
+    static {
+        try {
+            con = DriverManager.getConnection(connectionString, username, databasePassword);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    @AfterAll()
-    public void teardown(){
 
+    @Test
+    @Order(1)
+    public void setup() throws Exception{
+        con.createStatement().executeQuery("SELECT INSERT_DEPARTMENT('" + Department + "');");
+        con.createStatement().executeQuery("SELECT INSERT_STUDENT('" + "STUDENT1" + "','" + "2020CSB9999" + "','" + StudentEmail + "','" + "1" + "','" + "2020" + "','" + "7897897898" + "','" + "IIT ROPAR" + "')");
+        con.createStatement().executeQuery("SELECT INSERT_FACULTY('" + "FACULTY1" + "','" + FacultyEmail + "','" + "1" + "','" + "2022-1-1" + "','" + "4564564565" + "','" + "IIT ROPAR" + "')");
+    }
+    
+    @Test
+    @Order(2)
+    public void testLogin() throws Exception {
+        testDAO.login(dummyEmail, dummyPassword);
+    }
+    @Test
+    @Order(3)
+    public void testLoginLogs() throws Exception {
+        testDAO.loginLogs(dummyEmail);
+    }
+    @Test
+    @Order(4)
+    public void testLogoutLogs() throws Exception {
+        testDAO.logoutLogs(dummyEmail);
     }
 
+    @Test
+    @Order(5)
+    public void testCheckPassword() throws Exception {
+        testDAO.checkPassword(dummyEmail, dummyPassword);
+    }
+
+    @Test
+    @Order(6)
+    public void testChangePassword() throws Exception {
+        testDAO.changePassword(dummyEmail, dummyPassword);
+    }
+
+    @Test
+    @Order(7)
+    public void testCheckCourseOffering() throws Exception {
+        testDAO.checkCourseOffering(dummyCourseCode);
+    }
+
+    @Test
+    @Order(8)
+    public void testCheckCourseCatalog() throws Exception {
+        testDAO.checkCourseCatalog(dummyCourseCode);
+    }
+
+    @Test
+    @Order(9)
+    public void testCheckSemesterStatus() throws Exception {
+        testDAO.checkSemesterStatus("ENDED");
+    }
+
+    @Test
+    @Order(10)
+    public void testgetStudentEmail() throws Exception {
+        testDAO.getStudentEmail();
+    }
+
+    @Test
+    @Order(100)
+    public void teardown() throws SQLException {
+        String query="DELETE FROM login_logs WHERE email='"+dummyEmail+"'";
+        System.out.println(query);
+        con.createStatement().execute(query);
+
+        query="DROP TABLE transcript_student_"+testDAO.getStudentid(StudentEmail);
+        System.out.println(query);
+        con.createStatement().execute(query);
+
+        query="DROP TABLE courses_enrolled_student_"+testDAO.getStudentid(StudentEmail);
+        System.out.println(query);
+        con.createStatement().execute(query);
+
+        query="DELETE FROM students WHERE email='"+StudentEmail+"'";
+        System.out.println(query);
+        con.createStatement().execute(query);
+
+        query="DROP TABLE courses_teaching_faculty_"+testDAO.getfacultyidEmail(FacultyEmail);
+        System.out.println(query);
+        con.createStatement().execute(query);
+
+        query="DROP TABLE transcript_faculty_"+testDAO.getfacultyidEmail(FacultyEmail);
+        System.out.println(query);
+        con.createStatement().execute(query);
+
+        query="DELETE FROM faculties WHERE email='"+FacultyEmail+"'";
+        System.out.println(query);
+        con.createStatement().execute(query);
+
+        query="DELETE FROM departments WHERE name='"+Department+"'";
+        System.out.println(query);
+        con.createStatement().execute(query);
+    }
 
 }
