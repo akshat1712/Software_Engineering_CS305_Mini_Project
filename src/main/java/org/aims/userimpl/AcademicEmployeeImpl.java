@@ -105,13 +105,15 @@ public class AcademicEmployeeImpl implements userDAL {
 
         for (String s : courses) {
             String[] split = s.split(" ");
-            String query = "INSERT INTO batch_curriculum_" + batch + " (\"department_id\",\"catalog_id\",\"type\") VALUES('" + academicDAO.getdepartmentid(Department) + "','" + academicDAO.getCatalogid(split[0]) + "','" + split[1] + "')";
-            con.createStatement().execute(query);
+//            String query = "INSERT INTO batch_curriculum_" + batch + " (\"department_id\",\"catalog_id\",\"type\") VALUES('" + academicDAO.getdepartmentid(Department) + "','" + academicDAO.getCatalogid(split[0]) + "','" + split[1] + "')";
+//            con.createStatement().execute(query);
+            academicDAO.createBatchCurriculum(batch,Department,split[0],split[1]);
         }
         for (String s : credits) {
             String[] split = s.split(" ");
-            String query = "INSERT INTO batch_credits_" + batch + " (\"department_id\",\"type\",\"credits\") VALUES('" + academicDAO.getdepartmentid(Department) + "','" + split[0] + "','" + split[1] + "')";
-            con.createStatement().execute(query);
+//            String query = "INSERT INTO batch_credits_" + batch + " (\"department_id\",\"type\",\"credits\") VALUES('" + academicDAO.getdepartmentid(Department) + "','" + split[0] + "','" + split[1] + "')";
+//            con.createStatement().execute(query);
+            academicDAO.createBatchCredits(batch,Department,split[0],split[1]);
         }
         return "Curriculum Created Successfully\n";
 

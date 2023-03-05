@@ -1,14 +1,13 @@
 package org.aims.facultyTest;
 
 import org.aims.dataAccess.facultyDAO;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 
 public class TestFile3 {
     facultyDAO testDAO = new facultyDAO();
@@ -35,14 +34,47 @@ public class TestFile3 {
     }
 
 
-    @Test
-    @Order(1)
+    @BeforeAll
     public void setup() throws Exception{
         con.createStatement().executeQuery("SELECT INSERT_DEPARTMENT('" + Department + "');");
         con.createStatement().executeQuery("SELECT INSERT_STUDENT('" + "STUDENT1" + "','" + "2020CSB9999" + "','" + StudentEmail + "','" + "1" + "','" + "2020" + "','" + "7897897898" + "','" + "IIT ROPAR" + "')");
         con.createStatement().executeQuery("SELECT INSERT_FACULTY('" + "FACULTY1" + "','" + FacultyEmail + "','" + "1" + "','" + "2022-1-1" + "','" + "4564564565" + "','" + "IIT ROPAR" + "')");
+        con.createStatement().executeQuery("SELECT INSERT_COURSE_CATALOG('" + CourseCode + "','" + CourseCode + "','" + "1" + "'," + 1 + "," + 1 + "," + 1 + "," + 1 + "," + 1 + ")");
     }
-    
+
+    @AfterAll
+    public void teardown() throws SQLException {
+        String query="DELETE FROM login_logs WHERE email='"+dummyEmail+"'";
+        con.createStatement().execute(query);
+
+        query="DELETE FROM courses_offering WHERE faculty_id="+testDAO.getfacultyidEmail(FacultyEmail);
+        con.createStatement().execute(query);
+
+        query="DROP TABLE transcript_student_"+testDAO.getStudentid(StudentEmail);
+        con.createStatement().execute(query);
+
+        query="DROP TABLE courses_enrolled_student_"+testDAO.getStudentid(StudentEmail);
+        con.createStatement().execute(query);
+
+        query="DELETE FROM students WHERE email='"+StudentEmail+"'";
+        con.createStatement().execute(query);
+
+        query="DROP TABLE courses_teaching_faculty_"+testDAO.getfacultyidEmail(FacultyEmail);
+        con.createStatement().execute(query);
+
+        query="DROP TABLE transcript_faculty_"+testDAO.getfacultyidEmail(FacultyEmail);
+        con.createStatement().execute(query);
+
+        query="DELETE FROM faculties WHERE email='"+FacultyEmail+"'";
+        con.createStatement().execute(query);
+
+        query="DELETE FROM courses_catalog WHERE course_code='"+CourseCode+"'";
+        con.createStatement().execute(query);
+
+        query="DELETE FROM departments WHERE name='"+Department+"'";
+        con.createStatement().execute(query);
+    }
+
     @Test
     @Order(2)
     public void testLogin() throws Exception {
@@ -91,44 +123,80 @@ public class TestFile3 {
 
     @Test
     @Order(10)
-    public void testgetStudentEmail() throws Exception {
+    public void testGetStudentEmail() throws Exception {
         testDAO.getStudentEmail();
     }
 
     @Test
-    @Order(100)
-    public void teardown() throws SQLException {
-        String query="DELETE FROM login_logs WHERE email='"+dummyEmail+"'";
-        System.out.println(query);
-        con.createStatement().execute(query);
-
-        query="DROP TABLE transcript_student_"+testDAO.getStudentid(StudentEmail);
-        System.out.println(query);
-        con.createStatement().execute(query);
-
-        query="DROP TABLE courses_enrolled_student_"+testDAO.getStudentid(StudentEmail);
-        System.out.println(query);
-        con.createStatement().execute(query);
-
-        query="DELETE FROM students WHERE email='"+StudentEmail+"'";
-        System.out.println(query);
-        con.createStatement().execute(query);
-
-        query="DROP TABLE courses_teaching_faculty_"+testDAO.getfacultyidEmail(FacultyEmail);
-        System.out.println(query);
-        con.createStatement().execute(query);
-
-        query="DROP TABLE transcript_faculty_"+testDAO.getfacultyidEmail(FacultyEmail);
-        System.out.println(query);
-        con.createStatement().execute(query);
-
-        query="DELETE FROM faculties WHERE email='"+FacultyEmail+"'";
-        System.out.println(query);
-        con.createStatement().execute(query);
-
-        query="DELETE FROM departments WHERE name='"+Department+"'";
-        System.out.println(query);
-        con.createStatement().execute(query);
+    @Order(11)
+    public void testGetStudentid1() throws Exception {
+        testDAO.getStudentid(StudentEmail);
     }
 
+    @Test
+    @Order(12)
+    public void testGetStudentid2() throws Exception {
+        testDAO.getStudentid(FacultyEmail);
+    }
+
+    @Test
+    @Order(13)
+    public void testUpdateGrade() throws Exception {
+        testDAO.updateGrade(StudentEmail, CourseCode, "8");
+    }
+
+    @Test
+    @Order(14)
+    public void testInsertCourseFaculty() throws Exception {
+        testDAO.insertCourseFaculty(FacultyEmail, CourseCode);
+    }
+
+    @Test
+    @Order(15)
+    public void testInsertCourse() throws Exception {
+        testDAO.insertCourse(FacultyEmail, CourseCode,8.20);
+    }
+
+    @Test
+    @Order(17)
+    public void testGetfacultyidCourse() throws Exception {
+        testDAO.getfacultyidCourse(CourseCode);
+    }
+
+    @Test
+    @Order(18)
+    public void getCountCourseTranscript() throws Exception {
+        testDAO.getcountCoursetranscript(StudentEmail);
+    }
+
+    @Test
+    @Order(19)
+    public void testDeleteCourseEnrollement() throws Exception {
+        testDAO.deleteCourseEnrollement(StudentEmail, CourseCode);
+    }
+
+    @Test
+    @Order(20)
+    public void testCheckCourseEnrollement() throws Exception {
+        testDAO.checkCourseEnrollment(StudentEmail, CourseCode);
+    }
+
+    @Test
+    @Order(21)
+    public void testViewGrade() throws Exception {
+        testDAO.viewGrades(StudentEmail);
+    }
+
+
+    @Test
+    @Order(22)
+    public void testGetOfferingCourse() throws Exception {
+        int res=testDAO.getOfferingId(CourseCode);
+        System.out.println(res);
+    }
+    @Test
+    @Order(21)
+    public void testDeleteCourse() throws Exception {
+        testDAO.deleteCourseOffering(FacultyEmail, CourseCode);
+    }
 }

@@ -10,14 +10,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class academicDAO {
-
-
     private Connection con;
-
     private final String connectionString = "jdbc:postgresql://localhost:5432/postgres";
     private final String username = "postgres";
     private final String databasePassword = "2020csb1068";
-
     public academicDAO() {
         try {
             this.con = DriverManager.getConnection(connectionString, username, databasePassword);
@@ -25,7 +21,6 @@ public class academicDAO {
             System.out.println(e);
         }
     }
-
     public boolean login(String email, String password) {
         try {
             ResultSet rs = con.createStatement().executeQuery("SELECT * FROM passwords WHERE email='" + email + "' AND password='" + password + "' AND role='ACAD_STAFF'");
@@ -34,8 +29,6 @@ public class academicDAO {
             return false;
         }
     }
-
-    // Checked
     public boolean loginLogs(String email) {
         try {
             SimpleDateFormat DateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -46,8 +39,6 @@ public class academicDAO {
             return false;
         }
     }
-
-    // Checked
     public boolean logoutLogs(String email) {
         try {
             SimpleDateFormat DateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -59,8 +50,6 @@ public class academicDAO {
             return false;
         }
     }
-
-    // Checked
     public boolean checkPassword(String email, String oldPassword) {
         try {
             ResultSet rs1 = con.createStatement().executeQuery("SELECT * FROM passwords WHERE email='" + email + "' AND password='" + oldPassword + "' AND role='STUDENT'");
@@ -69,8 +58,6 @@ public class academicDAO {
             return false;
         }
     }
-
-    // Checked
     public boolean changePassword(String email, String newPassword) {
         try {
             con.createStatement().execute("UPDATE passwords SET password='" + newPassword + "' WHERE email='" + email + "'");
@@ -80,7 +67,6 @@ public class academicDAO {
             return false;
         }
     }
-
     public boolean checkCourseCatalog(String CourseCode) {
         try {
             ResultSet rs = con.createStatement().executeQuery("SELECT * FROM courses_catalog WHERE course_code='" + CourseCode + "'");
@@ -90,7 +76,6 @@ public class academicDAO {
             return false;
         }
     }
-
     public int getdepartmentid(String dept) {
         try {
             ResultSet rs = con.createStatement().executeQuery("SELECT * FROM departments WHERE name='" + dept + "'");
@@ -102,7 +87,6 @@ public class academicDAO {
             return -1;
         }
     }
-
     public boolean insertCourseCatalog(String courseName, String courseCode, String dept, int l, int t, int p, int s, double c) {
         try {
             ResultSet rs = con.createStatement().executeQuery("SELECT INSERT_COURSE_CATALOG('" + courseName + "','" + courseCode + "','" + getdepartmentid(dept) + "'," + l + "," + t + "," + p + "," + s + "," + c + ")");
@@ -112,7 +96,6 @@ public class academicDAO {
             return true;
         }
     }
-
     public boolean insertCoursePre(String courseCode, String preCourseCode) {
         try {
             con.createStatement().execute("INSERT INTO courses_pre_req(\"catalog_id\",\"pre_req\") VALUES('" + getCatalogid(courseCode) + "','" + preCourseCode + "')");
@@ -122,7 +105,6 @@ public class academicDAO {
             return false;
         }
     }
-
     public String getCatalogid(String CourseCode) {
         try {
             ResultSet rs = con.createStatement().executeQuery("SELECT catalog_id FROM courses_catalog WHERE course_code='" + CourseCode + "'");
@@ -133,7 +115,6 @@ public class academicDAO {
             return null;
         }
     }
-
     public boolean checkSemesterValidity(String semester, int year) {
         try {
             ResultSet rs = con.createStatement().executeQuery("SELECT * FROM time_semester WHERE semester='" + semester + "' AND year=" + year);
@@ -143,7 +124,6 @@ public class academicDAO {
             return false;
         }
     }
-
     public boolean newSemester(String semester, int Year) {
         try {
             con.createStatement().execute("INSERT INTO time_semester VALUES ('" + semester + "','" + Year + "','ONGOING-CO')");
@@ -153,7 +133,6 @@ public class academicDAO {
             return true;
         }
     }
-
     public boolean createbatch(int batch) {
         try {
             ResultSet rs = con.createStatement().executeQuery("SELECT * FROM batch WHERE batch=" + batch);
@@ -167,7 +146,6 @@ public class academicDAO {
             return false;
         }
     }
-
     public boolean checkCourseTypes(String courseType) {
         try {
             ResultSet rs = con.createStatement().executeQuery("SELECT * FROM course_types WHERE type_alias='" + courseType + "'");
@@ -177,7 +155,6 @@ public class academicDAO {
             return false;
         }
     }
-
     public boolean checkSemesterStatus(String Status) {
         try {
             ResultSet rs = con.createStatement().executeQuery("SELECT * FROM time_semester WHERE status='" + Status + "'");
@@ -187,7 +164,6 @@ public class academicDAO {
             return false;
         }
     }
-
     public boolean updateSemesterStatus(String oldStatus, String newStatus) {
         try {
             con.createStatement().execute("UPDATE time_semester SET status='" + newStatus + "' WHERE status='" + oldStatus + "'");
@@ -197,8 +173,6 @@ public class academicDAO {
             return false;
         }
     }
-
-
     public int getStudentid(String email) {
         try {
             ResultSet rs = con.createStatement().executeQuery("SELECT student_id FROM students WHERE email='" + email + "'");
@@ -209,7 +183,6 @@ public class academicDAO {
             return -1;
         }
     }
-
     public int getcountCoursetranscript(String email) {
         try {
             ResultSet rs = con.createStatement().executeQuery("SELECT count(*) FROM transcript_student_" + getStudentid(email));
@@ -220,7 +193,6 @@ public class academicDAO {
             return -1;
         }
     }
-
     public String[] viewGrades(String email) {
         try {
             if (getStudentid(email) == -1) return null;
@@ -239,7 +211,6 @@ public class academicDAO {
             return null;
         }
     }
-
     public String[] getStudentids() {
         try {
             ResultSet rs = con.createStatement().executeQuery("SELECT student_id FROM students");
@@ -262,7 +233,6 @@ public class academicDAO {
             return null;
         }
     }
-
     public String[] getfacultyids() {
         try {
             ResultSet rs = con.createStatement().executeQuery("SELECT faculty_id FROM faculties");
@@ -285,7 +255,6 @@ public class academicDAO {
             return null;
         }
     }
-
     public boolean checkGradeSubmission(String id) {
         try {
             ResultSet rs = con.createStatement().executeQuery("SELECT * FROM courses_enrolled_student_" + id + " WHERE grade is NULL");
@@ -295,18 +264,6 @@ public class academicDAO {
             return false;
         }
     }
-
-    public int getFacultyid(String email) {
-        try {
-            ResultSet rs = con.createStatement().executeQuery("SELECT faculty_id FROM faculties WHERE email='" + email + "'");
-            if (rs.next()) return rs.getInt("faculty_id");
-            else return -1;
-        } catch (SQLException e) {
-
-            return -1;
-        }
-    }
-
     public boolean updateStudentTranscript(String id) {
         try {
             String query = "INSERT INTO transcript_student_" + id + " (\"catalog_id\",\"grade\",\"semester\",\"year\") SELECT catalog_id,grade," + getSemester() + "," + getYear() + " FROM courses_enrolled_student_" + id;
@@ -319,7 +276,6 @@ public class academicDAO {
             return false;
         }
     }
-
     public boolean updateFacultyTranscript(String id) {
         try {
             String query = "INSERT INTO transcript_faculty_" + id + " (\"catalog_id\",\"semester\",\"year\") SELECT catalog_id," + getSemester() + "," + getYear() + " FROM courses_teaching_faculty_" + id;
@@ -331,7 +287,6 @@ public class academicDAO {
             return false;
         }
     }
-
     public String getSemester() {
         try {
             ResultSet rs = con.createStatement().executeQuery("SELECT * FROM time_semester WHERE status!='ENDED'");
@@ -342,7 +297,6 @@ public class academicDAO {
             return "0";
         }
     }
-
     public int getYear() {
         try {
             ResultSet rs = con.createStatement().executeQuery("SELECT * FROM time_semester WHERE status!='ENDED'");
@@ -353,7 +307,6 @@ public class academicDAO {
             return 0;
         }
     }
-
     public String[] getCurriculumCourse(String email) {
         try {
             ResultSet rs0 = con.createStatement().executeQuery("SELECT * FROM students WHERE email='" + email + "'");
@@ -379,7 +332,6 @@ public class academicDAO {
             return null;
         }
     }
-
     public boolean checkCourseTranscript(String email, String courseCode) {
         try {
             ResultSet rs = con.createStatement().executeQuery("SELECT * FROM transcript_student_" + getStudentid(email) + " WHERE catalog_id='" + getCatalogid(courseCode) + "'");
@@ -390,8 +342,6 @@ public class academicDAO {
             return false;
         }
     }
-
-
     public int getCreditsType(String email, String type) {
         try {
             ResultSet rs0 = con.createStatement().executeQuery("SELECT * FROM students WHERE email='" + email + "'");
@@ -411,7 +361,6 @@ public class academicDAO {
             return -1;
         }
     }
-
     public Map<String, Double> getEnrolledCreditsType(String email) {
         try {
 
@@ -439,9 +388,23 @@ public class academicDAO {
         }
     }
 
-//
-//    public static void main(String[] args) {
-//        academicDAO s = new academicDAO();
-//        System.out.println(s.checkGradeSubmission("4"));
-//    }
+    public int createBatchCurriculum(int batch,String dept,String courseCode,String type){
+        try{
+            String query = "INSERT INTO batch_curriculum_" + batch + " (\"department_id\",\"catalog_id\",\"type\") VALUES('" + getdepartmentid(dept) + "','" + getCatalogid(courseCode) + "','" + type + "')";
+            con.createStatement().execute(query);
+            return 1;
+        }catch(SQLException e){
+            return -1;
+        }
+    }
+
+    public int createBatchCredits(int batch,String dept,String courseCode,String type){
+        try{
+            String query = "INSERT INTO batch_credits_" + batch + " (\"department_id\",\"type\",\"credits\") VALUES('" + getdepartmentid(dept) + "','" + courseCode + "','" + type + "')";
+            con.createStatement().execute(query);
+            return 1;
+        }catch(SQLException e){
+            return -1;
+        }
+    }
 }
