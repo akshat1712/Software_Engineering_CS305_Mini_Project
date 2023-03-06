@@ -71,15 +71,6 @@ CREATE TABLE IF NOT EXISTS "courses_pre_req" (
     FOREIGN KEY ("catalog_id") REFERENCES "courses_catalog" ("catalog_id")
 );
 
-CREATE TABLE IF NOT EXISTS "courses_pre_req_offering" (
-    "pre_req_id" SERIAL PRIMARY KEY,
-    "offering_id" INTEGER NOT NULL,
-    "pre_req" VARCHAR(5) NOT NULL,
-    "grade" VARCHAR(2) NOT NULL,
-    "type" INTEGER NOT NULL,
-    FOREIGN KEY ("offering_id") REFERENCES "courses_offering" ("offering_id")
-)
-
 CREATE TABLE IF NOT EXISTS "courses_offering" (
     "offering_id" SERIAL PRIMARY KEY,
     "catalog_id" INTEGER,
@@ -90,13 +81,14 @@ CREATE TABLE IF NOT EXISTS "courses_offering" (
     FOREIGN KEY ("faculty_id") REFERENCES "faculties" ("faculty_id")
 );
 
-CREATE TABLE IF NOT EXISTS "capstone" (
-    "student_id" INTEGER NOT NULL,
-    "faculty_id" INTEGER NOT NULL,
-    FOREIGN KEY ("student_id") REFERENCES "students" ("student_id"),
-    FOREIGN KEY ("faculty_id") REFERENCES "faculties" ("faculty_id"),
-    PRIMARY KEY ("student_id")
-);
+CREATE TABLE IF NOT EXISTS "courses_pre_req_offering" (
+    "pre_req_id" SERIAL PRIMARY KEY,
+    "offering_id" INTEGER NOT NULL,
+    "pre_req" VARCHAR(5) NOT NULL,
+    "grade" VARCHAR(2) NOT NULL,
+    "type" INTEGER NOT NULL,
+    FOREIGN KEY ("offering_id") REFERENCES "courses_offering" ("offering_id")
+)
 
 CREATE TABLE IF NOT EXISTS "time_semester"(
     "semester" VARCHAR(1) NOT NULL,
