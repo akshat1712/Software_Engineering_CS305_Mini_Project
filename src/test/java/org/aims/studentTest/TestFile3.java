@@ -25,6 +25,7 @@ public class TestFile3 {
     private static final String username = "postgres";
     private static final String databasePassword = "2020csb1068";
     private static Connection con;
+    Integer year=2010;
 
     static {
         try {
@@ -39,6 +40,17 @@ public class TestFile3 {
         con.createStatement().executeQuery("SELECT INSERT_STUDENT('" + "STUDENT1" + "','" + "2020CSB9999" + "','" + StudentEmail + "','" + "1" + "','" + "2020" + "','" + "7897897898" + "','" + "IIT ROPAR" + "')");
         con.createStatement().executeQuery("SELECT INSERT_FACULTY('" + "FACULTY1" + "','" + FacultyEmail + "','" + "1" + "','" + "2022-1-1" + "','" + "4564564565" + "','" + "IIT ROPAR" + "')");
         con.createStatement().executeQuery("SELECT INSERT_COURSE_CATALOG('" + CourseCode + "','" + CourseCode + "','" + "1" + "'," + 1 + "," + 1 + "," + 1 + "," + 1 + "," + 1 + ")");
+        con.createStatement().execute("INSERT INTO courses_pre_req(\"catalog_id\",\"pre_req\") VALUES('" + testDAO.getCatalogid(CourseCode) + "','" + dummyCourseCode + "')");
+        testDAO.getSemester();
+        testDAO.getYear();
+        con.createStatement().execute("INSERT INTO time_semester VALUES ('" + 1 + "','" + year + "','ONGOING-CO')");
+        testDAO.getcountCourseOffered();
+        testDAO.getCourseOffered();
+        con.createStatement().execute("SELECT INSERT_COURSE_OFFERED('" + testDAO.getCatalogid(CourseCode) + "','" + getfacultyidEmail(FacultyEmail) + "','" + CourseCode + "','" + 8 + "')");
+        testDAO.insertCourseEnrollement(StudentEmail, CourseCode);
+        testDAO.getCourseEnrolled(StudentEmail);
+        con.createStatement().execute("INSERT INTO transcript_student_" + testDAO.getStudentid(StudentEmail) + " VALUES (" + testDAO.getCatalogid(CourseCode) + ",'8','1','2020'" + ")");
+
 
     }
 
@@ -64,6 +76,9 @@ public class TestFile3 {
         query="DELETE FROM students WHERE email='"+StudentEmail+"'";
         con.createStatement().execute(query);
 
+        query="DELETE FROM courses_offering WHERE course_code='"+CourseCode+"'";
+        con.createStatement().execute(query);
+
         query="DROP TABLE courses_teaching_faculty_"+getfacultyidEmail(FacultyEmail);
         con.createStatement().execute(query);
 
@@ -73,7 +88,13 @@ public class TestFile3 {
         query="DELETE FROM faculties WHERE email='"+FacultyEmail+"'";
         con.createStatement().execute(query);
 
+        query="DELETE FROM courses_pre_req WHERE pre_req='"+dummyCourseCode+"'";
+        con.createStatement().execute(query);
+
         query="DELETE FROM courses_catalog WHERE course_code='"+CourseCode+"'";
+        con.createStatement().execute(query);
+
+        query="DELETE FROM time_semester WHERE year="+year+";";
         con.createStatement().execute(query);
 
         query="DELETE FROM departments WHERE name='"+Department+"';";
@@ -131,5 +152,70 @@ public class TestFile3 {
     public void testGetCreditsCourse() throws Exception {
         testDAO.getCreditsCourse(CourseCode);
         testDAO.getCreditsCourse(dummyCourseCode);
+    }
+
+    @Test
+    @Order(12)
+    public void testGetTime() throws Exception{
+        testDAO.getSemester();
+        testDAO.getYear();
+    }
+
+    @Test
+    @Order(13)
+    public void testViewGrade() throws Exception{
+        testDAO.viewGrades(StudentEmail);
+    }
+
+    @Test
+    @Order(14)
+    public void testEnrollement()  throws Exception{
+        testDAO.getcountCourseEnrolled(StudentEmail);
+        testDAO.creditsEnrolled(StudentEmail);
+        testDAO.deleteCourseEnrollement(StudentEmail, CourseCode);
+        testDAO.getcountCourseEnrolled(StudentEmail);
+        testDAO.creditsEnrolled(StudentEmail);
+    }
+
+    @Test
+    @Order(15)
+    public void testGetOffering() throws Exception{
+        testDAO.getOfferingId(CourseCode);
+        testDAO.getOfferingId(dummyCourseCode);
+        testDAO.getcountCourseOffered();
+        testDAO.getCourseOffered();
+    }
+
+    @Test
+    @Order(16)
+    public void testPreReqOffer() throws Exception{
+        testDAO.getPreReqOffer(CourseCode);
+        testDAO.getPreReqOffer(dummyCourseCode);
+        testDAO.getPreReqCollege(dummyCourseCode);
+        testDAO.getPreReqCollege(CourseCode);
+    }
+
+    @Test
+    @Order(17)
+    public void testCGPA() throws Exception{
+        testDAO.getCGPAcriteria(dummyCourseCode);
+        testDAO.getCGPAcriteria(CourseCode);
+    }
+
+    @Test
+    @Order(18)
+    public void testCourseEnrolled() throws Exception{
+        testDAO.getCourseEnrolled(StudentEmail);
+    }
+
+    @Test
+    @Order(18)
+    public void testTranscript() throws Exception{
+        testDAO.creditsEarnedSemesterYear(StudentEmail,"1",2010);
+        testDAO.creditsEarned(StudentEmail);
+        testDAO.gradePointsEarned(StudentEmail);
+        testDAO.checkCourseTranscript(StudentEmail, CourseCode);
+        testDAO.getGradeCourse(StudentEmail, CourseCode);
+        testDAO.getReqGradeOffer(CourseCode,dummyCourseCode);
     }
 }

@@ -40,7 +40,7 @@ public class TestFile3 {
         con.createStatement().executeQuery("SELECT INSERT_STUDENT('" + "STUDENT1" + "','" + "2020CSB9999" + "','" + StudentEmail + "','" + "1" + "','" + "2020" + "','" + "7897897898" + "','" + "IIT ROPAR" + "')");
         con.createStatement().executeQuery("SELECT INSERT_FACULTY('" + "FACULTY1" + "','" + FacultyEmail + "','" + "1" + "','" + "2022-1-1" + "','" + "4564564565" + "','" + "IIT ROPAR" + "')");
         con.createStatement().executeQuery("SELECT INSERT_COURSE_CATALOG('" + CourseCode + "','" + CourseCode + "','" + "1" + "'," + 1 + "," + 1 + "," + 1 + "," + 1 + "," + 1 + ")");
-        con.createStatement().execute("INSERT INTO courses_pre_req(\"catalog_id\",\"pre_req\") VALUES('" + testDAO.getCatalogid(CourseCode) + "','" + dummyCourseCode + "')");
+
     }
 
 
@@ -70,9 +70,6 @@ public class TestFile3 {
         con.createStatement().execute(query);
 
         query="DELETE FROM faculties WHERE email='"+FacultyEmail+"'";
-        con.createStatement().execute(query);
-
-        query="DELETE FROM courses_pre_req WHERE pre_req="+dummyCourseCode;
         con.createStatement().execute(query);
 
         query="DELETE FROM courses_catalog WHERE course_code='"+CourseCode+"'";

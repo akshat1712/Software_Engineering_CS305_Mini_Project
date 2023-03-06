@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="793ca995-c85c-4b5c-99eb-10b3a8b12ea8" name="Changes" comment="ACAD EMPL IN MIDDLE">
+    <list default="true" id="793ca995-c85c-4b5c-99eb-10b3a8b12ea8" name="Changes" comment="ONLY STUDENT DAO REMAINING">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/dataAccess/academicDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/dataAccess/academicDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/userimpl/AcademicEmployeeImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/userimpl/AcademicEmployeeImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/aims/academicsTest/TestFile2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/aims/academicsTest/TestFile2.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/aims/academicsTest/TestFile3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/aims/academicsTest/TestFile3.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/org/aims/facultyTest/TestFile3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/aims/facultyTest/TestFile3.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/org/aims/studentTest/TestFile3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/aims/studentTest/TestFile3.java" afterDir="false" />
     </list>
@@ -20,7 +16,7 @@
   </component>
   <component name="ExportToHTMLSettings">
     <option name="OPEN_IN_BROWSER" value="true" />
-    <option name="OUTPUT_DIRECTORY" value="C:\Users\aksha\OneDrive\Desktop\CR3" />
+    <option name="OUTPUT_DIRECTORY" value="C:\Users\aksha\OneDrive\Desktop\CR2" />
   </component>
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
@@ -35,7 +31,12 @@
         </task>
         <projects_view>
           <tree_state>
-            <expand />
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Mini_Project" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
             <select />
           </tree_state>
         </projects_view>
@@ -106,7 +107,7 @@
       <recent name="org.aims.admin" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.Tests in 'Mini_Project.test'">
+  <component name="RunManager" selected="Gradle.Tests in 'org.aims'">
     <configuration name="Main" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.aims.Main" />
       <module name="Mini_Project.main" />
@@ -189,6 +190,9 @@
       </ExternalSystemSettings>
       <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <EXTENSION ID="com.intellij.execution.ExternalSystemRunConfigurationJavaExtension">
+        <extension name="coverage" sample_coverage="false" runner="jacoco" />
+      </EXTENSION>
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
@@ -279,8 +283,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.Tests in 'Mini_Project.test'" />
         <item itemvalue="Gradle.TestFile3 (1)" />
+        <item itemvalue="Gradle.Tests in 'Mini_Project.test'" />
         <item itemvalue="Gradle.TestFile3" />
         <item itemvalue="Gradle.TestFile2" />
         <item itemvalue="Gradle.TestFile2.testCreateCurriculum6" />
@@ -555,7 +559,14 @@
       <option name="project" value="LOCAL" />
       <updated>1678086991534</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="ONLY STUDENT DAO REMAINING">
+      <created>1678106680110</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1678106680110</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -573,7 +584,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="FACULTY WORK COMPLETED FOR NOW &amp; LOGIN LOGS WORKING IN ACADEMIC EMPLOYEE" />
     <MESSAGE value="STUDENT WORK STARTED" />
     <MESSAGE value="STUDENT WORK IN PROGRESS" />
     <MESSAGE value="ADDING SOME UTILITY FUNCTION" />
@@ -598,7 +608,19 @@
     <MESSAGE value="FACULTY DAO ALSO COMPLETE" />
     <MESSAGE value="REFACTORING DONE" />
     <MESSAGE value="ACAD EMPL IN MIDDLE" />
-    <option name="LAST_COMMIT_MESSAGE" value="ACAD EMPL IN MIDDLE" />
+    <MESSAGE value="ONLY STUDENT DAO REMAINING" />
+    <option name="LAST_COMMIT_MESSAGE" value="ONLY STUDENT DAO REMAINING" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/aims/dataAccess/studentDAO.java</url>
+          <line>78</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Mini_Project$Tests_in__Mini_Project_test_.ic" NAME="Tests in 'Mini_Project.test' Coverage Results" MODIFIED="1678102515258" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
@@ -621,7 +643,8 @@
     <SUITE FILE_PATH="coverage/Mini_Project$TestFile2__1_.ic" NAME="TestFile2 (1) Coverage Results" MODIFIED="1678083014324" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Mini_Project$AdminImplTest_loginTest1.ic" NAME="AdminImplTest.loginTest1 Coverage Results" MODIFIED="1676797291378" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Mini_Project$TestFile2.exec" NAME="TestFile2 Coverage Results" MODIFIED="1678093639618" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="jacoco" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
-    <SUITE FILE_PATH="coverage/Mini_Project$TestFile3__1_.ic" NAME="TestFile3 (1) Coverage Results" MODIFIED="1678104888379" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Mini_Project$TestFile3__1_.exec" NAME="TestFile3 (1) Coverage Results" MODIFIED="1678112243021" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="jacoco" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="true" />
+    <SUITE FILE_PATH="coverage/Mini_Project$TestFile3__1_.ic" NAME="TestFile3 (1) Coverage Results" MODIFIED="1678108695339" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Mini_Project$Tests_in__Mini_Project_test_.exec" NAME="Tests in 'Mini_Project.test' Coverage Results" MODIFIED="1678105182702" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="jacoco" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="true" />
   </component>
 </project>
