@@ -4,11 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="793ca995-c85c-4b5c-99eb-10b3a8b12ea8" name="Changes" comment="FACULTY DAO ALSO COMPLETE">
+    <list default="true" id="793ca995-c85c-4b5c-99eb-10b3a8b12ea8" name="Changes" comment="REFACTORING DONE">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/dataAccess/academicDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/dataAccess/academicDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/service/AcademicEmployeeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/service/AcademicEmployeeService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/userimpl/AcademicEmployeeImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/userimpl/AcademicEmployeeImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/userimpl/StudentImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/userimpl/StudentImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/aims/academicsTest/TestFile2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/aims/academicsTest/TestFile2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/aims/studentTest/TestFile2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/aims/studentTest/TestFile2.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,21 +81,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "last_opened_file_path": "C:/Users/aksha/OneDrive/Desktop/CR",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "configurable.group.build"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/aksha/OneDrive/Desktop/CR&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.build&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
@@ -104,7 +106,7 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration name="TestFile2 (1)" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="TestFile2" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -117,7 +119,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.aims.studentTest.TestFile2&quot;" />
+            <option value="&quot;org.aims.academicsTest.TestFile2&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -127,7 +129,7 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="TestFile2.testChangePassword1" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="TestFile2.testAddCourse2" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -140,7 +142,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.aims.studentTest.TestFile2.testChangePassword1&quot;" />
+            <option value="&quot;org.aims.academicsTest.TestFile2.testAddCourse2&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -150,7 +152,7 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="TestFile3" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="TestFile2.testAddCourse3" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -163,7 +165,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.aims.facultyTest.TestFile3&quot;" />
+            <option value="&quot;org.aims.academicsTest.TestFile2.testAddCourse3&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -173,7 +175,7 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="TestFile3.teardown" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="TestFile2.testAddCourse4" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -186,7 +188,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.aims.facultyTest.TestFile3.teardown&quot;" />
+            <option value="&quot;org.aims.academicsTest.TestFile2.testAddCourse4&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -196,7 +198,7 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="TestFile3.testgetStudentEmail" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="TestFile2.testAddCourse5" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -209,7 +211,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.aims.facultyTest.TestFile3.testgetStudentEmail&quot;" />
+            <option value="&quot;org.aims.academicsTest.TestFile2.testAddCourse5&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -220,19 +222,19 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Gradle.TestFile2 (1)" />
-      <item itemvalue="Gradle.TestFile2.testChangePassword1" />
-      <item itemvalue="Gradle.TestFile3" />
-      <item itemvalue="Gradle.TestFile3.teardown" />
-      <item itemvalue="Gradle.TestFile3.testgetStudentEmail" />
+      <item itemvalue="Gradle.TestFile2" />
+      <item itemvalue="Gradle.TestFile2.testAddCourse2" />
+      <item itemvalue="Gradle.TestFile2.testAddCourse3" />
+      <item itemvalue="Gradle.TestFile2.testAddCourse4" />
+      <item itemvalue="Gradle.TestFile2.testAddCourse5" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.TestFile3" />
-        <item itemvalue="Gradle.TestFile2 (1)" />
-        <item itemvalue="Gradle.TestFile2.testChangePassword1" />
-        <item itemvalue="Gradle.TestFile3.teardown" />
-        <item itemvalue="Gradle.TestFile3.testgetStudentEmail" />
+        <item itemvalue="Gradle.TestFile2" />
+        <item itemvalue="Gradle.TestFile2.testAddCourse5" />
+        <item itemvalue="Gradle.TestFile2.testAddCourse4" />
+        <item itemvalue="Gradle.TestFile2.testAddCourse3" />
+        <item itemvalue="Gradle.TestFile2.testAddCourse2" />
       </list>
     </recent_temporary>
   </component>
@@ -483,7 +485,21 @@
       <option name="project" value="LOCAL" />
       <updated>1678052515437</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="REFACTORING DONE">
+      <created>1678053749506</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1678053749506</updated>
+    </task>
+    <task id="LOCAL-00036" summary="REFACTORING DONE">
+      <created>1678053758966</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1678053758966</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -501,7 +517,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="ACADEMIC EMPLOYEE WORK HALFWAY DONE" />
     <MESSAGE value="FACULTY WORK STARTED" />
     <MESSAGE value="FACULTY WORK COMPLETED FOR NOW &amp; LOGIN LOGS WORKING IN ACADEMIC EMPLOYEE" />
     <MESSAGE value="STUDENT WORK STARTED" />
@@ -526,21 +541,22 @@
     <MESSAGE value="SERVICE &amp; MAIN TESTING COMPLETED&#10;SERVER AND DAO REMAINING , SHOULD COMPLETE BY 6TH EVENING" />
     <MESSAGE value="FACULTY EMPL ALSO COMPLETE" />
     <MESSAGE value="FACULTY DAO ALSO COMPLETE" />
-    <option name="LAST_COMMIT_MESSAGE" value="FACULTY DAO ALSO COMPLETE" />
+    <MESSAGE value="REFACTORING DONE" />
+    <option name="LAST_COMMIT_MESSAGE" value="REFACTORING DONE" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Mini_Project$AdminServiceTest_Showmenu_Department_Test1.ic" NAME="AdminServiceTest.Showmenu_Department_Test1 Coverage Results" MODIFIED="1676820704506" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Mini_Project$TestFile2__2_.ic" NAME="TestFile2 (2) Coverage Results" MODIFIED="1678010709067" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Mini_Project$TestFile1.ic" NAME="TestFile1 Coverage Results" MODIFIED="1678030877993" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
-    <SUITE FILE_PATH="coverage/Mini_Project$TestFile2.ic" NAME="TestFile2 Coverage Results" MODIFIED="1678039880263" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Mini_Project$TestFile2.ic" NAME="TestFile2 Coverage Results" MODIFIED="1678080937480" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Mini_Project$TestFile1__2_.ic" NAME="TestFile1 (2) Coverage Results" MODIFIED="1678018779741" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Mini_Project$AdminServiceTest_ShowmenuTest.ic" NAME="AdminServiceTest.ShowmenuTest Coverage Results" MODIFIED="1676819103689" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Mini_Project$AdminImplTest_login.ic" NAME="AdminImplTest.login Coverage Results" MODIFIED="1676824269442" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Mini_Project$TestFile3.ic" NAME="TestFile3 Coverage Results" MODIFIED="1678051714084" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Mini_Project$AdminImplTest.ic" NAME="AdminImplTest Coverage Results" MODIFIED="1676888429107" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
-    <SUITE FILE_PATH="coverage/Mini_Project$Tests_in__org_aims_.ic" NAME="Tests in 'org.aims' Coverage Results" MODIFIED="1678039937543" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Mini_Project$Tests_in__org_aims_.ic" NAME="Tests in 'org.aims' Coverage Results" MODIFIED="1678074949215" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Mini_Project$TestFile1__1_.ic" NAME="TestFile1 (1) Coverage Results" MODIFIED="1678017021438" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
-    <SUITE FILE_PATH="coverage/Mini_Project$TestFile2__1_.ic" NAME="TestFile2 (1) Coverage Results" MODIFIED="1678048233914" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Mini_Project$TestFile2__1_.ic" NAME="TestFile2 (1) Coverage Results" MODIFIED="1678083014324" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Mini_Project$AdminImplTest_loginTest1.ic" NAME="AdminImplTest.loginTest1 Coverage Results" MODIFIED="1676797291378" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>
