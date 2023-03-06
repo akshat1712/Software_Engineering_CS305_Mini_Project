@@ -352,4 +352,5 @@ public class TestFile2 {
         when(mockstudentDAO.insertCourseEnrollement("2020csb1068@iitrpr.ac.in","CS104")).thenReturn(false);
         assertEquals("Course Not Registered", teststudentImpl.registerCourse("CS104"));
     }
+
 }

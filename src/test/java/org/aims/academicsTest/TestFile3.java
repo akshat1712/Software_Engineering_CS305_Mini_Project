@@ -46,9 +46,13 @@ public class TestFile3 {
 
         testDAO.insertCourseCatalog(CourseCode, CourseCode, Department, 1, 1, 1, 1, 1);
         testDAO.insertCoursePre(CourseCode,dummyCourseCode);
+        testDAO.getYear();
+        testDAO.getSemester();
         testDAO.newSemester("1",year);
         testDAO.createbatch(year);
         testDAO.CreateCourseTypes("DEMO","DM");
+        con.createStatement().execute("INSERT INTO transcript_student_" + testDAO.getStudentid(StudentEmail) + " VALUES (" + testDAO.getCatalogid(CourseCode) + ",'8','1','2010'" + ")");
+
     }
 
     // HELPER FUNCTIONS

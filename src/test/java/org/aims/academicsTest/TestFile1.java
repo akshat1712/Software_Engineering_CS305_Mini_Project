@@ -145,7 +145,7 @@ public class TestFile1 {
     @Order(11)
     public void testGenerateReport() throws Exception{
         Map<String,String[]> res=new HashMap<>();
-        res.put("2020csb5000",new String[]{"CS100 || 8 || 1 || 2021","CS104 || 10 || 1 || 2021"});
+        res.put("2020csb6000@iitrpr.ac.in",new String[]{"CS100 || 8 || 1 || 2021","CS104 || 10 || 1 || 2021"});
         when(mockAcademicEmployeeImpl.generateReport()).thenReturn(res);
 
         String input="H\nA\n";

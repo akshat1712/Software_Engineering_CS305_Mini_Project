@@ -49,7 +49,7 @@ public class TestFile3 {
         con.createStatement().execute("SELECT INSERT_COURSE_OFFERED('" + testDAO.getCatalogid(CourseCode) + "','" + getfacultyidEmail(FacultyEmail) + "','" + CourseCode + "','" + 8 + "')");
         testDAO.insertCourseEnrollement(StudentEmail, CourseCode);
         testDAO.getCourseEnrolled(StudentEmail);
-        con.createStatement().execute("INSERT INTO transcript_student_" + testDAO.getStudentid(StudentEmail) + " VALUES (" + testDAO.getCatalogid(CourseCode) + ",'8','1','2020'" + ")");
+        con.createStatement().execute("INSERT INTO transcript_student_" + testDAO.getStudentid(StudentEmail) + " VALUES (" + testDAO.getCatalogid(CourseCode) + ",'8','1','2010'" + ")");
 
 
     }
@@ -212,10 +212,20 @@ public class TestFile3 {
     @Order(18)
     public void testTranscript() throws Exception{
         testDAO.creditsEarnedSemesterYear(StudentEmail,"1",2010);
+        testDAO.creditsEarnedSemesterYear(StudentEmail,"1",2005);
         testDAO.creditsEarned(StudentEmail);
         testDAO.gradePointsEarned(StudentEmail);
         testDAO.checkCourseTranscript(StudentEmail, CourseCode);
         testDAO.getGradeCourse(StudentEmail, CourseCode);
         testDAO.getReqGradeOffer(CourseCode,dummyCourseCode);
+    }
+
+    @Test
+    @Order(19)
+    public void testLeft() throws Exception{
+        testDAO.getStudentid(FacultyEmail);
+        testDAO.viewGrades(FacultyEmail);
+        testDAO.getcountCourseEnrolled(FacultyEmail);
+        testDAO.getCourseEnrolled(FacultyEmail);
     }
 }

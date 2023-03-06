@@ -58,7 +58,7 @@ public class TestFile1 {
     @Order(4)
     public void testViewGrades1(){
         when(mockfacultyImpl.viewGrades("2020csb1068@iitrpr.ac.in")).thenReturn(new String[]{"CS100 || 1 || 2022 || 8","CS104 || 1 || 2021 || 9"});
-        String input="D\n2020csb1068@iitrpr.ac.in\nA\n";
+        String input="Z\nD\n2020csb1068@iitrpr.ac.in\nA\n";
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         testfacultyService.showmenu();
         assertTrue(outContent.toString().contains("CS100 || 1 || 2022 || 8"));

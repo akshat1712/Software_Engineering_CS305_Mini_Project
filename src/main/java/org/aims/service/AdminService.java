@@ -40,12 +40,7 @@ public class AdminService implements UserService {
 
     @Override
     public boolean login(String email, String password) {
-        try {
-            return Admin.login(email,password);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+        return Admin.login(email,password);
     }
 
     private void AddFacultyService() {

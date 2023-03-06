@@ -244,6 +244,7 @@ public class TestFile2 {
         map.put("1",new String[]{"1"});
         when(mockacademicDAO.getStudentEmail()).thenReturn(new String[]{"1"});
         when(mockacademicDAO.viewGrades("1")).thenReturn(new String[]{"1"});
+        map.equals(testacademicEmployeeImpl.generateReport());
     }
 
     @Test

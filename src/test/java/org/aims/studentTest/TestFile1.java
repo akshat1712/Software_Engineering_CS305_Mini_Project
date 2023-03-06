@@ -108,7 +108,7 @@ public class TestFile1 {
     @Order(8)
     public void testViewGrades2(){
         when(mockstudentImpl.viewGrades()).thenReturn(null);
-        String input="D\nA\n";
+        String input="Z\nD\nA\n";
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         teststudentService.showmenu();
         assertTrue(outContent.toString().contains("No Grades Available"));

@@ -46,13 +46,12 @@ public class TestFile1 {
         when(mockAdminImpl.login(isA(String.class),isA(String.class))).thenReturn(false);
         assertTrue(!testAdminService.login("postgres@gmail.com","2020csb1068"));
 
-
     }
 
     @Test
     public void testAddDepartmentService1() throws SQLException {
         when(mockAdminImpl.AddDepartment(isA(String.class))).thenReturn("ADDED");
-        String input="E\nCSE\nA\n";
+        String input="Z\nE\nCSE\nA\n";
         System.setIn(new java.io.ByteArrayInputStream(input.getBytes()));
         testAdminService.showmenu();
         assertTrue(outContent.toString().contains("ADDED"));

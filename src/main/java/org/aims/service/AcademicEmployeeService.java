@@ -200,7 +200,7 @@ public class AcademicEmployeeService implements UserService {
 
             // Writing to a file
             for (Map.Entry<String, String[]> entry : response.entrySet()) {
-                File fp = new File(path + "\\" + entry.getKey().substring(0,13) + ".txt");
+                File fp = new File(path + "\\" + entry.getKey().substring(0,11) + ".txt");
                 for (String s : entry.getValue()) {
                     try {
                         FileWriter fw = new FileWriter(fp, true);

@@ -13,7 +13,7 @@ public class TestFile3 {
     facultyDAO testDAO = new facultyDAO();
     static String dummyEmail = "dummy@iitrpr.ac.in";
     static String dummyPassword = "dummy@123";
-    static String dummyCourseCode="DUM123";
+    static String dummyCourseCode="DUM12";
 
     static String FacultyEmail = "FAC@iitrpr.ac.in";
     static String StudentEmail = "STU@iitrpr.ac.in";
@@ -40,7 +40,8 @@ public class TestFile3 {
         con.createStatement().executeQuery("SELECT INSERT_STUDENT('" + "STUDENT1" + "','" + "2020CSB9999" + "','" + StudentEmail + "','" + "1" + "','" + "2020" + "','" + "7897897898" + "','" + "IIT ROPAR" + "')");
         con.createStatement().executeQuery("SELECT INSERT_FACULTY('" + "FACULTY1" + "','" + FacultyEmail + "','" + "1" + "','" + "2022-1-1" + "','" + "4564564565" + "','" + "IIT ROPAR" + "')");
         con.createStatement().executeQuery("SELECT INSERT_COURSE_CATALOG('" + CourseCode + "','" + CourseCode + "','" + "1" + "'," + 1 + "," + 1 + "," + 1 + "," + 1 + "," + 1 + ")");
-
+        con.createStatement().executeQuery("SELECT INSERT_COURSE_OFFERED('" + testDAO.getCatalogid(CourseCode) + "','" + testDAO.getfacultyidEmail(FacultyEmail) + "','" + CourseCode + "','" + 8 + "')");
+        testDAO.insertCoursePreReq(CourseCode, dummyCourseCode,"9",1);
     }
 
 
@@ -61,6 +62,12 @@ public class TestFile3 {
         con.createStatement().execute(query);
 
         query="DELETE FROM students WHERE email='"+StudentEmail+"'";
+        con.createStatement().execute(query);
+
+        query="DELETE FROM courses_pre_req_offering WHERE pre_req='"+dummyCourseCode+"'";
+        con.createStatement().execute(query);
+
+        query="DELETE FROM courses_offering WHERE course_code='"+CourseCode+"'";
         con.createStatement().execute(query);
 
         query="DROP TABLE courses_teaching_faculty_"+testDAO.getfacultyidEmail(FacultyEmail);
@@ -179,11 +186,20 @@ public class TestFile3 {
     @Order(22)
     public void testGetOfferingCourse() throws Exception {
         int res=testDAO.getOfferingId(CourseCode);
-        System.out.println(res);
     }
     @Test
     @Order(21)
     public void testDeleteCourse() throws Exception {
         testDAO.deleteCourseOffering(FacultyEmail, CourseCode);
+    }
+
+    @Test
+    @Order(22)
+    public void testExtra() throws Exception {
+        testDAO.getfacultyidEmail(StudentEmail);
+        testDAO.getCatalogid(dummyCourseCode);
+        testDAO.getOfferingId(CourseCode);
+        testDAO.getfacultyidCourse(CourseCode);
+        testDAO.viewGrades(FacultyEmail);
     }
 }

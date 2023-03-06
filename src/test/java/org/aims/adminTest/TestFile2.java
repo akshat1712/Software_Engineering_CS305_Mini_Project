@@ -10,6 +10,8 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -21,16 +23,48 @@ public class TestFile2 {
         testAdmin = new AdminImpl();
     }
 
+    static String connectionString = "jdbc:postgresql://localhost:5432/postgres";
+    static String username = "postgres";
+    static String databasePassword = "2020csb1068";
+    static Connection con;
+
+    static {
+        try {
+            con = DriverManager.getConnection(connectionString, username, databasePassword);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // HELPER FUNCTION
+
+    public static int getStudentid(String email) throws SQLException {
+        ResultSet rs = con.createStatement().executeQuery("SELECT student_id FROM students WHERE email='" + email + "'");
+        if (rs.next())
+            return rs.getInt("student_id");
+        else
+            return -1;
+    }
+
+    public static int  getfacultyidEmail(String email) throws SQLException {
+        ResultSet rs = con.createStatement().executeQuery("SELECT faculty_id FROM faculties WHERE email='" + email + "'");
+        if (rs.next())
+            return rs.getInt("faculty_id");
+        else
+            return -1;
+    }
+
     @AfterAll
     public static void clearing() throws Exception {
         testAdmin = null;
 
         try {
-            String connectionString = "jdbc:postgresql://localhost:5432/postgres";
-            String username = "postgres";
-            String databasePassword = "2020csb1068";
-            Connection con = DriverManager.getConnection(connectionString, username, databasePassword);
 
+            con.createStatement().execute("DROP TABLE courses_teaching_faculty_"+getfacultyidEmail("FAC1@iitrpr.ac.in"));
+            con.createStatement().execute("DROP TABLE transcript_faculty_"+getfacultyidEmail("FAC1@iitrpr.ac.in"));
+
+            con.createStatement().execute("DROP TABLE courses_enrolled_student_"+getStudentid("STUDENT1@iitrpr.ac.in"));
+            con.createStatement().execute("DROP TABLE transcript_student_"+getStudentid("STUDENT1@iitrpr.ac.in"));
 
             con.createStatement().execute("DELETE FROM departments WHERE name='CSE'");
 
@@ -90,6 +124,12 @@ public class TestFile2 {
         }
     }
 
+    @Test
+    public void testEmptyDepartment() throws Exception {
+        String res=testAdmin.AddDepartment("   ");
+        assertTrue(res.equals("Department name is Empty"));
+    }
+
 
 
     @ParameterizedTest
@@ -124,7 +164,16 @@ public class TestFile2 {
         }
     }
 
-
+    @Test
+    public void testEmptyAcadName() throws Exception {
+        String res=testAdmin.AddAcademicStaff("  ","ACAD_10@iitrpr.ac.in","2022-12-12","7539518426","IIT ROPAR");
+        assertTrue(res.equals("Name is invalid"));
+    }
+    @Test
+    public void testEmptyAcadAddress() throws Exception {
+        String res=testAdmin.AddAcademicStaff("ACAD_10","ACAD_10@iitrpr.ac.in","2022-12-12","7539518426","   ");
+        assertTrue(res.equals("Address is invalid"));
+    }
 
     @ParameterizedTest
     @CsvSource({
@@ -158,6 +207,17 @@ public class TestFile2 {
         } else if (type == 8) {
             assertTrue(res.equals("Faculty already exists"));
         }
+    }
+
+    @Test
+    public void testEmptyFacName() throws Exception {
+        String res=testAdmin.AddFaculty("  ","FAC1@iitrpr.ac.in","Computer Science","2022-12-12","7539518426","IIT ROPAR");
+        assertTrue(res.equals("Name is invalid"));
+    }
+    @Test
+    public void testEmptyFacAddress() throws Exception {
+        String res=testAdmin.AddFaculty("FAC1","FAC1@iitrpr.ac.in","Computer Science","2022-12-12","7539518426","  ");
+        assertTrue(res.equals("Address is invalid"));
     }
 
     @ParameterizedTest
@@ -209,5 +269,16 @@ public class TestFile2 {
         else if(type==10){
             assertTrue(res.equals("Student already exists"));
         }
+    }
+
+    @Test
+    public void testEmptyStudentName() throws Exception {
+        String res=testAdmin.AddStudent("  ","STUDENT1@iitrpr.ac.in","2020CSB7000","Computer Science","2020","7539518426","IIT ROPAR");
+        assertTrue(res.equals("Name is invalid"));
+    }
+    @Test
+    public void testEmptyStudentAddress() throws Exception {
+        String res=testAdmin.AddStudent("STUDENT1","STUDENT1@iitrpr.ac.in","2020CSB7000","Computer Science","2020","7539518426","  ");
+        assertTrue(res.equals("Address is invalid"));
     }
 }
