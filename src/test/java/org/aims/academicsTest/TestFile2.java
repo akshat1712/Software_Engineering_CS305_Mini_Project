@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -175,9 +177,190 @@ public class TestFile2 {
         assertEquals("COURSE ADDED IN CATALOG SUCCESSFULLY", res);
     }
 
-//    @Test
-//    @Order(20)
-//    public void testStartSemester1() throws Exception{
-//
-//    }
+    @Test
+    @Order(20)
+    public void testStartSemester1() throws Exception{
+        when(mockacademicDAO.checkSemesterStatus("ONGOING-CO")).thenReturn(true);
+        assertEquals("A Semester Already Ongoing", testacademicEmployeeImpl.startSemester(2020,"1"));
+    }
+
+    @Test
+    @Order(21)
+    public void testStartSemester2() throws Exception{
+        when(mockacademicDAO.checkSemesterStatus("ONGOING-CO")).thenReturn(false);
+        when(mockacademicDAO.checkSemesterStatus("ONGOING-GS")).thenReturn(false);
+        when(mockacademicDAO.checkSemesterValidity("1",2020)).thenReturn(true);
+        assertEquals("Semester Already Exists", testacademicEmployeeImpl.startSemester(2020,"1"));
+    }
+
+    @Test
+    @Order(21)
+    public void testStartSemester3() throws Exception{
+        when(mockacademicDAO.checkSemesterStatus("ONGOING-CO")).thenReturn(false);
+        when(mockacademicDAO.checkSemesterStatus("ONGOING-GS")).thenReturn(false);
+        when(mockacademicDAO.checkSemesterValidity("1",2020)).thenReturn(false);
+        assertEquals("Semester Started Successfully", testacademicEmployeeImpl.startSemester(2020,"1"));
+    }
+
+    @Test
+    @Order(22)
+    public void testEndSemester1() throws Exception{
+        when(mockacademicDAO.checkSemesterStatus("ONGOING-CO")).thenReturn(true);
+        assertEquals("Grade Submission Not started", testacademicEmployeeImpl.endSemester());
+    }
+
+    @Test
+    @Order(23)
+    public void testEndSemester2() throws Exception{
+        when(mockacademicDAO.checkSemesterStatus("ONGOING-CO")).thenReturn(false);
+        when(mockacademicDAO.getStudentids()).thenReturn(new String[]{"1","2"});
+        when(mockacademicDAO.checkGradeSubmission("1")).thenReturn(false);
+        when(mockacademicDAO.checkGradeSubmission("2")).thenReturn(true);
+        assertEquals("Grade Not Submitted for the student", testacademicEmployeeImpl.endSemester());
+    }
+
+    @Test
+    @Order(24)
+    public void testEndSemester3() throws Exception{
+        when(mockacademicDAO.checkSemesterStatus("ONGOING-CO")).thenReturn(false);
+        when(mockacademicDAO.getStudentids()).thenReturn(new String[]{"1"});
+        when(mockacademicDAO.checkGradeSubmission("1")).thenReturn(false);
+        when(mockacademicDAO.getfacultyids()).thenReturn(new String[]{"1"});
+        assertEquals("Semester Ended", testacademicEmployeeImpl.endSemester());
+    }
+
+    @Test
+    @Order(25)
+    public void testEndSemester4() throws Exception{
+        when(mockacademicDAO.checkSemesterStatus("ONGOING-CO")).thenReturn(false);
+        when(mockacademicDAO.getStudentids()).thenReturn(null);
+        assertEquals("ERROR", testacademicEmployeeImpl.endSemester());
+    }
+
+    @Test
+    @Order(26)
+    public void testGenerateReport1() throws Exception{
+        Map<String,String[]> map=new HashMap<>();
+        map.put("1",new String[]{"1"});
+        when(mockacademicDAO.getStudentEmail()).thenReturn(new String[]{"1"});
+        when(mockacademicDAO.viewGrades("1")).thenReturn(new String[]{"1"});
+    }
+
+    @Test
+    @Order(27)
+    public void testGenerateReport2() throws Exception{
+        when(mockacademicDAO.getStudentEmail()).thenReturn(null);
+        assertNull(testacademicEmployeeImpl.generateReport());
+    }
+
+    @Test
+    @Order(28)
+    public void testCheckGraduation1() throws Exception{
+        when(mockacademicDAO.getCurriculumCourse("2020csb1068@iitrpr.ac.in")).thenReturn(new String []{"1"});
+        when(mockacademicDAO.checkCourseTranscript("2020csb1068@iitrpr.ac.in","1")).thenReturn(false);
+        assertEquals("Not all Courses Completed", testacademicEmployeeImpl.checkGraduation("2020csb1068@iitrpr.ac.in"));
+    }
+
+    @Test
+    @Order(29)
+    public void testCheckGraduation2() throws Exception{
+        when(mockacademicDAO.getCurriculumCourse("2020csb1068@iitrpr.ac.in")).thenReturn(new String []{"1"});
+        when(mockacademicDAO.checkCourseTranscript("2020csb1068@iitrpr.ac.in","1")).thenReturn(true);
+
+        Map<String,Double> map=new HashMap<>();
+        map.put("PE",4.0);
+        when(mockacademicDAO.getEnrolledCreditsType("2020csb1068@iitrpr.ac.in")).thenReturn(map);
+        when(mockacademicDAO.getCreditsType("2020csb1068@iitrpr.ac.in","PE")).thenReturn(5);
+        assertEquals("Not Enough Credits of PE", testacademicEmployeeImpl.checkGraduation("2020csb1068@iitrpr.ac.in"));
+   }
+
+    @Test
+    @Order(30)
+    public void testCheckGraduation3() throws Exception{
+        when(mockacademicDAO.getCurriculumCourse("2020csb1068@iitrpr.ac.in")).thenReturn(new String []{"1"});
+        when(mockacademicDAO.checkCourseTranscript("2020csb1068@iitrpr.ac.in","1")).thenReturn(true);
+
+        Map<String,Double> map=new HashMap<>();
+        map.put("PE",8.0);
+        when(mockacademicDAO.getEnrolledCreditsType("2020csb1068@iitrpr.ac.in")).thenReturn(map);
+        when(mockacademicDAO.getCreditsType("2020csb1068@iitrpr.ac.in","PE")).thenReturn(5);
+        when(mockacademicDAO.getCreditsType("2020csb1068@iitrpr.ac.in","OE")).thenReturn(5);
+        assertEquals("Not Enough Credits of Open Elective", testacademicEmployeeImpl.checkGraduation("2020csb1068@iitrpr.ac.in"));
+    }
+
+    @Test
+    @Order(31)
+    public void testCheckGraduation4() throws Exception{
+        when(mockacademicDAO.getCurriculumCourse("2020csb1068@iitrpr.ac.in")).thenReturn(new String []{"1"});
+        when(mockacademicDAO.checkCourseTranscript("2020csb1068@iitrpr.ac.in","1")).thenReturn(true);
+
+        Map<String,Double> map=new HashMap<>();
+        map.put("PE",8.0);
+        when(mockacademicDAO.getEnrolledCreditsType("2020csb1068@iitrpr.ac.in")).thenReturn(map);
+        when(mockacademicDAO.getCreditsType("2020csb1068@iitrpr.ac.in","PE")).thenReturn(5);
+        when(mockacademicDAO.getCreditsType("2020csb1068@iitrpr.ac.in","OE")).thenReturn(2);
+        assertEquals("Student can Graduate", testacademicEmployeeImpl.checkGraduation("2020csb1068@iitrpr.ac.in"));
+    }
+
+    @Test
+    @Order(32)
+    public void testCheckGraduation5() throws Exception{
+        when(mockacademicDAO.getCurriculumCourse("2020csb1068@iitrpr.ac.in")).thenReturn(null);
+        assertEquals("ERROR", testacademicEmployeeImpl.checkGraduation("2020csb1068@iitrpr.ac.in"));
+    }
+
+    @Test
+    @Order(33)
+    public void testCreateCurriculum1() throws Exception{
+        String [] courses=new String[]{"CS201 PE"};
+        String [] credits=new String[]{"PE 10"};
+        when(mockacademicDAO.getdepartmentid("CSE")).thenReturn(-1);
+        assertEquals("Department Does Not Exist", testacademicEmployeeImpl.createCurriculum(2020,courses,credits,"CSE"));
+    }
+
+    @Test
+    @Order(34)
+    public void testCreateCurriculum2() throws Exception{
+        String [] courses=new String[]{"CS201 PE"};
+        String [] credits=new String[]{"PE -2"};
+        when(mockacademicDAO.getdepartmentid("CSE")).thenReturn(1);
+        assertEquals("Invalid Credits in PE", testacademicEmployeeImpl.createCurriculum(2020,courses,credits,"CSE"));
+    }
+
+    @Test
+    @Order(35)
+    public void testCreateCurriculum3() throws Exception{
+        String [] courses=new String[]{"CS201 PE"};
+        String [] credits=new String[]{"PE 2"};
+        when(mockacademicDAO.getdepartmentid("CSE")).thenReturn(1);
+        when(mockacademicDAO.checkCourseCatalog("CS201")).thenReturn(false);
+        assertEquals("Course Does Not Exist in Catalog CS201", testacademicEmployeeImpl.createCurriculum(2020,courses,credits,"CSE"));
+    }
+
+    @Test
+    @Order(36)
+    public void testCreateCurriculum4() throws Exception{
+        String [] courses=new String[]{"CS201 PE"};
+        String [] credits=new String[]{"PE 2"};
+        when(mockacademicDAO.getdepartmentid("CSE")).thenReturn(1);
+        when(mockacademicDAO.checkCourseCatalog("CS201")).thenReturn(true);
+        when(mockacademicDAO.checkCourseTypes("PE")).thenReturn(false);
+        assertEquals("Invalid Course Type PE", testacademicEmployeeImpl.createCurriculum(2020,courses,credits,"CSE"));
+    }
+
+    @Test
+    @Order(37)
+    public void testCreateCurriculum5() throws Exception{
+        String [] courses=new String[]{"CS201 PE"};
+        String [] credits=new String[]{"PE 2"};
+        when(mockacademicDAO.getdepartmentid("CSE")).thenReturn(1);
+        when(mockacademicDAO.checkCourseCatalog("CS201")).thenReturn(true);
+        when(mockacademicDAO.checkCourseTypes("PE")).thenReturn(true);
+        assertEquals("Curriculum Created Successfully", testacademicEmployeeImpl.createCurriculum(2020,courses,credits,"CSE"));
+    }
+    @Test
+    @Order(38)
+    public void testCreateCurriculum6() throws Exception{
+        assertEquals("ERROR", testacademicEmployeeImpl.createCurriculum(2020,null,null,"CSE"));
+    }
 }

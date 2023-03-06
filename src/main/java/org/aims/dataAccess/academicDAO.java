@@ -157,14 +157,12 @@ public class academicDAO {
     }
     public boolean updateStudentTranscript(String id) throws SQLException  {
         String query = "INSERT INTO transcript_student_" + id + " (\"catalog_id\",\"grade\",\"semester\",\"year\") SELECT catalog_id,grade," + getSemester() + "," + getYear() + " FROM courses_enrolled_student_" + id;
-
         con.createStatement().execute(query);
         con.createStatement().execute("TRUNCATE TABLE courses_enrolled_student_" + id);
         return true;
     }
     public boolean updateFacultyTranscript(String id) throws SQLException  {
         String query = "INSERT INTO transcript_faculty_" + id + " (\"catalog_id\",\"semester\",\"year\") SELECT catalog_id," + getSemester() + "," + getYear() + " FROM courses_teaching_faculty_" + id;
-
         con.createStatement().execute(query);
         con.createStatement().execute("TRUNCATE courses_teaching_faculty_" + id);
         return true;
@@ -181,16 +179,13 @@ public class academicDAO {
     }
     public String[] getCurriculumCourse(String email) throws SQLException  {
         ResultSet rs0 = con.createStatement().executeQuery("SELECT * FROM students WHERE email='" + email + "'");
-
         if (!rs0.next()) return null;
-
         ResultSet rs = con.createStatement().executeQuery("Select course_code from batch_curriculum_" + rs0.getInt("batch") + " P , courses_catalog Q WHERE P.catalog_id=Q.catalog_id AND P.department_id=+" + rs0.getInt("dept_id"));
         int count = 0;
         while (rs.next()) {
             count++;
         }
         String[] courses = new String[count];
-
         rs = con.createStatement().executeQuery("Select course_code from batch_curriculum_" + rs0.getInt("batch") + " P , courses_catalog Q WHERE P.catalog_id=Q.catalog_id AND P.department_id=+" + rs0.getInt("dept_id"));
 
         int i = 0;
@@ -240,19 +235,16 @@ public class academicDAO {
         }
         return res;
     }
-
     public int createBatchCurriculum(int batch,String dept,String courseCode,String type) throws SQLException {
         String query = "INSERT INTO batch_curriculum_" + batch + " (\"department_id\",\"catalog_id\",\"type\") VALUES('" + getdepartmentid(dept) + "','" + getCatalogid(courseCode) + "','" + type + "')";
         con.createStatement().execute(query);
         return 1;
     }
-
     public int createBatchCredits(int batch,String dept,String courseCode,String type) throws SQLException {
         String query = "INSERT INTO batch_credits_" + batch + " (\"department_id\",\"type\",\"credits\") VALUES('" + getdepartmentid(dept) + "','" + courseCode + "','" + type + "')";
         con.createStatement().execute(query);
         return 1;
     }
-
     public int endSemester() throws SQLException {
         con.createStatement().execute("UPDATE time_semester SET status='ENDED' WHERE status!='ENDED'");
         con.createStatement().execute("TRUNCATE TABLE courses_offering CASCADE");

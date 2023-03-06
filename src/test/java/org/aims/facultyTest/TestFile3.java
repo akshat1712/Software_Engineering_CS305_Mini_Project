@@ -40,7 +40,11 @@ public class TestFile3 {
         con.createStatement().executeQuery("SELECT INSERT_STUDENT('" + "STUDENT1" + "','" + "2020CSB9999" + "','" + StudentEmail + "','" + "1" + "','" + "2020" + "','" + "7897897898" + "','" + "IIT ROPAR" + "')");
         con.createStatement().executeQuery("SELECT INSERT_FACULTY('" + "FACULTY1" + "','" + FacultyEmail + "','" + "1" + "','" + "2022-1-1" + "','" + "4564564565" + "','" + "IIT ROPAR" + "')");
         con.createStatement().executeQuery("SELECT INSERT_COURSE_CATALOG('" + CourseCode + "','" + CourseCode + "','" + "1" + "'," + 1 + "," + 1 + "," + 1 + "," + 1 + "," + 1 + ")");
+        con.createStatement().execute("INSERT INTO courses_pre_req(\"catalog_id\",\"pre_req\") VALUES('" + testDAO.getCatalogid(CourseCode) + "','" + dummyCourseCode + "')");
     }
+
+
+
 
     @AfterAll
     public void teardown() throws SQLException {
@@ -68,13 +72,15 @@ public class TestFile3 {
         query="DELETE FROM faculties WHERE email='"+FacultyEmail+"'";
         con.createStatement().execute(query);
 
+        query="DELETE FROM courses_pre_req WHERE pre_req="+dummyCourseCode;
+        con.createStatement().execute(query);
+
         query="DELETE FROM courses_catalog WHERE course_code='"+CourseCode+"'";
         con.createStatement().execute(query);
 
         query="DELETE FROM departments WHERE name='"+Department+"'";
         con.createStatement().execute(query);
     }
-
     @Test
     @Order(2)
     public void testLogin() throws Exception {
@@ -90,91 +96,76 @@ public class TestFile3 {
     public void testLogoutLogs() throws Exception {
         testDAO.logoutLogs(dummyEmail);
     }
-
     @Test
     @Order(5)
     public void testCheckPassword() throws Exception {
         testDAO.checkPassword(dummyEmail, dummyPassword);
     }
-
     @Test
     @Order(6)
     public void testChangePassword() throws Exception {
         testDAO.changePassword(dummyEmail, dummyPassword);
     }
-
     @Test
     @Order(7)
     public void testCheckCourseOffering() throws Exception {
         testDAO.checkCourseOffering(dummyCourseCode);
     }
-
     @Test
     @Order(8)
     public void testCheckCourseCatalog() throws Exception {
         testDAO.checkCourseCatalog(dummyCourseCode);
     }
-
     @Test
     @Order(9)
     public void testCheckSemesterStatus() throws Exception {
         testDAO.checkSemesterStatus("ENDED");
     }
-
     @Test
     @Order(10)
     public void testGetStudentEmail() throws Exception {
         testDAO.getStudentEmail();
     }
-
     @Test
     @Order(11)
     public void testGetStudentid1() throws Exception {
         testDAO.getStudentid(StudentEmail);
     }
-
     @Test
     @Order(12)
     public void testGetStudentid2() throws Exception {
         testDAO.getStudentid(FacultyEmail);
     }
-
     @Test
     @Order(13)
     public void testUpdateGrade() throws Exception {
         testDAO.updateGrade(StudentEmail, CourseCode, "8");
     }
-
     @Test
     @Order(14)
     public void testInsertCourseFaculty() throws Exception {
         testDAO.insertCourseFaculty(FacultyEmail, CourseCode);
     }
-
     @Test
     @Order(15)
     public void testInsertCourse() throws Exception {
         testDAO.insertCourse(FacultyEmail, CourseCode,8.20);
     }
-
     @Test
     @Order(17)
     public void testGetfacultyidCourse() throws Exception {
         testDAO.getfacultyidCourse(CourseCode);
     }
-
     @Test
     @Order(18)
     public void getCountCourseTranscript() throws Exception {
         testDAO.getcountCoursetranscript(StudentEmail);
     }
-
     @Test
     @Order(19)
     public void testDeleteCourseEnrollement() throws Exception {
         testDAO.deleteCourseEnrollement(StudentEmail, CourseCode);
     }
-
     @Test
     @Order(20)
     public void testCheckCourseEnrollement() throws Exception {
@@ -186,7 +177,6 @@ public class TestFile3 {
     public void testViewGrade() throws Exception {
         testDAO.viewGrades(StudentEmail);
     }
-
 
     @Test
     @Order(22)

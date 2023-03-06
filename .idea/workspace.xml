@@ -4,13 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="793ca995-c85c-4b5c-99eb-10b3a8b12ea8" name="Changes" comment="REFACTORING DONE">
+    <list default="true" id="793ca995-c85c-4b5c-99eb-10b3a8b12ea8" name="Changes" comment="ACAD EMPL IN MIDDLE">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/dataAccess/academicDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/dataAccess/academicDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/userimpl/AcademicEmployeeImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/userimpl/AcademicEmployeeImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/aims/userimpl/StudentImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/aims/userimpl/StudentImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/org/aims/academicsTest/TestFile2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/aims/academicsTest/TestFile2.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/aims/studentTest/TestFile2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/aims/studentTest/TestFile2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/aims/academicsTest/TestFile3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/aims/academicsTest/TestFile3.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/aims/facultyTest/TestFile3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/aims/facultyTest/TestFile3.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/aims/studentTest/TestFile3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/aims/studentTest/TestFile3.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,7 +20,7 @@
   </component>
   <component name="ExportToHTMLSettings">
     <option name="OPEN_IN_BROWSER" value="true" />
-    <option name="OUTPUT_DIRECTORY" value="C:\Users\aksha\OneDrive\Desktop\CR" />
+    <option name="OUTPUT_DIRECTORY" value="C:\Users\aksha\OneDrive\Desktop\CR3" />
   </component>
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
@@ -105,7 +106,20 @@
       <recent name="org.aims.admin" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Gradle.Tests in 'Mini_Project.test'">
+    <configuration name="Main" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="org.aims.Main" />
+      <module name="Mini_Project.main" />
+      <extension name="coverage" runner="jacoco">
+        <pattern>
+          <option name="PATTERN" value="org.aims.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="TestFile2" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -126,10 +140,13 @@
       </ExternalSystemSettings>
       <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <EXTENSION ID="com.intellij.execution.ExternalSystemRunConfigurationJavaExtension">
+        <extension name="coverage" runner="jacoco" />
+      </EXTENSION>
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="TestFile2.testAddCourse2" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="TestFile2.testCreateCurriculum6" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -142,7 +159,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.aims.academicsTest.TestFile2.testAddCourse2&quot;" />
+            <option value="&quot;org.aims.academicsTest.TestFile2.testCreateCurriculum6&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -152,7 +169,7 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="TestFile2.testAddCourse3" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="TestFile3 (1)" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -165,7 +182,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.aims.academicsTest.TestFile2.testAddCourse3&quot;" />
+            <option value="&quot;org.aims.studentTest.TestFile3&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -175,7 +192,7 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="TestFile2.testAddCourse4" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="TestFile3" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -188,17 +205,44 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.aims.academicsTest.TestFile2.testAddCourse4&quot;" />
+            <option value="&quot;org.aims.academicsTest.TestFile3&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
       </ExternalSystemSettings>
       <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <EXTENSION ID="com.intellij.execution.ExternalSystemRunConfigurationJavaExtension">
+        <extension name="coverage" runner="jacoco" />
+      </EXTENSION>
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="TestFile2.testAddCourse5" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="Tests in 'Mini_Project.test'" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <EXTENSION ID="com.intellij.execution.ExternalSystemRunConfigurationJavaExtension">
+        <extension name="coverage" sample_coverage="false" runner="jacoco" />
+      </EXTENSION>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="Tests in 'org.aims'" type="GradleRunConfiguration" factoryName="Gradle">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -211,30 +255,35 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.aims.academicsTest.TestFile2.testAddCourse5&quot;" />
+            <option value="&quot;org.aims.*&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
       </ExternalSystemSettings>
       <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <EXTENSION ID="com.intellij.execution.ExternalSystemRunConfigurationJavaExtension">
+        <extension name="coverage" sample_coverage="false" runner="jacoco" />
+      </EXTENSION>
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="Application.Main" />
+      <item itemvalue="Gradle.Tests in 'org.aims'" />
       <item itemvalue="Gradle.TestFile2" />
-      <item itemvalue="Gradle.TestFile2.testAddCourse2" />
-      <item itemvalue="Gradle.TestFile2.testAddCourse3" />
-      <item itemvalue="Gradle.TestFile2.testAddCourse4" />
-      <item itemvalue="Gradle.TestFile2.testAddCourse5" />
+      <item itemvalue="Gradle.TestFile2.testCreateCurriculum6" />
+      <item itemvalue="Gradle.TestFile3 (1)" />
+      <item itemvalue="Gradle.Tests in 'Mini_Project.test'" />
+      <item itemvalue="Gradle.TestFile3" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.Tests in 'Mini_Project.test'" />
+        <item itemvalue="Gradle.TestFile3 (1)" />
+        <item itemvalue="Gradle.TestFile3" />
         <item itemvalue="Gradle.TestFile2" />
-        <item itemvalue="Gradle.TestFile2.testAddCourse5" />
-        <item itemvalue="Gradle.TestFile2.testAddCourse4" />
-        <item itemvalue="Gradle.TestFile2.testAddCourse3" />
-        <item itemvalue="Gradle.TestFile2.testAddCourse2" />
+        <item itemvalue="Gradle.TestFile2.testCreateCurriculum6" />
       </list>
     </recent_temporary>
   </component>
@@ -499,7 +548,14 @@
       <option name="project" value="LOCAL" />
       <updated>1678053758966</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="ACAD EMPL IN MIDDLE">
+      <created>1678086991534</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1678086991534</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -517,7 +573,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="FACULTY WORK STARTED" />
     <MESSAGE value="FACULTY WORK COMPLETED FOR NOW &amp; LOGIN LOGS WORKING IN ACADEMIC EMPLOYEE" />
     <MESSAGE value="STUDENT WORK STARTED" />
     <MESSAGE value="STUDENT WORK IN PROGRESS" />
@@ -542,21 +597,31 @@
     <MESSAGE value="FACULTY EMPL ALSO COMPLETE" />
     <MESSAGE value="FACULTY DAO ALSO COMPLETE" />
     <MESSAGE value="REFACTORING DONE" />
-    <option name="LAST_COMMIT_MESSAGE" value="REFACTORING DONE" />
+    <MESSAGE value="ACAD EMPL IN MIDDLE" />
+    <option name="LAST_COMMIT_MESSAGE" value="ACAD EMPL IN MIDDLE" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Mini_Project$Tests_in__Mini_Project_test_.ic" NAME="Tests in 'Mini_Project.test' Coverage Results" MODIFIED="1678102515258" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Mini_Project$Tests_in__org_aims_.exec" NAME="Tests in 'org.aims' Coverage Results" MODIFIED="1678102355389" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="jacoco" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="true" />
     <SUITE FILE_PATH="coverage/Mini_Project$AdminServiceTest_Showmenu_Department_Test1.ic" NAME="AdminServiceTest.Showmenu_Department_Test1 Coverage Results" MODIFIED="1676820704506" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Mini_Project$TestFile2__2_.ic" NAME="TestFile2 (2) Coverage Results" MODIFIED="1678010709067" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Mini_Project$TestFile1.ic" NAME="TestFile1 Coverage Results" MODIFIED="1678030877993" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
-    <SUITE FILE_PATH="coverage/Mini_Project$TestFile2.ic" NAME="TestFile2 Coverage Results" MODIFIED="1678080937480" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Mini_Project$TestFile2.ic" NAME="TestFile2 Coverage Results" MODIFIED="1678093505025" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Mini_Project$TestFile1__2_.ic" NAME="TestFile1 (2) Coverage Results" MODIFIED="1678018779741" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Mini_Project$Main.exec" NAME="Main Coverage Results" MODIFIED="1678087679276" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="jacoco" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>org.aims.*</FILTER>
+    </SUITE>
     <SUITE FILE_PATH="coverage/Mini_Project$AdminServiceTest_ShowmenuTest.ic" NAME="AdminServiceTest.ShowmenuTest Coverage Results" MODIFIED="1676819103689" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Mini_Project$AdminImplTest_login.ic" NAME="AdminImplTest.login Coverage Results" MODIFIED="1676824269442" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
-    <SUITE FILE_PATH="coverage/Mini_Project$TestFile3.ic" NAME="TestFile3 Coverage Results" MODIFIED="1678051714084" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Mini_Project$TestFile3.ic" NAME="TestFile3 Coverage Results" MODIFIED="1678095826182" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Mini_Project$AdminImplTest.ic" NAME="AdminImplTest Coverage Results" MODIFIED="1676888429107" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
-    <SUITE FILE_PATH="coverage/Mini_Project$Tests_in__org_aims_.ic" NAME="Tests in 'org.aims' Coverage Results" MODIFIED="1678074949215" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Mini_Project$Tests_in__org_aims_.ic" NAME="Tests in 'org.aims' Coverage Results" MODIFIED="1678091165338" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Mini_Project$TestFile3.exec" NAME="TestFile3 Coverage Results" MODIFIED="1678099490944" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="jacoco" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Mini_Project$TestFile1__1_.ic" NAME="TestFile1 (1) Coverage Results" MODIFIED="1678017021438" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Mini_Project$TestFile2__1_.ic" NAME="TestFile2 (1) Coverage Results" MODIFIED="1678083014324" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Mini_Project$AdminImplTest_loginTest1.ic" NAME="AdminImplTest.loginTest1 Coverage Results" MODIFIED="1676797291378" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Mini_Project$TestFile2.exec" NAME="TestFile2 Coverage Results" MODIFIED="1678093639618" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="jacoco" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Mini_Project$TestFile3__1_.ic" NAME="TestFile3 (1) Coverage Results" MODIFIED="1678104888379" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Mini_Project$Tests_in__Mini_Project_test_.exec" NAME="Tests in 'Mini_Project.test' Coverage Results" MODIFIED="1678105182702" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="jacoco" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="true" />
   </component>
 </project>

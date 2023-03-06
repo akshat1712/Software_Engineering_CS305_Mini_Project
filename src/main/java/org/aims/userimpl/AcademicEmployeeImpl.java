@@ -68,7 +68,6 @@ public class AcademicEmployeeImpl implements userDAL {
                 return "Department Does Not Exist";
             for (String s : credits) {
                 String[] split = s.split(" ");
-
                 if (Double.parseDouble(split[1]) < 0) {
                     return "Invalid Credits in " + split[0];
                 }
@@ -88,7 +87,7 @@ public class AcademicEmployeeImpl implements userDAL {
                 String[] split = s.split(" ");
                 academicDAO.createBatchCredits(batch, Department, split[0], split[1]);
             }
-            return "Curriculum Created Successfully\n";
+            return "Curriculum Created Successfully";
         } catch (Exception e) {
             return "ERROR";
         }
@@ -113,11 +112,12 @@ public class AcademicEmployeeImpl implements userDAL {
             String[] students = academicDAO.getStudentids();
             for (String s : students) {
                 if (academicDAO.checkGradeSubmission(s))
-                    return "Grade Not Submitted for the student ";
+                    return "Grade Not Submitted for the student";
             }
             for (String s : students) {
                 academicDAO.updateStudentTranscript(s);
             }
+
             String[] faculties = academicDAO.getfacultyids();
             for (String s : faculties) {
                 academicDAO.updateFacultyTranscript(s);
