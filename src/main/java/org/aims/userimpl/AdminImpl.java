@@ -4,6 +4,7 @@ import org.postgresql.util.PSQLException;
 
 
 import java.sql.*;
+import java.util.ResourceBundle;
 
 public class AdminImpl implements userDAL {
 
@@ -11,12 +12,13 @@ public class AdminImpl implements userDAL {
     private String Password;
     private final Connection con;
 
-    private final String connectionString = "jdbc:postgresql://localhost:5432/postgres";
-    private final String username = "postgres";
-    private final String databasePassword = "2020csb1068";
+    static ResourceBundle rd = ResourceBundle.getBundle("config");
+    static String data_base_url = rd.getString("data_base_url");
+    static String username = rd.getString("username");
+    static String password = rd.getString("password");
 
     public AdminImpl() throws SQLException {
-        con = DriverManager.getConnection(connectionString, username, databasePassword);
+        con = DriverManager.getConnection(data_base_url, username, password);
     }
 
     public boolean login(String email,String password) {

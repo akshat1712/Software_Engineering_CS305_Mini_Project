@@ -3,15 +3,17 @@ package org.aims.dataAccess;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.ResourceBundle;
 
 public class studentDAO {
     private Connection con;
-    private final String connectionString = "jdbc:postgresql://localhost:5432/postgres";
-    private final String username = "postgres";
-    private final String databasePassword = "2020csb1068";
+    ResourceBundle rd = ResourceBundle.getBundle("config");
+    String data_base_url = rd.getString("data_base_url");
+    String username = rd.getString("username");
+    String password = rd.getString("password");
     public studentDAO() {
         try {
-            this.con = DriverManager.getConnection(connectionString, username, databasePassword);
+            this.con = DriverManager.getConnection(data_base_url, username, password);
         } catch (SQLException e) {
             System.out.println(e);
         }

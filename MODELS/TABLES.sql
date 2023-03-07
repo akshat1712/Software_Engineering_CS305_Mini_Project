@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS "courses_pre_req_offering" (
     "grade" VARCHAR(2) NOT NULL,
     "type" INTEGER NOT NULL,
     FOREIGN KEY ("offering_id") REFERENCES "courses_offering" ("offering_id")
-)
+);
 
 CREATE TABLE IF NOT EXISTS "time_semester"(
     "semester" VARCHAR(1) NOT NULL,

@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ResourceBundle;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class TestFile3 {
@@ -21,15 +22,16 @@ public class TestFile3 {
     String Department="DUMMY";
     String CourseCode="CS000";
 
-    private static final String connectionString = "jdbc:postgresql://localhost:5432/postgres";
-    private static final String username = "postgres";
-    private static final String databasePassword = "2020csb1068";
+    static ResourceBundle rd = ResourceBundle.getBundle("config");
+    static String data_base_url = rd.getString("data_base_url");
+    static String username = rd.getString("username");
+    static String password = rd.getString("password");
     private static Connection con;
     Integer year=2010;
 
     static {
         try {
-            con = DriverManager.getConnection(connectionString, username, databasePassword);
+            con = DriverManager.getConnection(data_base_url, username, password);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ResourceBundle;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -23,14 +24,16 @@ public class TestFile2 {
         testAdmin = new AdminImpl();
     }
 
-    static String connectionString = "jdbc:postgresql://localhost:5432/postgres";
-    static String username = "postgres";
-    static String databasePassword = "2020csb1068";
+    static ResourceBundle rd = ResourceBundle.getBundle("config");
+    static String data_base_url = rd.getString("data_base_url");
+    static String username = rd.getString("username");
+    static String password = rd.getString("password");
+
     static Connection con;
 
     static {
         try {
-            con = DriverManager.getConnection(connectionString, username, databasePassword);
+            con = DriverManager.getConnection(data_base_url, username, password);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
